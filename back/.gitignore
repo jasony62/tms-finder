@@ -1,0 +1,9 @@
+node_modules/
+
+# application
+public/
+config/app.js
+config/db.js
+config/log4js.js
+config/redis.js
+files/

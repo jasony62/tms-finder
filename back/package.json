@@ -1,0 +1,15 @@
+{
+  "name": "tms-finder-back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "pm2": "pm2 start ecosystem.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "tms-koa": "^0.0.12"
+  }
+}

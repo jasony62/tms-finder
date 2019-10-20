@@ -6,4 +6,5 @@ config/app.js
 config/db.js
 config/log4js.js
 config/redis.js
+config/fs.js
 files/

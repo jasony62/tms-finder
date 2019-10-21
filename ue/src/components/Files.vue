@@ -24,47 +24,20 @@ export default {
   components: { Editor },
   data() {
     return {
-      editingFile: {
-        s1: '这是1条单行数据',
-        s2: '设置1条多行数据',
-        s3: 'v1',
-        s4: ['v2'],
-        s5: []
-      },
-      schemas: [
-        { id: 's1', type: 'shorttext', title: '单行填写题' },
-        { id: 's2', type: 'longtext', title: '多行填写题' },
-        {
-          id: 's3',
-          type: 'single',
-          title: '单选题',
-          ops: [
-            { v: 'v1', l: '选项1' },
-            { v: 'v2', l: '选项2' },
-            { v: 'v3', l: '选项3' }
-          ]
-        },
-        {
-          id: 's4',
-          type: 'multiple',
-          title: '多选题',
-          ops: [
-            { v: 'v1', l: '选项1' },
-            { v: 'v2', l: '选项2' },
-            { v: 'v3', l: '选项3' }
-          ]
-        },
-        { id: 's5', type: 'image', title: '图片' }
-      ]
+      editingFile: { path: '', info: {} }
     }
   },
   methods: {
     handleSetInfo(index, file) {
-      this.editorFile = file
+      this.editingFile = file
       this.$refs.editor.$emit('open')
     }
   },
   computed: {
+    schemas() {
+      let schemas = this.$store.state.schemas
+      return schemas
+    },
     files() {
       let files = this.$store.state.files
       return files

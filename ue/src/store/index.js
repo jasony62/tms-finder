@@ -7,10 +7,14 @@ import browser from '../apis/file/browse'
 
 export default new Vuex.Store({
   state: {
+    schemas: null,
     tree: { name: '全部', path: '' },
     files: []
   },
   mutations: {
+    schemas(state, payload) {
+      state.schemas = payload.schemas
+    },
     files(state, payload) {
       state.files = payload.files
     },
@@ -24,6 +28,14 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    schemas({ commit }) {
+      return new Promise((resolve, reject) => {
+        browser.schemas().then(schemas => {
+          commit({ type: 'schemas', schemas })
+          resolve(schemas)
+        })
+      })
+    },
     list({ commit }, payload) {
       let { dir } = payload
       return new Promise((resolve, reject) => {

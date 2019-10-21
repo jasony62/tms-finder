@@ -1,12 +1,5 @@
 module.exports = {
-  presets: [
-    [
-      '@vue/app',
-      {
-        useBuiltIns: 'entry'
-      }
-    ]
-  ],
+  presets: [['@vue/app']],
   plugins: [
     [
       'component',
@@ -20,13 +13,14 @@ module.exports = {
       {
         libraryName: 'tms-vue-ui',
         style: true
-      }
+      },
+      'tms-vue-ui'
     ],
     [
       'import',
       {
         libraryName: 'vant',
-        libraryDirectory: 'es',
+        libraryDirectory: 'lib',
         style: true
       },
       'vant'

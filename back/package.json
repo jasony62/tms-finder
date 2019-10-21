@@ -10,7 +10,7 @@
   "author": "jasony62",
   "license": "MIT",
   "dependencies": {
-    "tms-db": "^0.0.5",
+    "tms-db": "^0.0.7",
     "tms-koa": "^0.0.20"
   }
 }

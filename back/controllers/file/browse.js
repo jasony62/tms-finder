@@ -1,7 +1,5 @@
 const { BrowseCtrl } = require('tms-koa/lib/controller/fs')
 const { ResultData, ResultFault, ResultObjectNotFound } = require('tms-koa')
-const _ = require('lodash')
-const path = require('path')
 const { LocalFS } = require('tms-koa/lib/model/fs/local')
 
 class Browse extends BrowseCtrl {
@@ -12,30 +10,31 @@ class Browse extends BrowseCtrl {
    * 获取文件及目录
    */
   async list() {
-    let oUser = this.client.data
-    let tbl = _.get(this.fsConfig, ['local', 'database', 'file_table'], '')
-    let rootDir = _.get(this.fsConfig, ['local', 'rootDir'], '')
-    let { dir = '' } = this.request.query
-
-    // 获取一级文件夹
+    let { dir } = this.request.query
     let localFS = new LocalFS('upload', { fileConfig: this.fsConfig })
-    let { dirs } = localFS.list(dir)
+    let { files, dirs } = localFS.list(dir)
+    for (let file of files) {
+      //
+      file.createTime = Math.floor(file.birthtime)
+      delete file.birthtime
+      //
+      let info = await this.getBizInfo(file.path)
+      file.info = typeof info === 'object' ? info : {}
+    }
+    for (let dir of dirs) {
+      if (dir.sub.files > 0) {
+        dir.sub.files = true
+      } else {
+        dir.sub.files = false
+      }
+      if (dir.sub.dirs > 0) {
+        dir.sub.dirs = true
+      } else {
+        dir.sub.dirs = false
+      }
+    }
 
-    let fsDb = this.fsDb
-    if (!fsDb) return new ResultFault('数据库连接失败')
-
-    //获取文件
-    let stmt = fsDb.newSelect(tbl, '*')
-    stmt.where.fieldMatch('userid', '=', oUser.uid).fieldMatch('path', 'like', rootDir + '%')
-    let files = await stmt.exec()
-
-    files.forEach(file => {
-      let fPath = path.dirname(file.path.replace(rootDir, "")).split(path.sep)
-      file.path = fPath
-    })
-
-    let data = { dirs: dirs, files: files }
-    return new ResultData(data)
+    return new ResultData({ files, dirs })
   }
 }
 

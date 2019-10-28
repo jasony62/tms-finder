@@ -1,25 +1,17 @@
 module.exports = {
   local: {
-    rootDir: 'D:/WWW/tms-finder/back/files' // 指定保存文件的根目录
+    rootDir: 'D:/WWW/tms-finder/back/files', // 指定保存文件的根目录
     database: {
       dialect: 'sqlite',
       file_table: 'upload_files'
     },
     schemas: [
-      { id: 's1', type: 'shorttext', title: '信息1' },
-      { id: 's2', type: 'longtext', title: '信息2' },
-      {
-        id: 's3',
-        type: 'single',
-        title: '信息3',
-        ops: [{ v: 'v1', l: '选项1' }, { v: 'v2', l: '选项2' }, { v: 'v3', l: '选项3' }]
-      },
-      {
-        id: 's4',
-        type: 'multiple',
-        title: '信息4',
-        ops: [{ v: 'v1', l: '选项1' }, { v: 'v2', l: '选项2' }, { v: 'v3', l: '选项3' }]
-      }
+      { id: 'dirs', type: 'shorttext', title: '目录结构' }, // {"一级目录" ：{“二级目录”： {}，“三级目录”：{“四级目录”：{}}}，“一级目录”：{}}
+      { id: 'user_name', type: 'shorttext', title: '创建人姓名' },
+      { id: 'create_time', type: 'shorttext', title: '创建时间' },
+      { id: 'file_name', type: 'shorttext', title: '文件名' },
+      { id: 'file_type', type: 'shorttext', title: '文件类型' },
+      { id: 'file_size', type: 'shorttext', title: '文件大小' }
     ]
   }
 }

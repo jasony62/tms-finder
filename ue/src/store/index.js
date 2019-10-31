@@ -28,9 +28,10 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    schemas({ commit }) {
+    schemas({ commit }, payload ) {
+      let { access_token } = payload
       return new Promise((resolve, reject) => {
-        browser.schemas().then(schemas => {
+        browser.schemas(access_token).then(schemas => {
           commit({ type: 'schemas', schemas })
           resolve(schemas)
         })

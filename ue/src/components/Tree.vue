@@ -5,6 +5,7 @@
     :expand-on-click-node="false"
     :load="loadNode"
     @node-click="clickNode"
+    @current-change="currentChange"
     ref="tree"
     node-key="path"
   ></el-tree>
@@ -21,11 +22,13 @@ export default {
         label: 'label',
         children: 'children',
         isLeaf: 'leaf'
-      }
+      },
+      currentNode: {}
     }
   },
   methods: {
     loadNode(node, resolve) {
+      // console.log(node)
       if (node.level === 0) {
         let { tree } = this.$store.state
         return resolve([
@@ -51,7 +54,11 @@ export default {
           resolve(children)
         })
     },
+    currentChange(data, node) {
+      this.currentNode = data;
+    },
     clickNode(data, node, treeNode) {
+      // if (this.currentNode.label === data.label) return;
       this.$store.dispatch({ type: 'list', dir: data.rawData }).then(data => {
         if (false === node.loaded) {
           let { dirs } = data

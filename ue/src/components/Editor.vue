@@ -29,7 +29,7 @@ export default {
     }
   },
   created() {
-    this.$on('open', function() {
+    this.$on('open', () => {
       this.dialogVisible = true
     })
   },

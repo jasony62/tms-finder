@@ -46,19 +46,22 @@ class Browse extends BrowseCtrl {
   /**
    * 
    */
-  async listFilter() {
-    let { dir, filter = '' } = this.request.query
+  async listAll() {
+    let { dir, basename = '' } = this.request.body
     let rootDir = _.get(this.fsConfig, ['local', 'rootDir'], '')
 
     let path = dir ? rootDir + '/' + dir : rootDir
-    let globInstance = new glob.Glob(path + "/**/*+(" + filter + ")*", { matchBase: true, sync: true })
+    let globInstance = new glob.Glob(path + "/**/*+(" + basename + ")*", { matchBase: true, sync: true })
 
     let dirs = []
     let files = []
     for (const file of globInstance.found) {
       let stats = fs.lstatSync(file)
       if (stats.isFile()) {
-        files.push({ name: pathObj.basename(file), size: stats.size, createTime: Math.floor(stats.birthtimeMs), path: file })
+        //
+        let info = await this.getBizInfo(file)
+        let fileInfo = typeof info === 'object' ? info : {}
+        files.push({ name: pathObj.basename(file), size: stats.size, createTime: Math.floor(stats.birthtimeMs), path: file, info: fileInfo })
       } else if (stats.isDirectory()) {
         let file2 = file.replace(path, '')
         dirs.push({ name: file2, createTime: Math.floor(stats.birthtimeMs) })

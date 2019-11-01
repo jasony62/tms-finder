@@ -3,6 +3,8 @@ const { ResultData, ResultFault, ResultObjectNotFound } = require('tms-koa')
 const { LocalFS } = require('tms-koa/lib/model/fs/local')
 const glob = require("glob")
 const _ = require('lodash')
+const fs = require('fs')
+const pathObj = require('path')
 
 class Browse extends BrowseCtrl {
   constructor(...args) {
@@ -12,7 +14,7 @@ class Browse extends BrowseCtrl {
    * 获取文件及目录
    */
   async list() {
-    let { dir, filter = '' } = this.request.query
+    let { dir } = this.request.query
     let localFS = new LocalFS('upload', { fileConfig: this.fsConfig })
     let { files, dirs } = localFS.list(dir)
     for (let file of files) {
@@ -44,25 +46,26 @@ class Browse extends BrowseCtrl {
   /**
    * 
    */
-  async list2() {
+  async listFilter() {
+    let { dir, filter = '' } = this.request.query
     let rootDir = _.get(this.fsConfig, ['local', 'rootDir'], '')
-    console.log(rootDir + "/*.png")
-    // let files
-    // glob(rootDir + "/*.png", { matchBase: true }, function (er, files2) {
-    //   console.log(files2)
-    //   files = files2
-    //   if (er) {
-    //     console.log(er)
-    //   }
-    // })
 
+    let path = dir ? rootDir + '/' + dir : rootDir
+    let globInstance = new glob.Glob(path + "/**/*+(" + filter + ")*", { matchBase: true, sync: true })
 
-    let globInstance = new glob.Glob(rootDir + "/upload/*+(a)*+(76)*", { nonull: false, matchBase: true, sync: true });
-    console.log(globInstance);
+    let dirs = []
+    let files = []
+    for (const file of globInstance.found) {
+      let stats = fs.lstatSync(file)
+      if (stats.isFile()) {
+        files.push({ name: pathObj.basename(file), size: stats.size, createTime: Math.floor(stats.birthtimeMs), path: file })
+      } else if (stats.isDirectory()) {
+        let file2 = file.replace(path, '')
+        dirs.push({ name: file2, createTime: Math.floor(stats.birthtimeMs) })
+      }
+    }
 
-
-
-    return new ResultData(globInstance.found)
+    return new ResultData({ files, dirs })
   }
 }
 

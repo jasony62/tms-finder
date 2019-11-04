@@ -1,5 +1,17 @@
 <template>
-  <div>
+  <div class="files">
+    <div class="demo-input-suffix row">
+      <el-col :span="6" :offset="16">
+        <el-input
+          placeholder="全站搜索-请输入搜索内容"
+          suffix-icon="el-icon-search"
+          v-model="searchContent">
+        </el-input>
+      </el-col>
+      <el-col :span="1">
+        <el-button type="primary" size="small" @click="overallSearch">搜索</el-button>
+      </el-col>
+    </div>
     <el-table :data="files" stripe style="width: 100%">
       <el-table-column prop="createTime" label="日期" width="180" :formatter="formatDate"></el-table-column>
       <el-table-column prop="size" label="大小" width="180" :formatter="formateFileSize"></el-table-column>
@@ -15,8 +27,9 @@
 </template>
 <script>
 import Vue from 'vue'
-import { Table, TableColumn } from 'element-ui'
-Vue.use(Table).use(TableColumn)
+import { mapState } from 'vuex'
+import { Table, TableColumn, Input, Row, Col } from 'element-ui';
+Vue.use(Table).use(TableColumn).use(Input).use(Row).use(Col);
 
 import Editor from './Editor.vue'
 
@@ -24,13 +37,25 @@ export default {
   components: { Editor },
   data() {
     return {
-      editingFile: { path: '', info: {} }
+      editingFile: { path: '', info: {} },
+      searchContent: ''
     }
   },
   methods: {
     handleSetInfo(index, file) {
       this.editingFile = file
       this.$refs.editor.$emit('open')
+    },
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    // 全局搜索
+    overallSearch() {
+      this.$store
+        .dispatch({ type: 'overallSearch', access_token: '', dir: '', basename: this.searchContent})
+        .then(data => {
+          
+        });
     },
     // 格式化日期
     formatDate(data) {
@@ -49,7 +74,7 @@ export default {
     fileLengthFormat(total, n) {
       const size = total / 1024;
       if (size > 1024) {
-        return arguments.callee(size, ++n);
+        return this.fileLengthFormat(size, ++n);
       } else {
         let format = size.toFixed(2);
         switch (n) {
@@ -74,20 +99,28 @@ export default {
       this.$store
         .dispatch({ type: 'schemas', access_token: ''})
         .then(schemas => {
-          console.log(schemas)
+          
         });
     }
   },
   computed: {
-    schemas() {
-      return this.$store.state.schemas
-    },
-    files() {
-      return this.$store.state.files
-    }
+    ...mapState([
+      'schemas',
+      'files',
+      'refTree'
+    ])
   },
   created() {
     this.getFilesList();
   }
 }
 </script>
+<style>
+.files .el-input__inner {
+  height: 30px;
+  line-height: 30px;
+}
+.files .demo-input-suffix {
+  margin-top: 10px;
+}
+</style>

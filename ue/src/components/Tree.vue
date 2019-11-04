@@ -28,7 +28,6 @@ export default {
   },
   methods: {
     loadNode(node, resolve) {
-      // console.log(node)
       if (node.level === 0) {
         let { tree } = this.$store.state
         return resolve([

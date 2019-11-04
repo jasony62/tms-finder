@@ -9,7 +9,8 @@ export default new Vuex.Store({
   state: {
     schemas: null,
     tree: { name: '全部', path: '' },
-    files: []
+    files: [],
+    searchFiles: [],
   },
   mutations: {
     schemas(state, payload) {
@@ -25,6 +26,9 @@ export default new Vuex.Store({
         d.path = `${dir.path}/${d.name}`
         d.parent = dir
       })
+    },
+    searchFiles(state, payload) {
+      state.searchFiles = payload.searchFiles
     }
   },
   actions: {
@@ -55,6 +59,22 @@ export default new Vuex.Store({
           let { dirs } = expandData
           commit({ type: 'appendDirs', dir, dirs })
           resolve(dirs)
+        })
+      })
+    },
+    overallSearch({ commit }, payload) {
+      let { access_token, dir, basename } = payload
+      return new Promise((resolve, reject) => {
+        const params = {
+          access_token,
+          basename,
+          dir: dir.path || ''
+        }
+        browser.overallSearch(params).then(searchData => {
+          let { dirs, files } = searchData
+          // commit({ type: 'appendDirs', dir, dirs })
+          commit({ type: 'files', files })
+          resolve({ dirs, files })
         })
       })
     }

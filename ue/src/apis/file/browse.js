@@ -5,7 +5,7 @@ Vue.use(TmsAxiosPlugin)
 let name = 'file-api'
 Vue.TmsAxios({ name })
 
-const base = '/api';
+const base = '/finder/api';
 
 export default {
   schemas(access_token = '') {
@@ -30,5 +30,11 @@ export default {
       .post(`${base}/file/browse/setInfo?path=${path}`, info)
       .then(rst => rst.data.result)
       .catch(err => Promise.reject(err))
+  },
+  overallSearch(params) {
+    return TmsAxios.ins('file-api')
+    .post(`${base}/file/browse/listAll`, params)
+    .then(rst => rst.data.result)
+    .catch(err => Promise.reject(err))
   }
 }

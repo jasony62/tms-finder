@@ -1,5 +1,5 @@
-// const target = 'http://192.168.102.110:3000';
-const target = 'http://192.168.43.14:3000';
+const target = 'http://192.168.102.110:3000';
+// const target = 'http://192.168.43.14:3000';
 module.exports = {
   publicPath: '/ue/',
   outputDir: '../back/public/ue',
@@ -15,7 +15,7 @@ module.exports = {
   },
   devServer: {
     proxy: {
-      "/api": {
+      "/finder/api": {
         target: target,
         changeOrigin: true, // 是否改变域名
         // ws: true

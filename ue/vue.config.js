@@ -19,12 +19,6 @@ module.exports = {
     proxy: {
       "/finder/api": {
         target: `${target}${apiPort}`,
-        // changeOrigin: true, // 是否改变域名
-        // ws: true
-        // pathRewrite: {
-        //   // 路径重写
-        //   "/api": "" 
-        // }
       },
       "/finder/ue": {
         target: `${target}${uePort}`,

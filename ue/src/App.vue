@@ -1,19 +1,11 @@
 <template>
   <div id="app">
-    <finder></finder>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Finder from './components/Finder.vue'
-
 export default {
   name: 'app',
-  // mounted() {
-  //   this.$store.dispatch({ type: 'schemas' })
-  // },
-  components: {
-    Finder
-  }
 }
 </script>

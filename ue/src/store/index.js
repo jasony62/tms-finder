@@ -10,7 +10,7 @@ export default new Vuex.Store({
     schemas: null,
     tree: { name: '全部', path: '' },
     files: [],
-    searchFiles: [],
+    searchFiles: []
   },
   mutations: {
     schemas(state, payload) {
@@ -33,9 +33,8 @@ export default new Vuex.Store({
   },
   actions: {
     schemas({ commit }, payload ) {
-      let { access_token } = payload
       return new Promise((resolve, reject) => {
-        browser.schemas(access_token).then(schemas => {
+        browser.schemas().then(schemas => {
           commit({ type: 'schemas', schemas })
           resolve(schemas)
         })
@@ -63,10 +62,9 @@ export default new Vuex.Store({
       })
     },
     overallSearch({ commit }, payload) {
-      let { access_token, dir, basename } = payload
+      let { dir, basename } = payload
       return new Promise((resolve, reject) => {
         const params = {
-          access_token,
           basename,
           dir: dir.path || ''
         }

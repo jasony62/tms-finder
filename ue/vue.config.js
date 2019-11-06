@@ -1,4 +1,6 @@
-const target = 'http://192.168.102.110:3000';
+const target = 'http://192.168.102.110:';
+const apiPort = '3000';
+const uePort = '3330';
 // const target = 'http://192.168.43.14:3000';
 module.exports = {
   publicPath: '/ue/',
@@ -16,13 +18,22 @@ module.exports = {
   devServer: {
     proxy: {
       "/finder/api": {
-        target: target,
-        changeOrigin: true, // 是否改变域名
+        target: `${target}${apiPort}`,
+        // changeOrigin: true, // 是否改变域名
         // ws: true
         // pathRewrite: {
         //   // 路径重写
         //   "/api": "" 
         // }
+      },
+      "/finder/ue": {
+        target: `${target}${uePort}`,
+        changeOrigin: true, // 是否改变域名
+        // ws: true,
+        pathRewrite: {
+          // 路径重写
+          "/finder/ue": "/oauth/ue" 
+        }
       }
     },
   },

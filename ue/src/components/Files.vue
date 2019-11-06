@@ -3,7 +3,7 @@
     <div class="demo-input-suffix row">
       <el-col :span="6" :offset="16">
         <el-input
-          placeholder="全站搜索-请输入搜索内容"
+          placeholder="全站搜索-请输入文件名名称"
           suffix-icon="el-icon-search"
           v-model="searchContent">
         </el-input>
@@ -52,7 +52,7 @@ export default {
     // 全局搜索
     overallSearch() {
       this.$store
-        .dispatch({ type: 'overallSearch', access_token: '', dir: '', basename: this.searchContent})
+        .dispatch({ type: 'overallSearch', dir: '', basename: this.searchContent})
         .then(data => {
           
         });
@@ -97,7 +97,7 @@ export default {
     // 获取文件系统列表
     getFilesList() {
       this.$store
-        .dispatch({ type: 'schemas', access_token: ''})
+        .dispatch('schemas')
         .then(schemas => {
           
         });

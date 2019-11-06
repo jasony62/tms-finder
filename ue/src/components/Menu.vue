@@ -4,7 +4,7 @@
       <el-menu :default-active="'1'" class="el-menu-demo" mode="horizontal" @select="handleSelect">
         <el-submenu index="1">
           <template slot="title">用户</template>
-          <el-menu-item index="1-1">退出</el-menu-item>
+          <el-menu-item index="1-1" @click="$router.push('/login')">退出</el-menu-item>
         </el-submenu>
       </el-menu>
     </el-col>

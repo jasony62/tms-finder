@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <tms-login :data="data" class="tms-finder">
+    <tms-login :data="data" :submit="getTokenSuccess" class="tms-finder">
     </tms-login> 
   </div>
 </template>
@@ -35,19 +35,14 @@ export default {
     }
   },
   methods: {
-    addTokenRule(token) {
+    getTokenSuccess(token) {
+      localStorage.setItem('access_token', token)
       // 去掉之前的token
       this.TmsAxios.remove('access_token');
       // 添加token
       this.TmsAxios('file-api').rules[0].requestParams.set('access_token', token)
-    }
-  },
-  created() {
-    this.$eventHub.$on('getTokenSuccess', token => {
-      this.addTokenRule(token)
-      localStorage.setItem('access_token', token)
       this.$router.push('/finder')
-    })
+    }
   }
 }
 </script>

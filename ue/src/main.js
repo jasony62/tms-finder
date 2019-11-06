@@ -22,8 +22,6 @@ Vue.TmsAxios({name, rules: [rule]})
 Vue.use(VueRouter)
 Vue.config.productionTip = false
 
-Vue.prototype.$eventHub = Vue.prototype.$eventHub || new Vue()
-
 const router = new VueRouter({
   routes
 });

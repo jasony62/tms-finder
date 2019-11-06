@@ -25,19 +25,8 @@ export default {
   methods: {
     // 选中
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+      // console.log(key, keyPath);
     }
-  },
-  computed: {
-    schemas() {
-      return this.$store.state.schemas
-    },
-    files() {
-      return this.$store.state.files
-    }
-  },
-  created() {
-    
   }
 }
 </script>

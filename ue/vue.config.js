@@ -4,7 +4,7 @@ const uePort = '3330';
 // const target = 'http://192.168.43.14:3000';
 module.exports = {
   publicPath: '/ue/',
-  outputDir: '../back/public/ue',
+  outputDir: '../back/public/finderue',
   filenameHashing: true,
   pages: {
     index: {

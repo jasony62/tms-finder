@@ -33,16 +33,16 @@ export default {
     .then(rst => rst.data.result)
     .catch(err => Promise.reject(err))
   },
-  fnGetCaptcha(params) {
+  fnGetCaptcha() {
     return TmsAxios.ins('file-api')
-    .post(`${baseUe}/captcha`, params)
-    .then(rst => Promise.resolve({ code: 0, result: rst.data.result }))
-    .catch(err => Promise.reject(err))
+    .post(`${baseUe}/captcha`)
+    .then(rst => Promise.resolve(rst.data))
+    .catch(err => alert(err))
   },
   fnGetToken(params) {
     return TmsAxios.ins('file-api')
     .post(`${baseUe}/token`, params)
-    .then(rst => Promise.resolve({ code: 0, result: rst.data.result }))
-    .catch(err => Promise.reject(err))
+    .then(rst => Promise.resolve(rst.data))
+    .catch(err => alert(err.msg))
   }
 }

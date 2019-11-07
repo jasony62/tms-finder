@@ -18,7 +18,6 @@ const name = 'file-api'
 let rule = Vue.TmsAxios.newInterceptorRule({
   requestParams: new Map([['access_token', '']]),
   onRetryAttempt: (res, rule) => {
-    console.log(typeof res.data.code);
     // 缺少access_token
     if (res.data.code === 10001) {
       return new Promise(resolve => {

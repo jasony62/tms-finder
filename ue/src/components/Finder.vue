@@ -1,5 +1,8 @@
 <template>
-  <tms-frame class="tms-finder" :display="{header:true,footer:true,left:true}">
+  <tms-frame class="tms-finder" :display="{header:true,footer:true,left:true}" :leftWidth="'20%'">
+    <template v-slot:header>
+      <menus></menus>
+    </template>
     <template v-slot:left>
       <tree></tree>
     </template>
@@ -16,9 +19,10 @@ Vue.use(Frame)
 
 import Tree from './Tree.vue'
 import Files from './Files.vue'
+import Menus from './Menu.vue'
 
 export default {
   name: 'Finder',
-  components: { Tree, Files }
+  components: { Tree, Files, Menus }
 }
 </script>

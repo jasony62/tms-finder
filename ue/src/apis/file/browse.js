@@ -1,20 +1,18 @@
-import Vue from 'vue'
-import { TmsAxiosPlugin, TmsAxios } from 'tms-vue'
-Vue.use(TmsAxiosPlugin)
+import { TmsAxios } from 'tms-vue'
 
-let name = 'file-api'
-Vue.TmsAxios({ name })
+const base = '/finder/api/file/browse';
+const baseUe = '/finder/ue/auth';
 
 export default {
   schemas() {
     return TmsAxios.ins('file-api')
-      .get(`/file/browse/schemas`)
+      .get(`${base}/schemas`)
       .then(rst => rst.data.result)
       .catch(err => Promise.reject(err))
   },
   list(dirName = '') {
     return TmsAxios.ins('file-api')
-      .get(`/file/browse/list?dir=${dirName}`)
+      .get(`${base}/list?dir=${dirName}`)
       .then(rst => {
         rst.data.result.files.forEach(f => {
           if (typeof f.info !== 'object') f.info = {}
@@ -25,8 +23,26 @@ export default {
   },
   setInfo(path, info) {
     return TmsAxios.ins('file-api')
-      .post(`/file/browse/setInfo?path=${path}`, info)
+      .post(`${base}/setInfo?path=${path}`, info)
       .then(rst => rst.data.result)
       .catch(err => Promise.reject(err))
+  },
+  overallSearch(params) {
+    return TmsAxios.ins('file-api')
+    .post(`${base}/listAll`, params)
+    .then(rst => rst.data.result)
+    .catch(err => Promise.reject(err))
+  },
+  fnGetCaptcha() {
+    return TmsAxios.ins('file-api')
+    .post(`${baseUe}/captcha`)
+    .then(rst => Promise.resolve(rst.data))
+    .catch(err => alert(err))
+  },
+  fnGetToken(params) {
+    return TmsAxios.ins('file-api')
+    .post(`${baseUe}/token`, params)
+    .then(rst => Promise.resolve(rst.data))
+    .catch(err => alert(err.msg))
   }
 }

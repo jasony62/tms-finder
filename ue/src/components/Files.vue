@@ -18,7 +18,7 @@
       <el-table-column prop="name" label="文件名"></el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="handleSetInfo(scope.$index, scope.row)">编辑</el-button>
+          <!-- <el-button type="text" size="small" @click="handleSetInfo(scope.$index, scope.row)">编辑</el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -46,9 +46,6 @@ export default {
       this.editingFile = file
       this.$refs.editor.$emit('open')
     },
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
-    },
     // 全局搜索
     overallSearch() {
       this.$store
@@ -60,7 +57,10 @@ export default {
     // 格式化日期
     formatDate(data) {
       const date = new Date(data.createTime);
-      return date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDay() + '日';
+      return date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDay() + '日 ' + this.isGreaterTen(date.getHours()) + ':'+ this.isGreaterTen(date.getMinutes()) + ':'+ this.isGreaterTen(date.getSeconds());
+    },
+    isGreaterTen(time) {
+      return time > 10 ? time : '0' + time;
     },
     // 格式化文件大小
     formateFileSize(data) {

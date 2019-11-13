@@ -58,7 +58,7 @@ export default {
             return {
               label: sd.name,
               children: [],
-              leaf: sd.sub.dirs === false && sd.sub.files === false,
+              leaf: sd.sub.dirs === false,
               rawData: sd
             }
           })

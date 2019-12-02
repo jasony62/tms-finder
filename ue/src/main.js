@@ -3,7 +3,7 @@ import App from "./App.vue"
 import store from "./store"
 import routes from "./router"
 import VueRouter from 'vue-router'
-
+import { Message } from 'element-ui'
 import { TmsAxiosPlugin } from 'tms-vue'
 Vue.use(TmsAxiosPlugin)
 
@@ -16,19 +16,21 @@ const router = new VueRouter({
 
 const name = 'file-api'
 let rule = Vue.TmsAxios.newInterceptorRule({
-  requestParams: new Map([['access_token', '']]),
-  onRetryAttempt: (res, rule) => {
-    // 缺少access_token
-    if (res.data.code === 10001) {
-      return new Promise(resolve => {
-        rule.requestParams.set('access_token', localStorage.getItem('access_token'))
-        resolve(true)
-      })
-    } else if(res.data.code === 20001){
+  requestParams: new Map([['access_token', localStorage.getItem('access_token') || '']]),
+  onRetryAttempt: (res) => {
+   if(res.data.code === 20001){
       // access_token过期
       router.push('/login');
+      return Promise.resolve(false)
     }
-  }
+  },
+  // onResultFault: res => {
+  //   console.log(res)
+  //   return new Promise(resolve => {
+  //     Message({ message: res.data.msg, type: 'error', showClose: true })
+  //     resolve(true)
+  //   })
+  // }
 })
 Vue.TmsAxios({name, rules: [rule]})
 

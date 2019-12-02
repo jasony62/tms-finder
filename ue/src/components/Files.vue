@@ -13,7 +13,7 @@
       </el-col>
     </div>
     <el-table :data="files" stripe style="width: 100%">
-      <el-table-column prop="createTime" label="日期" width="180" :formatter="formatDate"></el-table-column>
+      <el-table-column prop="createTime" label="日期" width="240" :formatter="formatDate"></el-table-column>
       <el-table-column prop="size" label="大小" width="180" :formatter="formateFileSize"></el-table-column>
       <el-table-column prop="name" label="文件名"></el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
@@ -55,12 +55,18 @@ export default {
         });
     },
     // 格式化日期
-    formatDate(data) {
-      const date = new Date(data.createTime);
-      return date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDay() + '日 ' + this.isGreaterTen(date.getHours()) + ':'+ this.isGreaterTen(date.getMinutes()) + ':'+ this.isGreaterTen(date.getSeconds());
+    formatDate(row, column, cellValue) {
+      const time = new Date(cellValue);
+      const year = time.getFullYear(); 
+      const month = time.getMonth()+1; 
+      const date = time.getDate(); 
+      const hour = time.getHours(); 
+      const minute = time.getMinutes(); 
+      const second = time.getSeconds(); 
+      return year + "年" + month + "月" + date + "日" + " " + this.isGreaterTen(hour) + ":" + this.isGreaterTen(minute) + ":" + this.isGreaterTen(second);
     },
     isGreaterTen(time) {
-      return time > 10 ? time : '0' + time;
+      return time > 9 ? time : '0' + time;
     },
     // 格式化文件大小
     formateFileSize(data) {

@@ -1,5 +1,4 @@
 import { TmsAxios } from 'tms-vue'
-
 const base = '/finder/api/file/browse';
 const baseUe = '/finder/ue/auth';
 
@@ -37,12 +36,12 @@ export default {
     return TmsAxios.ins('file-api')
     .post(`${baseUe}/captcha`)
     .then(rst => Promise.resolve(rst.data))
-    .catch(err => alert(err))
+    .catch(err => Promise.resolve(err))
   },
   fnGetToken(params) {
     return TmsAxios.ins('file-api')
     .post(`${baseUe}/token`, params)
     .then(rst => Promise.resolve(rst.data))
-    .catch(err => alert(err.msg))
+    .catch(err => Promise.resolve(err))
   }
 }

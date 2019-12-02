@@ -8,7 +8,7 @@
 import Vue from 'vue'
 import { Login } from 'tms-vue-ui'
 import browser from '../apis/file/browse'
-const { fnGetCaptcha, fnGetToken, cbCreateAxios } = browser
+const { fnGetCaptcha, fnGetToken } = browser
 Vue.use(Login, { fnGetCaptcha, fnGetToken })
 export default {
   data() {
@@ -46,6 +46,12 @@ export default {
   }
 }
 </script>
+<style>
+.van-notify--danger {
+  background-color: #ee0a24 !important;
+}
+</style>
+
 <style scope>
 .login {
   display: flex;

@@ -28,7 +28,13 @@ export default {
       },
       currentNode: {},
       initNode: {},
-      initResolve: ''
+      initResolve: '',
+      currentLevel: 0
+    }
+  },
+  watch: {
+    currentLevel(newVal) {
+      this.$store.state.isShowSearch = newVal > 1;
     }
   },
   methods: {
@@ -69,6 +75,8 @@ export default {
       this.currentNode = data;
     },
     clickNode(data, node, treeNode) {
+      this.$store.state.searchPath = data.rawData.path
+      this.currentLevel = node.level
       // if (this.currentNode.label === data.label) return;
       this.$store.dispatch({ type: 'list', dir: data.rawData }).then(data => {
         if (false === node.loaded) {

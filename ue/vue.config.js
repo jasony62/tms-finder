@@ -1,4 +1,4 @@
-const target = 'http://192.168.102.45:';
+const target = 'http://192.168.102.135:';
 const apiPort = '3000';
 const uePort = '3330';
 // const target = 'http://192.168.43.14:3000';

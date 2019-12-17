@@ -1,9 +1,9 @@
 <template>
   <div class="files">
-    <div class="demo-input-suffix row">
+    <div class="demo-input-suffix row" v-show="isShowSearch">
       <el-col :span="6" :offset="16">
         <el-input
-          placeholder="全站搜索-请输入文件名名称"
+          placeholder="当前文件夹搜索"
           suffix-icon="el-icon-search"
           v-model="searchContent">
         </el-input>
@@ -41,6 +41,14 @@ export default {
       searchContent: ''
     }
   },
+  // watch: {
+  //   isShowSearch(newVal) {
+  //     // 每次重新显示搜索框-重置搜索路径
+  //     if (newVal) {
+  //       this.$store.state.searchPath = '';
+  //     }
+  //   }
+  // },
   methods: {
     handleSetInfo(index, file) {
       this.editingFile = file
@@ -49,7 +57,7 @@ export default {
     // 全局搜索
     overallSearch() {
       this.$store
-        .dispatch({ type: 'overallSearch', dir: '', basename: this.searchContent})
+        .dispatch({ type: 'overallSearch', dir: this.searchPath, basename: this.searchContent})
         .then(data => {
           
         });
@@ -113,7 +121,9 @@ export default {
     ...mapState([
       'schemas',
       'files',
-      'refTree'
+      'refTree',
+      'isShowSearch',
+      'searchPath'
     ])
   },
   created() {

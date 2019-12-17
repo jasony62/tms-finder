@@ -10,7 +10,9 @@ export default new Vuex.Store({
     schemas: null,
     tree: { name: '全部', path: '' },
     files: [],
-    searchFiles: []
+    searchFiles: [],
+    isShowSearch: false,
+    searchPath: ''
   },
   mutations: {
     schemas(state, payload) {
@@ -66,7 +68,7 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         const params = {
           basename,
-          dir: dir.path || ''
+          dir: dir || ''
         }
         browser.overallSearch(params).then(searchData => {
           let { dirs, files } = searchData

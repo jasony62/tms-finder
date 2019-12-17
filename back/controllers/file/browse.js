@@ -47,15 +47,21 @@ class Browse extends BrowseCtrl {
    * 
    */
   async listAll() {
-    let { dir, basename = '' } = this.request.body
+    let { dir, basename = '', dot } = this.request.body
     let rootDir = _.get(this.fsConfig, ['local', 'rootDir'], '')
 
     let path = dir ? (rootDir + '/' + 'upload/' + dir) : rootDir
-    let globInstance = await new glob.Glob(path + "/**/*+(" + basename + ")*", { matchBase: true, sync: true })
+    let match = dot ? path + "/**/*+(" + basename + ")*" + dot : path + "/**/*+(" + basename + ")*"
+
+    // let globInstance = await new glob.Glob(match, { matchBase: true, sync: true })
+
+    let globInstance = await glob.sync(match, { matchBase: true })
+    // console.log(globInstance)
 
     let dirs = []
     let files = []
-    for await (const file of globInstance.found) {
+    // for (let file of globInstance.found) {
+    for (let file of globInstance) {
       let stats = fs.lstatSync(file)
       if (stats.isFile()) {
         //

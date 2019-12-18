@@ -50,7 +50,7 @@ class Browse extends BrowseCtrl {
     let { dir, basename = '', dot } = this.request.body
     let rootDir = _.get(this.fsConfig, ['local', 'rootDir'], '')
 
-    let path = dir ? (rootDir + '/' + 'upload/' + dir) : rootDir
+    let path = dir ? (rootDir + '/' + 'upload' + dir) : rootDir
     let match = dot ? path + "/**/*+(" + basename + ")*" + dot : path + "/**/*+(" + basename + ")*"
 
     // let globInstance = await new glob.Glob(match, { matchBase: true, sync: true })

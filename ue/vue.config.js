@@ -1,10 +1,13 @@
-const target = 'http://192.168.102.110:';
-const apiPort = '3000';
-const uePort = '3330';
-// const target = 'http://192.168.43.14:3000';
+const devServer = { proxy: {} }
+
+// 代理auth请求
+devServer.proxy[`${process.env.VUE_APP_BACK_AUTH_BASE}/auth`] = { target: process.env.VUE_APP_BACK_AUTH_SERVER }
+// 代理api请求
+devServer.proxy[`${process.env.VUE_APP_BACK_API_BASE}/file`] = { target: process.env.VUE_APP_BACK_API_SERVER }
+
 module.exports = {
-  publicPath: '/finderue/',
-  outputDir: '../back/public/finderue',
+  publicPath: './',
+  outputDir: 'dist',
   filenameHashing: true,
   pages: {
     index: {
@@ -15,22 +18,7 @@ module.exports = {
       chunks: ['chunk-vendors', 'chunk-common', 'index']
     }
   },
-  devServer: {
-    proxy: {
-      "/finder/api": {
-        target: `${target}${apiPort}`,
-      },
-      "/finder/ue": {
-        target: `${target}${uePort}`,
-        changeOrigin: true, // 是否改变域名
-        // ws: true,
-        pathRewrite: {
-          // 路径重写
-          "/finder/ue": "/oauth/ue" 
-        }
-      }
-    },
-  },
+  devServer,
   parallel: require('os').cpus().length > 1,
   runtimeCompiler: true
 }

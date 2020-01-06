@@ -1,48 +1,45 @@
 import { TmsAxios } from 'tms-vue'
 
-const base = '/finder/api/file/browse';
-const baseUe = '/finder/ue/auth';
+const baseApi = (process.env.VUE_BACK_API_BASE || '') + '/file/browse'
+
+const baseAuth = (process.env.VUE_BACK_AUTH_BASE || '') + '/auth'
 
 export default {
   schemas() {
     return TmsAxios.ins('file-api')
-      .get(`${base}/schemas`)
+      .get(`${baseApi}/schemas`)
       .then(rst => rst.data.result)
-      .catch(err => Promise.reject(err))
   },
   list(dirName = '') {
     return TmsAxios.ins('file-api')
-      .get(`${base}/list?dir=${dirName}`)
+      .get(`${baseApi}/list?dir=${dirName}`)
       .then(rst => {
         rst.data.result.files.forEach(f => {
           if (typeof f.info !== 'object') f.info = {}
         })
         return rst.data.result
       })
-      .catch(err => Promise.reject(err))
   },
   setInfo(path, info) {
     return TmsAxios.ins('file-api')
-      .post(`${base}/setInfo?path=${path}`, info)
+      .post(`${baseApi}/setInfo?path=${path}`, info)
       .then(rst => rst.data.result)
-      .catch(err => Promise.reject(err))
   },
   overallSearch(params) {
     return TmsAxios.ins('file-api')
-    .post(`${base}/listAll`, params)
-    .then(rst => rst.data.result)
-    .catch(err => Promise.reject(err))
+      .post(`${baseApi}/listAll`, params)
+      .then(rst => rst.data.result)
   },
   fnGetCaptcha() {
-    return TmsAxios.ins('file-api')
-    .post(`${baseUe}/captcha`)
-    .then(rst => Promise.resolve(rst.data))
-    .catch(err => alert(err))
+    return TmsAxios.ins('auth-api')
+      .post(`${baseAuth}/captcha`)
+      .then(rst => Promise.resolve(rst.data))
   },
-  fnGetToken(params) {
-    return TmsAxios.ins('file-api')
-    .post(`${baseUe}/token`, params)
-    .then(rst => Promise.resolve(rst.data))
-    .catch(err => alert(err.msg))
+  fnGetJwt(params) {
+    return TmsAxios.ins('auth-api')
+      .post(`${baseAuth}/authorize`, params)
+      .then(rst => {
+        return Promise.resolve(rst.data)
+      })
   }
 }

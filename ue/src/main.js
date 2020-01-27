@@ -3,20 +3,43 @@ import App from './App.vue'
 import store from './store'
 import router from './router'
 import { Message } from 'element-ui'
-import Login from './components/Login.vue'
 import { TmsAxiosPlugin, TmsErrorPlugin, TmsIgnorableError, TmsLockPromise } from 'tms-vue'
+import { Login } from 'tms-vue-ui'
+import browser from './apis/file/browse'
 
 Vue.config.productionTip = false
 
 Vue.use(TmsAxiosPlugin).use(TmsErrorPlugin)
 
+const { fnGetCaptcha, fnGetJwt } = browser
+const LoginSchema = [
+  {
+    key: process.env.VUE_APP_LOGIN_KEY_USERNAME || 'username',
+    type: 'text',
+    placeholder: '用户名'
+  },
+  {
+    key: process.env.VUE_APP_LOGIN_KEY_PASSWORD || 'password',
+    type: 'password',
+    placeholder: '密码'
+  },
+  {
+    key: process.env.VUE_APP_LOGIN_KEY_PIN || 'pin',
+    type: 'code',
+    placeholder: '验证码'
+  }
+]
+Vue.use(Login, { schema: LoginSchema, fnGetCaptcha, fnGetToken: fnGetJwt })
 /**
  * 请求中需要包含认证信息
  */
 const LoginPromise = (function() {
-  let login = new Vue(Login)
+  let login = new Login(LoginSchema, fnGetCaptcha, fnGetJwt)
   let ins = new TmsLockPromise(function() {
-    return login.showDialog().then(token => `Bearer ${token}`)
+    return login.showAsDialog().then(token => {
+      sessionStorage.setItem('access_token', token)
+      return `Bearer ${token}`
+    })
   })
   return ins
 })()

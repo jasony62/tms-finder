@@ -12,6 +12,7 @@
   "dependencies": {
     "glob": "^7.1.5",
     "log4js": "^6.1.0",
+    "mongodb": "^3.5.2",
     "tms-db": "^0.0.10",
     "tms-koa": "jasony62/tms-koa#dev"
   }

@@ -5,13 +5,13 @@ import router from './router'
 import { Message } from 'element-ui'
 import { TmsAxiosPlugin, TmsErrorPlugin, TmsIgnorableError, TmsLockPromise } from 'tms-vue'
 import { Login } from 'tms-vue-ui'
-import browser from './apis/file/browse'
+import auth from './apis/auth'
 
 Vue.config.productionTip = false
 
 Vue.use(TmsAxiosPlugin).use(TmsErrorPlugin)
 
-const { fnGetCaptcha, fnGetJwt } = browser
+const { fnGetCaptcha, fnGetJwt } = auth
 const LoginSchema = [
   {
     key: process.env.VUE_APP_LOGIN_KEY_USERNAME || 'username',

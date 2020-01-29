@@ -11,14 +11,10 @@
 
 <script>
 import Vue from 'vue'
-import { Form, FormItem, Alert, Dialog, Button } from 'element-ui'
+import { Dialog } from 'element-ui'
 import { ElJsonDoc } from 'tms-vue-ui'
 
-Vue.use(Form)
-  .use(FormItem)
-  .use(Alert)
-  .use(Dialog)
-  .use(Button)
+Vue.use(Dialog)
 
 import browser from '../apis/file/browse'
 

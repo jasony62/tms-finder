@@ -1,31 +1,23 @@
-import { TmsAxios } from 'tms-vue'
+const baseApi = (process.env.VUE_APP_API_SERVER || '') + '/file/browse'
 
-const baseApi = (process.env.VUE_BACK_API_BASE || '') + '/file/browse'
-
-export default {
-  schemas() {
-    return TmsAxios.ins('file-api')
-      .get(`${baseApi}/schemas`)
-      .then(rst => rst.data.result)
-  },
-  list(dirName = '') {
-    return TmsAxios.ins('file-api')
-      .get(`${baseApi}/list?dir=${dirName}`)
-      .then(rst => {
+export default function create(tmsAxios) {
+  return {
+    schemas() {
+      return tmsAxios.get(`${baseApi}/schemas`).then(rst => rst.data.result)
+    },
+    list(dirName = '') {
+      return tmsAxios.get(`${baseApi}/list?dir=${dirName}`).then(rst => {
         rst.data.result.files.forEach(f => {
           if (typeof f.info !== 'object') f.info = {}
         })
         return rst.data.result
       })
-  },
-  setInfo(path, info) {
-    return TmsAxios.ins('file-api')
-      .post(`${baseApi}/setInfo?path=${path}`, info)
-      .then(rst => rst.data.result)
-  },
-  overallSearch(params) {
-    return TmsAxios.ins('file-api')
-      .post(`${baseApi}/listAll`, params)
-      .then(rst => rst.data.result)
+    },
+    setInfo(path, info) {
+      return tmsAxios.post(`${baseApi}/setInfo?path=${path}`, info).then(rst => rst.data.result)
+    },
+    overallSearch(params) {
+      return tmsAxios.post(`${baseApi}/listAll`, params).then(rst => rst.data.result)
+    }
   }
 }

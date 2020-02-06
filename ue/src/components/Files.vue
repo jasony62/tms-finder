@@ -18,7 +18,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <editor ref="editor" :schemas="schemas" :file="editingFile"></editor>
   </div>
 </template>
 <script>
@@ -31,33 +30,29 @@ Vue.use(Table)
   .use(Row)
   .use(Col)
 
-import Editor from './Editor.vue'
+import { createAndMount } from './Editor.vue'
 
 export default {
-  components: { Editor },
   data() {
     return {
-      editingFile: { path: '', info: {} },
       searchContent: ''
     }
   },
   methods: {
     handleSetInfo(index, file) {
-      this.editingFile = file
-      this.$refs.editor.$emit('open')
-    },
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath)
+      if (!file.info) file.info = {}
+      const comp = createAndMount(Vue, this.schemas, file.path, file.info)
+      comp.$on('onClose', info => {
+        Object.assign(file.info, info)
+      })
     },
     // 全局搜索
     overallSearch() {
-      this.$store
-        .dispatch({
-          type: 'overallSearch',
-          dir: '',
-          basename: this.searchContent
-        })
-        .then(data => {})
+      this.$store.dispatch({
+        type: 'overallSearch',
+        dir: '',
+        basename: this.searchContent
+      })
     },
     // 格式化日期
     formatDate(data) {
@@ -76,9 +71,9 @@ export default {
       return this.fileLengthFormat(data.size, 1)
     },
     /**
-     *@descrite 格式化文件大小
-     *@params {number} total 文件大小，默认单位Byte
-     *@params {number} n 1-b 2-kb 3-mb
+     * @description 格式化文件大小
+     * @params {number} total 文件大小，默认单位Byte
+     * @params {number} n 1-b 2-kb 3-mb
      */
     fileLengthFormat(total, n) {
       const size = total / 1024
@@ -105,7 +100,7 @@ export default {
     },
     // 获取文件系统列表
     getFilesList() {
-      this.$store.dispatch('schemas').then(schemas => {})
+      this.$store.dispatch('schemas')
     }
   },
   computed: {

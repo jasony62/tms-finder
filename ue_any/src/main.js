@@ -1,19 +1,13 @@
 import Vue from 'vue'
 import App from './App.vue'
-import store from './store'
-import router from './router'
 import { Message } from 'element-ui'
 import { TmsAxiosPlugin, TmsErrorPlugin, TmsIgnorableError, TmsLockPromise } from 'tms-vue'
-import { Frame, Flex, Login } from 'tms-vue-ui'
-import ApiPlugin from './apis'
+import { Login } from 'tms-vue-ui'
 import auth from './apis/auth'
 
 Vue.config.productionTip = false
 
-Vue.use(TmsAxiosPlugin)
-  .use(TmsErrorPlugin)
-  .use(Frame)
-  .use(Flex)
+Vue.use(TmsAxiosPlugin).use(TmsErrorPlugin)
 
 const { fnGetCaptcha, fnGetJwt } = auth
 const LoginSchema = [
@@ -99,13 +93,10 @@ let responseRule = Vue.TmsAxios.newInterceptorRule({
 })
 rules.push(responseRule)
 
-const tmsAxios = {}
-tmsAxios.file = Vue.TmsAxios({ name: 'file-api', rules })
-tmsAxios.auth = Vue.TmsAxios({ name: 'auth-api' })
-Vue.use(ApiPlugin, { tmsAxios })
+Vue.TmsAxios({ name: 'file-api', rules })
+
+Vue.TmsAxios({ name: 'auth-api' })
 
 new Vue({
-  store,
-  router,
   render: h => h(App)
 }).$mount('#app')

@@ -1,47 +1,57 @@
 <template>
-  <el-dialog
-    title="文件信息"
-    :closeOnClickModal="closeOnClickModal"
-    :visible="dialogVisible"
-    @close="onClose"
-  >
-    <el-json-doc :schema="schemas" :doc="file.info" v-on:submit="onSubmit"></el-json-doc>
+  <el-dialog title="文件信息" :closeOnClickModal="false" :visible="true" @close="onClose">
+    <el-json-doc :schema="schemas" :doc="info" v-on:submit="onSubmit"></el-json-doc>
   </el-dialog>
 </template>
 
 <script>
-import Vue from 'vue'
+import createBrowseApi from '../apis/file/browse'
 import { Dialog } from 'element-ui'
 import { ElJsonDoc } from 'tms-vue-ui'
 
-Vue.use(Dialog)
-
-import browser from '../apis/file/browse'
-
-export default {
-  components: { ElJsonDoc },
+const componentOptions = {
+  components: { 'el-dialog': Dialog, ElJsonDoc },
   props: {
+    tmsAxiosName: { type: String },
     schemas: { type: Object },
-    file: { type: Object }
+    path: { type: String },
+    info: { type: Object }
   },
-  data() {
-    return {
-      closeOnClickModal: false,
-      dialogVisible: false
-    }
+  mounted() {
+    document.body.appendChild(this.$el)
   },
-  created() {
-    this.$on('open', () => {
-      this.dialogVisible = true
-    })
+  beforeDestroy() {
+    document.body.removeChild(this.$el)
   },
   methods: {
     onClose() {
-      this.dialogVisible = false
+      this.$emit('onClose', this.info)
+      this.$destroy()
     },
     onSubmit(info) {
-      browser.setInfo(this.file.path, info).then(() => this.onClose())
+      createBrowseApi(this.TmsAxios(this.tmsAxiosName))
+        .setInfo(this.path, info)
+        .then(() => {
+          Object.assign(this.info, info)
+          this.onClose()
+        })
     }
   }
+}
+
+export default componentOptions
+
+export function createAndMount(Vue, schemas, path, info) {
+  const CompClass = Vue.extend(componentOptions)
+  const comp = new CompClass({
+    propsData: {
+      tmsAxiosName: 'file-api',
+      schemas,
+      path,
+      info
+    }
+  })
+  comp.$mount()
+  return comp
 }
 </script>

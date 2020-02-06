@@ -1,7 +1,7 @@
 <template>
   <tms-frame class="tms-finder" :display="{header:true,footer:true,left:true}" :leftWidth="'20%'">
     <template v-slot:header>
-      <menus></menus>
+      <topbar activeIndex="storage"></topbar>
     </template>
     <template v-slot:left>
       <tree></tree>
@@ -13,16 +13,12 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import { Frame } from 'tms-vue-ui'
-Vue.use(Frame)
-
+import Topbar from './Topbar.vue'
 import Tree from './Tree.vue'
 import Files from './Files.vue'
-import Menus from './Menu.vue'
 
 export default {
-  name: 'Finder',
-  components: { Tree, Files, Menus }
+  name: 'Storage',
+  components: { Tree, Files, Topbar }
 }
 </script>

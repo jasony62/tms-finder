@@ -7,7 +7,6 @@
           :data="info"
           :action="''"
           :http-request="handleUpload"
-          :headers="headers"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
           :file-list="fileList"
@@ -27,8 +26,7 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import UploadApi from '../apis/file/upload'
+import createUploadApi from '../apis/file/upload'
 import { Dialog, Form, FormItem, Input, Upload, Button } from 'element-ui'
 
 const componentOptions = {
@@ -40,9 +38,11 @@ const componentOptions = {
     'el-upload': Upload,
     'el-button': Button
   },
+  props: {
+    tmsAxiosName: String
+  },
   data() {
     return {
-      headers: {},
       info: {
         comment: ''
       },
@@ -78,7 +78,8 @@ const componentOptions = {
           req.onProgress({ percent: percentCompleted })
         }
       }
-      UploadApi.plain(fileData, config)
+      createUploadApi(this.TmsAxios(this.tmsAxiosName))
+        .plain(fileData, config)
         .then(path => req.onSuccess(path))
         .catch(err => {
           req.onError(err)
@@ -87,12 +88,8 @@ const componentOptions = {
     submitUpload() {
       this.$refs.upload.submit()
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePreview(file) {
-      console.log(file)
-    },
+    handleRemove() {},
+    handlePreview() {},
     onClose() {
       this.$destroy()
     }
@@ -101,8 +98,12 @@ const componentOptions = {
 
 export default componentOptions
 
-export function createAndMount() {
+export function createAndMount(Vue) {
   const CompClass = Vue.extend(componentOptions)
-  new CompClass().$mount()
+  new CompClass({
+    propsData: {
+      tmsAxiosName: 'file-api'
+    }
+  }).$mount()
 }
 </script>

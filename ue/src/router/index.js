@@ -1,24 +1,32 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/Login'
-import Finder from '../components/Finder'
+import Storage from '../components/Storage'
+import Manage from '../components/Manage'
 import NotFound from '../components/NotFound'
 import { TmsRouterHistoryPlugin } from 'tms-vue'
 
+const VUE_APP_BASE_URL = process.env.VUE_APP_BASE_URL ? process.env.VUE_APP_BASE_URL : ''
+
 const routes = [
   {
-    path: '/login',
+    path: `${VUE_APP_BASE_URL}/web/login`,
     component: Login,
     name: 'login'
   },
   {
-    path: '/finder',
-    component: Finder,
-    name: 'finder'
+    path: `${VUE_APP_BASE_URL}/web/manage`,
+    component: Manage,
+    name: 'manage'
   },
   {
-    path: '/',
-    component: Finder,
+    path: `${VUE_APP_BASE_URL}/web/storage`,
+    component: Storage,
+    name: 'storage'
+  },
+  {
+    path: `${VUE_APP_BASE_URL}/web`,
+    component: Manage,
     name: 'root'
   },
   {
@@ -26,7 +34,6 @@ const routes = [
     component: NotFound
   }
 ]
-
 Vue.use(VueRouter).use(TmsRouterHistoryPlugin)
 
 let router = new VueRouter({
@@ -39,7 +46,7 @@ router.beforeEach((to, from, next) => {
     let token = sessionStorage.getItem('access_token')
     if (!token) {
       Vue.TmsRouterHistory.push(to.path)
-      return next('/login')
+      return next({ name: 'login' })
     }
   }
   next()

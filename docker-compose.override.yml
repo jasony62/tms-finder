@@ -1,8 +1,8 @@
 version: '3.7'
 services:
   mongodb:
-    # volumes:
-    #   - ./mongodb/data:/data/db
+    volumes:
+      - ./mongodb/data:/data/db
     ports:
       - '27017:27017'
     logging:

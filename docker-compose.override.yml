@@ -1,0 +1,31 @@
+version: '3.7'
+services:
+  mongodb:
+    # volumes:
+    #   - ./mongodb/data:/data/db
+    ports:
+      - '27017:27017'
+    logging:
+      driver: 'none'
+
+  back:
+    ports:
+      - '3000:3000'
+
+  ue:
+    build:
+      args:
+        vue_app_auth_server: http://localhost:3000
+        vue_app_api_server: http://localhost:3000
+    ports:
+      - '8080:80'
+
+  ue_any:
+    build:
+      context: ./ue_any
+      args:
+        vue_app_auth_server: http://localhost:3000
+        vue_app_api_server: http://localhost:3000
+        vue_app_upload_lib_url: http://localhost:8080/finder_ue/lib
+    ports:
+      - '8081:80'

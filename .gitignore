@@ -64,4 +64,3 @@ typings/
 dump.rdb
 
 # application
-docker-compose.override.yml

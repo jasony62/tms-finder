@@ -64,5 +64,4 @@ typings/
 dump.rdb
 
 # application
-mongodb/
 docker-compose.override.yml

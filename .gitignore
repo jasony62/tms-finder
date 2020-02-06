@@ -55,10 +55,14 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+#.env
 
 # next.js build output
 .next
 
 #redis
 dump.rdb
+
+# application
+mongodb/
+docker-compose.override.yml

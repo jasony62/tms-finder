@@ -11,19 +11,19 @@ module.exports = {
     [
       'import',
       {
-        libraryName: 'tms-vue-ui',
+        libraryName: 'vant',
+        libraryDirectory: 'es',
         style: true
       },
-      'tms-vue-ui'
+      'vant'
     ],
     [
       'import',
       {
-        libraryName: 'vant',
-        libraryDirectory: 'lib',
+        libraryName: 'tms-vue-ui',
         style: true
       },
-      'vant'
+      'tms-vue-ui'
     ]
   ]
 }

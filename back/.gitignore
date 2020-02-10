@@ -1,6 +1,4 @@
 node_modules/
 
 # application
-public/
-config/
-files/
+storage/

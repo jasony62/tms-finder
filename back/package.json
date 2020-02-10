@@ -11,8 +11,9 @@
   "license": "MIT",
   "dependencies": {
     "glob": "^7.1.5",
+    "log4js": "^6.1.0",
     "mongodb": "^3.5.2",
-    "tms-db": "^0.0.8",
+    "tms-db": "^0.0.10",
     "tms-koa": "^0.0.31",
     "underscore": "^1.9.2"
   }

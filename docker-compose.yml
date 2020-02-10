@@ -1,0 +1,58 @@
+version: '3.7'
+services:
+  mongodb:
+    build: ./mongodb
+    image: tms-finder/mongo:latest
+    container_name: tms-finder-mongo
+    # ports:
+    #   - '27017:27017'
+    # volumes:
+    #   - ./mongodb/data:/data/db # 指定容器外部的数据存储位置
+    # logging:
+    #   driver: none
+
+  back:
+    build: ./back
+    image: tms-finder/back:latest
+    container_name: tms-finder-back
+    # ports:
+    #   - '3000:3000'
+    environment:
+      - NODE_ENV=production
+      - TMS_FINDER_MONGODB_HOST=mongodb
+      - TMS_FINDER_MONGODB_PORT=27017
+      - TMS_FINDER_FS_ROOTDIR=/home/storage
+    volumes:
+      - ./back/storage/upload:/home/storage/upload # 指定上传文件的外部存储位置
+    command: ['./wait-for.sh', 'mongodb:27017', '-t', '300', '--', 'node', 'app']
+
+  ue:
+    build:
+      context: ./ue
+      args:
+        vue_app_base_url: /finder_ue
+        vue_app_login_key_username: username
+        vue_app_login_key_password: password
+        vue_app_login_key_pin: pin
+    image: tms-finder/ue:latest
+    container_name: tms-finder-ue
+    environment:
+      - NGINX_WEB_BASE_URL=/finder_ue
+      - NGINX_ACCESS_CONTROL_ALLOW_ORIGIN=*
+    # ports:
+    #   - '8080:80'
+
+  ue_any:
+    build:
+      context: ./ue_any
+      args:
+        vue_app_base_url: /finder_ue_any
+        vue_app_login_key_username: username
+        vue_app_login_key_password: password
+        vue_app_login_key_pin: pin
+    image: tms-finder/ue_any:latest
+    container_name: tms-finder-ue_any
+    environment:
+      - NGINX_WEB_BASE_URL=/finder_ue_any
+    # ports:
+    #   - '8081:80'

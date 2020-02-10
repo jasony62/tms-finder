@@ -1,0 +1,8 @@
+module.exports = {
+  appenders: {
+    out: { type: 'stdout' }
+  },
+  categories: {
+    default: { appenders: ['out'], level: 'debug' }
+  }
+}

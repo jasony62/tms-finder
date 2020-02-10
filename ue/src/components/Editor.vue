@@ -1,47 +1,57 @@
 <template>
-  <el-dialog title="文件信息" :visible="dialogVisible" @close="onClose">
-    <tms-form :schemas="schemas" :data="file.info"></tms-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button @click="onSubmit">取消</el-button>
-      <el-button type="primary" @click="onSubmit">保存修改</el-button>
-    </div>
+  <el-dialog title="文件信息" :closeOnClickModal="false" :visible="true" @close="onClose">
+    <el-json-doc :schema="schemas" :doc="info" v-on:submit="onSubmit"></el-json-doc>
   </el-dialog>
 </template>
 
 <script>
-import Vue from 'vue'
-import { Dialog, Button } from 'element-ui'
-Vue.use(Dialog).use(Button)
+import createBrowseApi from '../apis/file/browse'
+import { Dialog } from 'element-ui'
+import { ElJsonDoc } from 'tms-vue-ui'
 
-import { TmsForm } from 'tms-form-vant'
-
-import browser from '../apis/file/browse'
-
-export default {
-  components: { TmsForm },
+const componentOptions = {
+  components: { 'el-dialog': Dialog, ElJsonDoc },
   props: {
-    schemas: { type: Array },
-    file: { type: Object }
+    tmsAxiosName: { type: String },
+    schemas: { type: Object },
+    path: { type: String },
+    info: { type: Object }
   },
-  data() {
-    return {
-      dialogVisible: false
-    }
+  mounted() {
+    document.body.appendChild(this.$el)
   },
-  created() {
-    this.$on('open', () => {
-      this.dialogVisible = true
-    })
+  beforeDestroy() {
+    document.body.removeChild(this.$el)
   },
   methods: {
     onClose() {
-      this.dialogVisible = false
+      this.$emit('onClose', this.info)
+      this.$destroy()
     },
-    onSubmit() {
-      browser.setInfo(this.file.path, this.file.info).then(schemas => {
-        this.onClose()
-      })
+    onSubmit(info) {
+      createBrowseApi(this.TmsAxios(this.tmsAxiosName))
+        .setInfo(this.path, info)
+        .then(() => {
+          Object.assign(this.info, info)
+          this.onClose()
+        })
     }
   }
+}
+
+export default componentOptions
+
+export function createAndMount(Vue, schemas, path, info) {
+  const CompClass = Vue.extend(componentOptions)
+  const comp = new CompClass({
+    propsData: {
+      tmsAxiosName: 'file-api',
+      schemas,
+      path,
+      info
+    }
+  })
+  comp.$mount()
+  return comp
 }
 </script>

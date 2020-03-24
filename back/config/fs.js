@@ -1,6 +1,7 @@
 module.exports = {
   local: {
-    rootDir: process.env.TMS_FINDER_FS_ROOTDIR || 'D:/WWW/files',
+    rootDir: process.env.TMS_FINDER_FS_ROOTDIR || 'storage',
+    outDir: process.env.TMS_FINDER_FS_OUTDIR || 'storage',
     database: {
       dialect: 'mongodb',
       source: process.env.TMS_FINDER_FS_MONGODB_SOURCE || 'master',

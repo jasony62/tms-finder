@@ -33,6 +33,7 @@
 | TMS_FINDER_MONGODB_HOST          | 记录上传文件信息的 mongodb 地址                                       | localhost |
 | TMS_FINDER_MONGODB_PORT          | 记录上传文件信息的 mongodb 端口                                       | 27017     |
 | TMS_FINDER_FS_ROOTDIR            | 上传文件在本地磁盘的存储位置                                          | storage   |
+| TMS_FINDER_FS_CUSTOMNAME         | 用户自行指定上传文件的存储目录及命名                                  | true      |
 | TMS_FINDER_FS_MONGODB_SOURCE     | 记录上传文件信息的 mongodb 数据源，和配置文件`mongodb.js`中的内容对应 | master    |
 | TMS_FINDER_FS_MONGODB_DATABASE   | 记录上传文件信息的 mongodb 数据库                                     | upload    |
 | TMS_FINDER_FS_MONGODB_COLLECTION | 记录上传文件信息的 mongodb 集合                                       | files     |

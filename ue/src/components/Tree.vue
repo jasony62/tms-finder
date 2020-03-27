@@ -54,7 +54,8 @@ export default {
         })
     },
     currentChange(data) {
-      this.currentNode = data;
+      this.currentNode = data
+      this.$store.commit('currentDir', { dir: data.rawData })
     },
     clickNode(data, node) {
       this.$store.dispatch({ type: 'list', dir: data.rawData }).then(data => {

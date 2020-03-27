@@ -1,6 +1,9 @@
 <template>
   <el-dialog title="文件上传" :closeOnClickModal="false" :visible="true" @close="onClose">
     <el-form :label-position="'left'" label-width="80px">
+      <el-form-item label="当前目录">
+        <div>{{dir}}</div>
+      </el-form-item>
       <el-form-item label="上传文件">
         <el-upload
           ref="upload"
@@ -39,7 +42,11 @@ const componentOptions = {
     'el-button': Button
   },
   props: {
-    tmsAxiosName: String
+    tmsAxiosName: String,
+    dir: {
+      type: String,
+      default: ''
+    }
   },
   data() {
     return {
@@ -79,7 +86,7 @@ const componentOptions = {
         }
       }
       createUploadApi(this.TmsAxios(this.tmsAxiosName))
-        .plain(fileData, config)
+        .plain({ dir: this.dir }, fileData, config)
         .then(path => req.onSuccess(path))
         .catch(err => {
           req.onError(err)
@@ -98,12 +105,16 @@ const componentOptions = {
 
 export default componentOptions
 
-export function createAndMount(Vue) {
+export function createAndMount(Vue, props) {
   const CompClass = Vue.extend(componentOptions)
+
+  const propsData = {
+    tmsAxiosName: 'file-api'
+  }
+  if (props && typeof props === 'object') Object.assign(propsData, props)
+
   new CompClass({
-    propsData: {
-      tmsAxiosName: 'file-api'
-    }
+    propsData
   }).$mount()
 }
 </script>

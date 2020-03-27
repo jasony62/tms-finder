@@ -1,10 +1,26 @@
 <template>
   <div class="topbar">
     <el-row type="flex">
-      <el-col :span="18">
+      <el-col :span="6">
         <el-menu :default-active="activeIndex" mode="horizontal" @select="onMenuSelect">
           <el-menu-item index="manage">管理视图</el-menu-item>
           <el-menu-item index="storage">存储视图</el-menu-item>
+        </el-menu>
+      </el-col>
+      <el-col :span="12">
+        <el-menu class="el-menu__placeholder" mode="horizontal">
+          <el-menu-item index="currentDir">
+            <div>
+              当前目录：
+              <span v-if="currentDir">{{currentDir.path}}</span>
+            </div>
+          </el-menu-item>
+          <el-menu-item index="mkdir">
+            <el-button @click.prevent="mkdir">新建目录</el-button>
+          </el-menu-item>
+          <el-menu-item index="rmdir">
+            <el-button @click.prevent="rmdir">删除目录</el-button>
+          </el-menu-item>
         </el-menu>
       </el-col>
       <el-col :span="3">
@@ -39,15 +55,24 @@ export default {
   props: {
     activeIndex: { type: String }
   },
+  computed: {
+    currentDir() {
+      return this.$store.state.currentDir
+    }
+  },
   methods: {
     onMenuSelect(name) {
       this.$router.push({ name })
     },
     upload() {
       import('./Upload.vue').then(Module => {
-        Module.createAndMount(Vue)
+        Module.createAndMount(Vue, {
+          dir: this.currentDir ? this.currentDir.path : null
+        })
       })
-    }
+    },
+    mkdir() {},
+    rmdir() {}
   }
 }
 </script>

@@ -52,7 +52,7 @@ export default {
   },
   created() {
     const listApi = this.$apis.file.manage.list.bind(this.$apis.file.mange)
-    this.batch = new Batch(listApi)
+    this.batch = new Batch(listApi, this.domain, this.bucket)
     this.batch.size = 12
   },
   mounted() {

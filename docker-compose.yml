@@ -23,7 +23,7 @@ services:
       - TMS_FINDER_MONGODB_PORT=27017
       - TMS_FINDER_FS_ROOTDIR=/home/storage
     volumes:
-      - ./back/storage/upload:/home/storage/upload # 指定上传文件的外部存储位置
+      - ./back/storage:/home/storage # 指定文件服务的外部存储位置（rootDir）
     command: ['./wait-for.sh', 'mongodb:27017', '-t', '300', '--', 'node', 'app']
 
   ue:

@@ -15,7 +15,7 @@ class Browse extends BrowseCtrl {
    */
   async list() {
     let { dir } = this.request.query
-    let localFS = new LocalFS(this.domain)
+    let localFS = new LocalFS(this.domain, this.bucket)
     let { files, dirs } = localFS.list(dir)
     for (let file of files) {
       //

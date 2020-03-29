@@ -39,6 +39,7 @@ Vue.use(Table)
 
 export default {
   name: 'Info',
+  props: { domain: String, bucket: String },
   data() {
     return {
       gap: 4,
@@ -65,7 +66,14 @@ export default {
       })
     },
     handleSetInfo(index, file) {
-      const comp = createAndMount(Vue, this.schemas, file.path, file)
+      const comp = createAndMount(
+        Vue,
+        this.schemas,
+        file.path,
+        file,
+        this.domain,
+        this.bucket
+      )
       comp.$on('onClose', info => {
         Object.assign(file, info)
       })

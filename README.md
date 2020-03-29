@@ -16,6 +16,10 @@
 
 在浏览器中输入：http://localhost:8080/finder_ue/web
 
+可以通过新建`docker-compose.local.yml`设置需要的参数，执行如下启动命令：
+
+> docker-compose -f docker-compose.yml -f docker-compose.local.yml up --build -d
+
 # 关闭服务
 
 > docker-compose down

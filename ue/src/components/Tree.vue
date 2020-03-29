@@ -16,6 +16,7 @@ import { Tree } from 'element-ui'
 Vue.use(Tree)
 
 export default {
+  props: { domain: String, bucket: String },
   data() {
     return {
       defaultProps: {
@@ -40,7 +41,12 @@ export default {
         ])
       }
       this.$store
-        .dispatch({ type: 'expand', dir: node.data.rawData })
+        .dispatch({
+          type: 'expand',
+          dir: node.data.rawData,
+          domain: this.domain,
+          bucket: this.bucket
+        })
         .then(subDirs => {
           let children = subDirs.map(sd => {
             return {
@@ -58,26 +64,33 @@ export default {
       this.$store.commit('currentDir', { dir: data.rawData })
     },
     clickNode(data, node) {
-      this.$store.dispatch({ type: 'list', dir: data.rawData }).then(data => {
-        if (false === node.loaded) {
-          let { dirs } = data
-          if (dirs && dirs.length) {
-            dirs.forEach(dir => {
-              let leaf = dir.sub.dirs === 0
-              this.$refs.tree.append(
-                {
-                  label: dir.name,
-                  children: [],
-                  leaf,
-                  rawData: dir
-                },
-                node
-              )
-            })
+      this.$store
+        .dispatch({
+          type: 'list',
+          dir: data.rawData,
+          domain: this.domain,
+          bucket: this.bucket
+        })
+        .then(data => {
+          if (false === node.loaded) {
+            let { dirs } = data
+            if (dirs && dirs.length) {
+              dirs.forEach(dir => {
+                let leaf = dir.sub.dirs === 0
+                this.$refs.tree.append(
+                  {
+                    label: dir.name,
+                    children: [],
+                    leaf,
+                    rawData: dir
+                  },
+                  node
+                )
+              })
+            }
+            node.loaded = true
           }
-          node.loaded = true
-        }
-      })
+        })
     }
   }
 }

@@ -46,7 +46,9 @@ const componentOptions = {
     dir: {
       type: String,
       default: ''
-    }
+    },
+    domain: String,
+    bucket: String
   },
   data() {
     return {
@@ -86,7 +88,11 @@ const componentOptions = {
         }
       }
       createUploadApi(this.TmsAxios(this.tmsAxiosName))
-        .plain({ dir: this.dir }, fileData, config)
+        .plain(
+          { dir: this.dir, domain: this.domain, bucket: this.bucket },
+          fileData,
+          config
+        )
         .then(path => req.onSuccess(path))
         .catch(err => {
           req.onError(err)

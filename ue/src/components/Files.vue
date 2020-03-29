@@ -33,6 +33,7 @@ Vue.use(Table)
 import { createAndMount } from './Editor.vue'
 
 export default {
+  props: { domain: String, bucket: String },
   data() {
     return {
       searchContent: ''
@@ -41,7 +42,14 @@ export default {
   methods: {
     handleSetInfo(index, file) {
       if (!file.info) file.info = {}
-      const comp = createAndMount(Vue, this.schemas, file.path, file.info)
+      const comp = createAndMount(
+        Vue,
+        this.schemas,
+        file.path,
+        file.info,
+        this.domain,
+        this.bucket
+      )
       comp.$on('onClose', info => {
         Object.assign(file.info, info)
       })

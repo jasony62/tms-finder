@@ -2,6 +2,9 @@ module.exports = {
   local: {
     rootDir: process.env.TMS_FINDER_FS_ROOTDIR || 'storage',
     customName: process.env.TMS_FINDER_FS_CUSTOMNAME || true,
+    domain: {
+      valid: ['download']
+    },
     database: {
       dialect: 'mongodb',
       source: process.env.TMS_FINDER_FS_MONGODB_SOURCE || 'master',

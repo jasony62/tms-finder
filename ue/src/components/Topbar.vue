@@ -53,7 +53,9 @@ Vue.use(Row)
 
 export default {
   props: {
-    activeIndex: { type: String }
+    activeIndex: String,
+    domain: String,
+    bucket: String
   },
   computed: {
     currentDir() {
@@ -62,12 +64,14 @@ export default {
   },
   methods: {
     onMenuSelect(name) {
-      this.$router.push({ name })
+      this.$router.push({ name, query: this.$route.query })
     },
     upload() {
       import('./Upload.vue').then(Module => {
         Module.createAndMount(Vue, {
-          dir: this.currentDir ? this.currentDir.path : null
+          dir: this.currentDir ? this.currentDir.path : null,
+          domain: this.domain,
+          bucket: this.bucket
         })
       })
     },

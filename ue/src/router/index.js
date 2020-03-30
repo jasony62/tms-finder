@@ -16,18 +16,21 @@ const routes = [
   },
   {
     path: `${VUE_APP_BASE_URL}/web/manage`,
+    name: 'manage',
     component: Manage,
-    name: 'manage'
+    props: route => ({ domain: route.query.domain, bucket: route.query.bucket })
   },
   {
     path: `${VUE_APP_BASE_URL}/web/storage`,
+    name: 'storage',
     component: Storage,
-    name: 'storage'
+    props: route => ({ domain: route.query.domain, bucket: route.query.bucket })
   },
   {
     path: `${VUE_APP_BASE_URL}/web`,
+    name: 'root',
     component: Manage,
-    name: 'root'
+    props: route => ({ domain: route.query.domain, bucket: route.query.bucket })
   },
   {
     path: '*',

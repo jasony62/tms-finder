@@ -43,9 +43,9 @@ export default new Vuex.Store({
       })
     },
     list({ commit }, payload) {
-      let { dir } = payload
+      let { dir, domain, bucket } = payload
       return new Promise(resolve => {
-        Vue.$apis.file.browse.list(dir.path).then(listData => {
+        Vue.$apis.file.browse.list(dir.path, domain, bucket).then(listData => {
           let { dirs, files } = listData
           commit({ type: 'appendDirs', dir, dirs })
           commit({ type: 'files', files })
@@ -54,9 +54,9 @@ export default new Vuex.Store({
       })
     },
     expand({ commit }, payload) {
-      let { dir } = payload
+      let { dir, domain, bucket } = payload
       return new Promise(resolve => {
-        Vue.$apis.file.browse.list(dir.path).then(expandData => {
+        Vue.$apis.file.browse.list(dir.path, domain, bucket).then(expandData => {
           let { dirs } = expandData
           commit({ type: 'appendDirs', dir, dirs })
           resolve(dirs)

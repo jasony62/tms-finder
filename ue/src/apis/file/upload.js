@@ -4,7 +4,9 @@ export default function create(tmsAxios) {
   return {
     plain(query, fileData, config) {
       let url = `${baseApi}/plain`
-      if (query && query.dir) url += `?dir=${query.dir}`
+      if (!config || typeof config !== 'object') config = {}
+      const { dir, domain, bucket } = query
+      config.params = { dir, domain, bucket }
       return tmsAxios.post(url, fileData, config).then(rst => rst.data.result)
     }
   }

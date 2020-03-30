@@ -1,10 +1,10 @@
 <template>
   <tms-frame class="tms-finder" :display="{header:true,footer:true}" :leftWidth="'20%'">
     <template v-slot:header>
-      <topbar activeIndex="manage"></topbar>
+      <topbar activeIndex="manage" :domain="domain" :bucket="bucket"></topbar>
     </template>
     <template v-slot:center>
-      <info></info>
+      <info :domain="domain" :bucket="bucket"></info>
     </template>
   </tms-frame>
 </template>
@@ -15,6 +15,7 @@ import Info from './Info.vue'
 
 export default {
   name: 'Manage',
+  props: { domain: String, bucket: String },
   components: { Topbar, Info }
 }
 </script>

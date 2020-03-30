@@ -15,7 +15,9 @@ const componentOptions = {
     tmsAxiosName: { type: String },
     schemas: { type: Object },
     path: { type: String },
-    info: { type: Object }
+    info: { type: Object },
+    domain: String,
+    bucket: String
   },
   mounted() {
     document.body.appendChild(this.$el)
@@ -30,7 +32,7 @@ const componentOptions = {
     },
     onSubmit(info) {
       createBrowseApi(this.TmsAxios(this.tmsAxiosName))
-        .setInfo(this.path, info)
+        .setInfo(this.path, info, this.domain, this.bucket)
         .then(() => {
           Object.assign(this.info, info)
           this.onClose()
@@ -41,14 +43,16 @@ const componentOptions = {
 
 export default componentOptions
 
-export function createAndMount(Vue, schemas, path, info) {
+export function createAndMount(Vue, schemas, path, info, domain, bucket) {
   const CompClass = Vue.extend(componentOptions)
   const comp = new CompClass({
     propsData: {
       tmsAxiosName: 'file-api',
       schemas,
       path,
-      info
+      info,
+      domain,
+      bucket
     }
   })
   comp.$mount()

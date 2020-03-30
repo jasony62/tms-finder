@@ -6,7 +6,10 @@ let appConfig = {
       prefix: 'auth' // 鉴权接口调用url的前缀
     },
     controllers: {
-      prefix: 'api' // 控制器接口调用url的前缀，例如：/api
+      prefix: '' // 接口调用url的前缀
+    },
+    fsdomain: {
+      prefix: 'fs' // 文件下载服务的前缀
     }
   },
   tmsTransaction: false,

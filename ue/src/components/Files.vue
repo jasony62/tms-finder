@@ -12,9 +12,10 @@
       <el-table-column prop="createTime" label="日期" width="240" :formatter="formatDate"></el-table-column>
       <el-table-column prop="size" label="大小" width="180" :formatter="formateFileSize"></el-table-column>
       <el-table-column prop="name" label="文件名"></el-table-column>
-      <el-table-column fixed="right" label="操作" width="100">
+      <el-table-column fixed="right" label="操作" width="120">
         <template slot-scope="scope">
-          <!-- <el-button type="text" size="small" @click="handleSetInfo(scope.$index, scope.row)">编辑</el-button> -->
+          <el-button type="text" size="small" @click="handleSetInfo(scope.$index, scope.row)">编辑</el-button>
+          <el-button type="text" size="small" @click="download(scope.$index, scope.row)">下载</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -23,7 +24,7 @@
 <script>
 import Vue from 'vue'
 import { mapState } from 'vuex'
-import { Table, TableColumn, Input, Row, Col } from 'element-ui'
+import { Table, TableColumn, Input, Row, Col, MessageBox } from 'element-ui'
 Vue.use(Table)
   .use(TableColumn)
   .use(Input)
@@ -33,6 +34,7 @@ Vue.use(Table)
 import { createAndMount } from './Editor.vue'
 
 export default {
+  props: { domain: String, bucket: String },
   data() {
     return {
       searchContent: ''
@@ -49,9 +51,28 @@ export default {
   methods: {
     handleSetInfo(index, file) {
       if (!file.info) file.info = {}
-      const comp = createAndMount(Vue, this.schemas, file.path, file.info)
+      const comp = createAndMount(
+        Vue,
+        this.schemas,
+        file.path,
+        file.info,
+        this.domain,
+        this.bucket
+      )
       comp.$on('onClose', info => {
         Object.assign(file.info, info)
+      })
+    },
+    download(index, file) {
+      const fserver =
+        process.env.VUE_APP_FS_SERVER ||
+        `${location.protocol}//${location.host}:${location.port}`
+      const fileurl = `${fserver}${file.path}`
+      MessageBox.confirm(fileurl, file.name, {
+        confirmButtonText: '下载',
+        cancelButtonText: '取消'
+      }).then(() => {
+        window.open(fileurl)
       })
     },
     // 全局搜索

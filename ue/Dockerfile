@@ -14,13 +14,15 @@ ARG vue_app_login_key_username=username
 ARG vue_app_login_key_password=password
 ARG vue_app_login_key_pin=pin
 ARG vue_app_api_server
+ARG vue_app_fs_server
 
 RUN echo VUE_APP_BASE_URL=$vue_app_base_url > .env && \
   echo VUE_APP_AUTH_SERVER=$vue_app_auth_server >> .env && \
   echo VUE_APP_LOGIN_KEY_USERNAME=$vue_app_login_key_username >> .env && \
   echo VUE_APP_LOGIN_KEY_PASSWORD=$vue_app_login_key_password  >> .env && \
   echo VUE_APP_LOGIN_KEY_PIN=$vue_app_login_key_pin  >> .env && \
-  echo VUE_APP_API_SERVER=$vue_app_api_server >> .env
+  echo VUE_APP_API_SERVER=$vue_app_api_server >> .env && \
+  echo VUE_APP_FS_SERVER=$vue_app_fs_server >> .env
 
 # 安装依赖包，构建代码
 RUN cnpm i && yarn build && yarn build-lib

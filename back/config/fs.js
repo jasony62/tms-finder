@@ -1,7 +1,6 @@
 module.exports = {
   local: {
     rootDir: process.env.TMS_FINDER_FS_ROOTDIR || 'storage',
-    outDir: process.env.TMS_FINDER_FS_OUTDIR || 'storage',
     customName: process.env.TMS_FINDER_FS_CUSTOMNAME || true,
     database: {
       dialect: 'mongodb',

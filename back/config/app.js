@@ -7,6 +7,9 @@ module.exports = {
     },
     controllers: {
       prefix: '' // 接口调用url的前缀
+    },
+    fsdomain: {
+      prefix: 'fs' // 文件下载服务的前缀
     }
   },
   auth: {

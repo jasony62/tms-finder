@@ -1,4 +1,4 @@
-const baseApi = (process.env.VUE_APP_API_HOST || '') + '/file/upload'
+const baseApi = (process.env.VUE_APP_API_SERVER || '') + '/file/upload'
 
 export default function create(tmsAxios) {
   return {

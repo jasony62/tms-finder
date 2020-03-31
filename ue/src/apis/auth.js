@@ -1,6 +1,6 @@
 import { TmsAxios } from 'tms-vue'
 
-const baseAuth = (process.env.VUE_APP_AUTH_HOST || '') + '/auth'
+const baseAuth = (process.env.VUE_APP_AUTH_SERVER || '') + '/auth'
 
 export default {
   fnGetCaptcha() {

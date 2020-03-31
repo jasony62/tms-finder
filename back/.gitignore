@@ -2,3 +2,4 @@ node_modules/
 
 # application
 storage/
+config/*.local.js

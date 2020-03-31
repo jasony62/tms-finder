@@ -45,11 +45,14 @@ let router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'login') {
-    let token = sessionStorage.getItem('access_token')
-    if (!token) {
-      Vue.TmsRouterHistory.push(to.path)
-      return next({ name: 'login' })
+  // 进入页面前检查是否已经通过用户认证
+  if (process.env.VUE_APP_AUTH_DISABLED !== 'Yes' && process.env.VUE_APP_AUTH_SERVER) {
+    if (to.name !== 'login') {
+      let token = sessionStorage.getItem('access_token')
+      if (!token) {
+        Vue.TmsRouterHistory.push(to.path)
+        return next({ name: 'login' })
+      }
     }
   }
   next()

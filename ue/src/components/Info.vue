@@ -2,7 +2,7 @@
   <div class="info">
     <tms-flex direction="column" :gap="gap" alignItems="stretch">
       <div v-if="schemas">
-        <el-table :data="files" stripe style="width: 100%">
+        <el-table :data="files" stripe style="width: 100%" @row-dblclick="rowDbClick">
           <el-table-column type="index" width="50"></el-table-column>
           <el-table-column v-for="(s, k) in schemas.properties" :key="k" :prop="k" :label="s.title"></el-table-column>
           <el-table-column fixed="right" label="操作" width="120">
@@ -80,16 +80,16 @@ export default {
       })
     },
     download(index, file) {
-      const fserver =
-        process.env.VUE_APP_FS_SERVER ||
-        `${location.protocol}//${location.host}:${location.port}`
-      const fileurl = `${fserver}${file.path}`
+      const fileurl = this.$utils.getFileUrl(file)
       MessageBox.confirm(fileurl, file.name, {
         confirmButtonText: '下载',
         cancelButtonText: '取消'
       }).then(() => {
         window.open(fileurl)
       })
+    },
+    rowDbClick(file) {
+      this.$utils.postMessage(() => this.$utils.getFileUrl(file))
     }
   }
 }

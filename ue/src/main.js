@@ -3,7 +3,7 @@ import App from './App.vue'
 import store from './store'
 import router from './router'
 import { Message } from 'element-ui'
-import { TmsAxiosPlugin, TmsErrorPlugin, TmsIgnorableError, TmsLockPromise } from 'tms-vue'
+import { TmsAxiosPlugin, TmsErrorPlugin, TmsEventPlugin, TmsIgnorableError, TmsLockPromise } from 'tms-vue'
 import { Frame, Flex, Login } from 'tms-vue-ui'
 import ApiPlugin from './apis'
 import auth from './apis/auth'
@@ -15,6 +15,7 @@ Vue.prototype.$utils = utils
 
 Vue.use(TmsAxiosPlugin)
   .use(TmsErrorPlugin)
+  .use(TmsEventPlugin)
   .use(Frame)
   .use(Flex)
 

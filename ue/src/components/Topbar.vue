@@ -75,8 +75,31 @@ export default {
         })
       })
     },
-    mkdir() {},
-    rmdir() {}
+    mkdir() {
+      import('./Mkdir.vue').then(Module => {
+        Module.createAndMount(Vue, {
+          dir: this.currentDir ? this.currentDir.path : null,
+          domain: this.domain,
+          bucket: this.bucket
+        })
+        this.$tmsOn('onMake',()=>{
+          this.$tmsEmit('reFresh')
+        })
+      })
+    },
+    rmdir() {
+      import('./Rmdir.vue').then(Module => {
+        Module.createAndMount(Vue, {
+          dir: this.currentDir ? this.currentDir.path : null,
+          domain: this.domain,
+          bucket: this.bucket
+        })
+        this.$tmsOn('onRemove',()=>{
+          this.$store.commit('currentDir', {dir: null})
+          this.$tmsEmit('reFresh')
+        })
+      })
+    }
   }
 }
 </script>

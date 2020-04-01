@@ -3,7 +3,7 @@
     <el-button type="text" @click="dialogVisible = true">打开tms-finder选择文件</el-button>
     <div>返回结果：{{returnData}}</div>
     <el-dialog class="abow_dialog" title="双击选择返回结果" :visible.sync="dialogVisible" width="90%" top="4vh">
-      <div class="iframe-container">
+      <div>
         <iframe
           id="iframe"
           width="100%"

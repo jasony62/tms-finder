@@ -56,7 +56,7 @@ export default {
       })
     },
     download(index, file) {
-      const fileurl = this.utils.getFileUrl(file)
+      const fileurl = this.$utils.getFileUrl(file)
       MessageBox.confirm(fileurl, file.name, {
         confirmButtonText: '下载',
         cancelButtonText: '取消'

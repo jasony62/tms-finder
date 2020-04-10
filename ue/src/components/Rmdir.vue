@@ -46,7 +46,7 @@ const componentOptions = {
     submitMkdir() {
       if (this.dir) {
         createUploadApi(this.TmsAxios(this.tmsAxiosName))
-          .rmdir({ dir: this.dir })
+          .rmdir({ dir: this.dir, domain: this.domain, bucket: this.bucket })
           .then(res=>{
             if (res=='ok') {
               Message({

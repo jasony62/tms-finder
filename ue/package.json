@@ -13,6 +13,8 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "element-ui": "^2.12.0",
+    "less": "^3.11.1",
+    "less-loader": "^5.0.0",
     "tms-form-vant": "^0.0.5",
     "tms-vue": "^0.0.7",
     "tms-vue-ui": "^0.0.16",

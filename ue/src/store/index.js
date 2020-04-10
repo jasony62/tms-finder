@@ -9,7 +9,8 @@ export default new Vuex.Store({
     tree: { name: '全部', path: '' },
     files: [],
     searchFiles: [],
-    currentDir: null
+    currentDir: null,
+    radio: '1'
   },
   mutations: {
     schemas(state, payload) {
@@ -31,6 +32,9 @@ export default new Vuex.Store({
     },
     currentDir(state, payload) {
       state.currentDir = payload.dir
+    },
+    radio(state, payload){
+      state.radio = payload.radio
     }
   },
   actions: {

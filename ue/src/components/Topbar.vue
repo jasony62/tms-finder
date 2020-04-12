@@ -1,13 +1,23 @@
 <template>
   <div class="topbar">
     <el-row type="flex">
-      <el-col :span="6">
+      <el-col :span="4">
         <el-menu :default-active="activeIndex" mode="horizontal" @select="onMenuSelect">
           <el-menu-item index="manage">管理视图</el-menu-item>
           <el-menu-item index="storage">存储视图</el-menu-item>
         </el-menu>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="4">
+        <el-menu class="el-menu__placeholder" mode="horizontal">
+          <el-menu-item index="shiftView">
+            <el-radio-group size="small" v-model="radio" @change="selectRadio">
+              <el-radio-button label="1">列表视图</el-radio-button>
+              <el-radio-button label="2">图标视图</el-radio-buttons>
+            </el-radio-group>
+          </el-menu-item>
+        </el-menu>
+      </el-col>
+      <el-col :span="10">
         <el-menu class="el-menu__placeholder" mode="horizontal">
           <el-menu-item index="currentDir">
             <div>
@@ -43,13 +53,15 @@
 </template>
 <script>
 import Vue from 'vue'
-import { Row, Col, Menu, Submenu, MenuItem, Button } from 'element-ui'
+import { Row, Col, Menu, Submenu, MenuItem, Button, RadioButton, RadioGroup } from 'element-ui'
 Vue.use(Row)
   .use(Col)
   .use(Menu)
   .use(Submenu)
   .use(MenuItem)
   .use(Button)
+  .use(RadioButton)
+  .use(RadioGroup)
 
 export default {
   props: {
@@ -57,12 +69,20 @@ export default {
     domain: String,
     bucket: String
   },
+  data() {
+    return {
+      radio: this.$store.state.radio
+    }
+  },
   computed: {
     currentDir() {
       return this.$store.state.currentDir
     }
   },
   methods: {
+    selectRadio(value){
+      this.$store.commit('radio', { radio: value })
+    },
     onMenuSelect(name) {
       this.$router.push({ name, query: this.$route.query })
     },

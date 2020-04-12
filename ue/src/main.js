@@ -8,6 +8,8 @@ import { Frame, Flex, Login } from 'tms-vue-ui'
 import ApiPlugin from './apis'
 import auth from './apis/auth'
 import utils from './utils'
+import './assets/icon/iconfont.js'
+import './assets/icon/icon.css'
 
 Vue.config.productionTip = false
 

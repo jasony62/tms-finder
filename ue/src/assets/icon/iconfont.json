@@ -1,0 +1,72 @@
+{
+  "id": "1694789",
+  "name": "no name",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "10058073",
+      "name": "icon_未知文件",
+      "font_class": "icon_weizhiwenjian",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "13412232",
+      "name": "文件类型 - excel",
+      "font_class": "yunpanlogo-",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "13412233",
+      "name": "文件类型 - ppt",
+      "font_class": "yunpanlogo-1",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "13412234",
+      "name": "文件类型 - word",
+      "font_class": "yunpanlogo-2",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "13412239",
+      "name": "文件类型 - 音乐",
+      "font_class": "yunpanlogo-3",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
+      "icon_id": "13412242",
+      "name": "文件类型 - 视频文件",
+      "font_class": "yunpanlogo-4",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "13412243",
+      "name": "文件类型 - 文本文档",
+      "font_class": "yunpanlogo-5",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "13412250",
+      "name": "文件类型 - 图片文件",
+      "font_class": "yunpanlogo-6",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
+      "icon_id": "13412731",
+      "name": "文件类型 - PDF",
+      "font_class": "yunpanlogo-7",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    }
+  ]
+}

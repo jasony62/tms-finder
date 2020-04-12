@@ -8,8 +8,8 @@
         <el-button type="primary" size="small" @click="overallSearch">搜索</el-button>
       </el-col>
     </div>
-    <el-table :data="files" stripe style="width: 100%">
-      <el-table-column prop="createTime" label="日期" width="240" :formatter="formatDate"></el-table-column>
+    <el-table :data="files" stripe style="width: 100%" @row-dblclick="rowDbClick">
+      <el-table-column prop="createTime" label="日期" width="180" :formatter="formatDate"></el-table-column>
       <el-table-column prop="size" label="大小" width="180" :formatter="formateFileSize"></el-table-column>
       <el-table-column prop="name" label="文件名"></el-table-column>
       <el-table-column fixed="right" label="操作" width="120">
@@ -64,16 +64,16 @@ export default {
       })
     },
     download(index, file) {
-      const fserver =
-        process.env.VUE_APP_FS_SERVER ||
-        `${location.protocol}//${location.host}:${location.port}`
-      const fileurl = `${fserver}${file.path}`
+      const fileurl = this.$utils.getFileUrl(file)
       MessageBox.confirm(fileurl, file.name, {
         confirmButtonText: '下载',
         cancelButtonText: '取消'
       }).then(() => {
         window.open(fileurl)
       })
+    },
+    rowDbClick(file) {
+      this.$utils.postMessage(() => this.$utils.getFileUrl(file))
     },
     // 全局搜索
     overallSearch() {

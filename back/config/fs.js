@@ -27,7 +27,11 @@ module.exports = {
   local: {
     rootDir: process.env.TMS_FINDER_FS_ROOTDIR || 'storage',
     domains: {
-      upload: { database, schemas, customName: process.env.TMS_FINDER_FS_CUSTOMNAME || true },
+      upload: {
+        database,
+        schemas,
+        customName: process.env.TMS_FINDER_FS_CUSTOMNAME || true
+      },
       download: { database, schemas, customName: process.env.TMS_FINDER_FS_CUSTOMNAME || true }
     },
     defaultDomain: 'upload'

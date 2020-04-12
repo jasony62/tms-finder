@@ -4,3 +4,4 @@ node_modules/
 storage/
 .env
 public/
+config/*.local.js

@@ -25,7 +25,9 @@ export default {
       defaultProps: {
         label: 'label',
         children: 'children',
-        isLeaf: 'leaf'
+        isLeaf: 'leaf',
+        node: [],
+        resolve: []
       },
       currentNode: {},
       initNode: {},
@@ -46,9 +48,9 @@ export default {
     },
     loadNode(node, resolve) {
       if (node.level === 0) {
-        this.initNode = node
-        this.initResolve = resolve
-        const { tree } = this.$store.state
+        this.node = node
+        this.resolve = resolve
+        let { tree } = this.$store.state
         return resolve([
           {
             label: tree.name,
@@ -110,6 +112,12 @@ export default {
           }
         })
     }
+  },
+  mounted(){
+    this.$tmsOn('reFresh', ()=>{
+      this.node.childNodes = []
+      this.loadNode(this.node, this.resolve)
+    })
   }
 }
 </script>

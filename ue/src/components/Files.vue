@@ -21,7 +21,7 @@
     </el-table>
     <div class="icon-view" v-if="radio==2">
       <div class="icon-lists" v-if="files.length">
-        <el-card :class="cardClass" v-for="(item, index) in files" :body-style="{ padding: '0px' }" shadow="never">
+        <el-card :class="cardClass" v-for="(item, index) in files" :key="index" :body-style="{ padding: '0px' }" shadow="never">
           <svg class="image icon" aria-hidden="true">
             <use :xlink:href="formateFileType(item)"></use>
           </svg>
@@ -35,7 +35,7 @@
             </div>
           </div>
         </el-card>
-        <div :class="emptyClass" v-for="item in (columns - files.length % columns)" v-if=" files.length % columns > 0">
+        <div :class="emptyClass" v-for="index in (columns - files.length % columns)" :key="index" v-show=" files.length % columns > 0">
         </div>
       </div>
       <div class="empty" v-else>

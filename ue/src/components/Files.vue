@@ -1,6 +1,6 @@
 <template>
   <div class="files">
-    <div class="demo-input-suffix row">
+    <div class="demo-input-suffix row" v-show="isShowSearch">
       <el-col :span="6" :offset="16">
         <el-input placeholder="全站搜索-请输入文件名名称" suffix-icon="el-icon-search" v-model="searchContent"></el-input>
       </el-col>
@@ -67,6 +67,14 @@ export default {
       emptyClass: 'empty-card'
     }
   },
+  // watch: {
+  //   isShowSearch(newVal) {
+  //     // 每次重新显示搜索框-重置搜索路径
+  //     if (newVal) {
+  //       this.$store.state.searchPath = '';
+  //     }
+  //   }
+  // },
   methods: {
     handleSetInfo(index, file) {
       if (!file.info) file.info = {}

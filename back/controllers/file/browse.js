@@ -47,7 +47,7 @@ class Browse extends BrowseCtrl {
    *
    */
   async listAll() {
-    let { dir, basename = '' } = this.request.body
+    let { dir, basename = '', dot } = this.request.body
     let rootDir = _.get(this.fsConfig, ['local', 'rootDir'], '')
 
     let path = dir ? rootDir + '/' + dir : rootDir
@@ -55,7 +55,8 @@ class Browse extends BrowseCtrl {
 
     let dirs = []
     let files = []
-    for (const file of globInstance.found) {
+    // for (let file of globInstance.found) {
+    for (let file of globInstance) {
       let stats = fs.lstatSync(file)
       if (stats.isFile()) {
         //

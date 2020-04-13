@@ -1,14 +1,17 @@
 <template>
-  <el-tree
-    :props="defaultProps"
-    lazy
-    :expand-on-click-node="false"
-    :load="loadNode"
-    @node-click="clickNode"
-    @current-change="currentChange"
-    ref="tree"
-    node-key="path"
-  ></el-tree>
+  <div class="left-tree">
+    <el-tree
+      :props="defaultProps"
+      lazy
+      :expand-on-click-node="false"
+      :load="loadNode"
+      @node-click="clickNode"
+      @current-change="currentChange"
+      ref="tree"
+      node-key="path"
+    ></el-tree>
+    <i class="el-icon-refresh refresh" @click="refresh"></i>
+  </div>
 </template>
 <script>
 import Vue from 'vue'
@@ -26,10 +29,23 @@ export default {
         node: [],
         resolve: []
       },
-      currentNode: {}
+      currentNode: {},
+      initNode: {},
+      initResolve: '',
+      currentLevel: 0
+    }
+  },
+  watch: {
+    currentLevel(newVal) {
+      this.$store.state.isShowSearch = newVal > 1;
     }
   },
   methods: {
+    refresh() {
+      this.initNode.childNodes = []
+      this.$store.commit('files', {files: []})
+      this.loadNode(this.initNode, this.initResolve)
+    },
     loadNode(node, resolve) {
       if (node.level === 0) {
         this.node = node
@@ -52,11 +68,11 @@ export default {
           bucket: this.bucket
         })
         .then(subDirs => {
-          let children = subDirs.map(sd => {
+          const children = subDirs.map(sd => {
             return {
               label: sd.name,
               children: [],
-              leaf: sd.sub.dirs === 0,
+              leaf: sd.sub.dirs === false,
               rawData: sd
             }
           })
@@ -105,3 +121,17 @@ export default {
   }
 }
 </script>
+<style scoped>
+.left-tree {
+  position: relative;
+}
+.left-tree .refresh {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+.left-tree .refresh:hover{
+  color: red;
+}
+</style>

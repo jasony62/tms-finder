@@ -8,7 +8,7 @@
         <el-button type="primary" size="small" @click="overallSearch">搜索</el-button>
       </el-col>
     </div>
-    <el-table :data="files" stripe style="width: 100%" @row-dblclick="rowDbClick">
+    <el-table :data="files" stripe style="width: 100%" @row-dblclick="rowDbClick" v-if="radio==1">
       <el-table-column prop="createTime" label="日期" width="180" :formatter="formatDate"></el-table-column>
       <el-table-column prop="size" label="大小" width="180" :formatter="formateFileSize"></el-table-column>
       <el-table-column prop="name" label="文件名"></el-table-column>
@@ -19,17 +19,41 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="icon-view" v-if="radio==2">
+      <div class="icon-lists" v-if="files.length">
+        <el-card :class="cardClass" v-for="(item, index) in files" :body-style="{ padding: '0px' }" shadow="never">
+          <svg class="image icon" aria-hidden="true">
+            <use :xlink:href="formateFileType(item)"></use>
+          </svg>
+          <div style="padding:0 14px 14px;">
+            <span class="file-name">{{item.name}}</span>
+            <span class="file-size">{{formateFileSize(item)}}</span>
+            <div class="bottom clearfix">
+              <time class="time">{{formatDate(item)}}</time>
+              <el-button type="text" class="button" @click="handleSetInfo(index, item)">编辑</el-button>
+              <el-button type="text" class="button" @click="download(index, item)">下载</el-button>
+            </div>
+          </div>
+        </el-card>
+        <div :class="emptyClass" v-for="item in (columns - files.length % columns)" v-if=" files.length % columns > 0">
+        </div>
+      </div>
+      <div class="empty" v-else>
+        暂无数据
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import Vue from 'vue'
 import { mapState } from 'vuex'
-import { Table, TableColumn, Input, Row, Col, MessageBox } from 'element-ui'
+import { Table, TableColumn, Input, Row, Col, MessageBox, Card } from 'element-ui'
 Vue.use(Table)
   .use(TableColumn)
   .use(Input)
   .use(Row)
   .use(Col)
+  .use(Card)
 
 import { createAndMount } from './Editor.vue'
 
@@ -37,7 +61,10 @@ export default {
   props: { domain: String, bucket: String },
   data() {
     return {
-      searchContent: ''
+      searchContent: '',
+      columns: 5,
+      cardClass: 'el-card',
+      emptyClass: 'empty-card'
     }
   },
   // watch: {
@@ -127,25 +154,149 @@ export default {
         return format
       }
     },
+    // 文件类型对应图标
+    formateFileType(data){
+      const fileType = this.$utils.matchType(data.name)
+      let iconId = ''
+      switch (fileType) {
+        case false:
+          iconId = '#iconicon_weizhiwenjian'
+          break
+        case 'image':
+          iconId = '#iconyunpanlogo-6'
+          break
+        case 'txt':
+          iconId = '#iconyunpanlogo-5'
+          break
+        case 'excel':
+          iconId = '#iconyunpanlogo-'
+          break
+        case 'word':
+          iconId = '#iconyunpanlogo-2'
+          break
+        case 'pdf':
+          iconId = '#iconyunpanlogo-7'
+          break
+        case 'ppt':
+          iconId = '#iconyunpanlogo-1'
+          break
+        case 'video':
+          iconId = '#iconyunpanlogo-4'
+          break
+        case 'radio':
+          iconId = '#iconyunpanlogo-3'
+          break
+        case 'other':
+          iconId = '#iconicon_weizhiwenjian'
+          break
+      }
+      return iconId
+    },
     // 获取文件系统列表
     getFilesList() {
       this.$store.dispatch('schemas')
     }
   },
   computed: {
-    ...mapState(['schemas', 'files', 'refTree'])
+    ...mapState(['schemas', 'files', 'refTree', 'radio']),
   },
   created() {
     this.getFilesList()
+  },
+  mounted(){
+    if (window.screen.width >= 1920) {
+      this.columns = 7
+      this.cardClass = 'el-card-2'
+      this.emptyClass = 'empty-card-2'
+    }else{
+      this.columns = 5
+      this.cardClass = 'el-card'
+      this.emptyClass = 'empty-card'
+    }
   }
 }
 </script>
-<style>
-.files .el-input__inner {
-  height: 30px;
-  line-height: 30px;
-}
-.files .demo-input-suffix {
-  margin-top: 10px;
-}
+<style lang="less">
+  .files{
+    display: flex;
+    flex-direction: column;
+    .el-input__inner {
+      height: 30px;
+      line-height: 30px;
+    }
+    .el-input__inner {
+      height: 30px;
+      line-height: 30px;
+    }
+    .demo-input-suffix {
+      margin-top: 10px;
+    }
+    .el-card{
+      margin-bottom: 10px;
+      width: 19%;
+    }
+    .empty-card{
+      margin-bottom: 10px;
+      width: 19%;
+    }
+    .el-card-2{
+      margin-bottom: 10px;
+      width: 13%;
+    }
+    .empty-card-2{
+      margin-bottom: 10px;
+      width: 13%;
+    }
+    .file-name{
+      display: inline-block;
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      width: 60%;
+    }
+    .file-size{
+      float: right;
+      font-size: 13px;
+      color: #999;
+    }
+    .empty{
+      width: 100%;
+      margin-top: 50px;
+      line-height: 60px;
+      text-align: center;
+      color: #909399;
+      border-top: 1px solid #ebeef5;
+      border-bottom: 1px solid #ebeef5;
+      font-size: 14px;
+    }
+    .time {
+      font-size: 13px;
+      color: #999;
+    }
+    .bottom {
+      margin-top: 13px;
+      line-height: 12px;
+    }
+    .button {
+      padding: 0;
+      float: right;
+      margin-left: 6px;
+    }
+  }
+  .icon-view .icon-lists{
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both
+  }
 </style>

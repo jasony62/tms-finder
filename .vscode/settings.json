@@ -15,13 +15,5 @@
   "[json]": {
     "editor.defaultFormatter": "HookyQR.beautify"
   },
-  "editor.tabSize": 2,
-  "sqltools.connections": [
-    {
-      "askForPassword": true,
-      "database": "./back/files/info.sqlite.db",
-      "dialect": "SQLite",
-      "name": "file-info.db"
-    }
-  ]
+  "editor.tabSize": 2
 }

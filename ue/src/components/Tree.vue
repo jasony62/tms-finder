@@ -52,11 +52,11 @@ export default {
           bucket: this.bucket
         })
         .then(subDirs => {
-          let children = subDirs.map(sd => {
+          const children = subDirs.map(sd => {
             return {
               label: sd.name,
               children: [],
-              leaf: sd.sub.dirs === 0,
+              leaf: sd.sub.dirs === false,
               rawData: sd
             }
           })

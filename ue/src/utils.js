@@ -39,7 +39,7 @@ export default {
     if (result) {
       result = 'image';
       return result;
-    };
+    }
     // 匹配txt
     var txtlist = ['txt'];
     result = txtlist.some(function (item) {
@@ -48,7 +48,7 @@ export default {
     if (result) {
       result = 'txt';
       return result;
-    };
+    }
     // 匹配 excel
     var excelist = ['xls', 'xlsx'];
     result = excelist.some(function (item) {
@@ -57,7 +57,7 @@ export default {
     if (result) {
       result = 'excel';
       return result;
-    };
+    }
     // 匹配 word
     var wordlist = ['doc', 'docx'];
     result = wordlist.some(function (item) {
@@ -66,7 +66,7 @@ export default {
     if (result) {
       result = 'word';
       return result;
-    };
+    }
     // 匹配 pdf
     var pdflist = ['pdf'];
     result = pdflist.some(function (item) {
@@ -75,7 +75,7 @@ export default {
     if (result) {
       result = 'pdf';
       return result;
-    };
+    }
     // 匹配 ppt
     var pptlist = ['ppt'];
     result = pptlist.some(function (item) {
@@ -84,7 +84,7 @@ export default {
     if (result) {
       result = 'ppt';
       return result;
-    };
+    }
     // 匹配 视频
     var videolist = ['mp4', 'm2v', 'mkv'];
     result = videolist.some(function (item) {
@@ -93,7 +93,7 @@ export default {
     if (result) {
       result = 'video';
       return result;
-    };
+    }
     // 匹配 音频
     var radiolist = ['mp3', 'wav', 'wmv'];
     result = radiolist.some(function (item) {

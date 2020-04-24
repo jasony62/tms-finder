@@ -105,17 +105,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.left-tree {
-  position: relative;
-}
-.left-tree .refresh {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  cursor: pointer;
-}
-.left-tree .refresh:hover{
-  color: red;
-}
-</style>

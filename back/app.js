@@ -14,5 +14,6 @@ process.on('uncatchException', function (e) {
 const { TmsKoa } = require('tms-koa')
 
 const tmsKoa = new TmsKoa()
+if (process.env.TMS_FINDER_PROXY === "true") tmsKoa.proxy = true
 
 tmsKoa.startup()

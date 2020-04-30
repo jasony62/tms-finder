@@ -17,12 +17,6 @@ export default {
   }
 }
 </script>
-<style>
-.van-notify--danger {
-  background-color: #ee0a24 !important;
-}
-</style>
-
 <style scope>
 .login {
   display: flex;

@@ -12,7 +12,7 @@
           <el-menu-item index="shiftView">
             <el-radio-group size="small" v-model="radio" @change="selectRadio">
               <el-radio-button label="1">列表视图</el-radio-button>
-              <el-radio-button label="2">图标视图</el-radio-buttons>
+              <el-radio-button label="2">图标视图</el-radio-button>
             </el-radio-group>
           </el-menu-item>
         </el-menu>

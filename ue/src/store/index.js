@@ -72,7 +72,7 @@ export default new Vuex.Store({
       return new Promise(resolve => {
         const params = {
           basename,
-          dir: dir || ''
+          dir: dir.path || ''
         }
         Vue.$apis.file.browse.overallSearch(params).then(searchData => {
           let { dirs, files } = searchData

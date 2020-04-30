@@ -1,6 +1,6 @@
 <template>
   <div class="files">
-    <div class="demo-input-suffix row" v-show="isShowSearch">
+    <div class="demo-input-suffix row">
       <el-col :span="6" :offset="16">
         <el-input placeholder="全站搜索-请输入文件名名称" suffix-icon="el-icon-search" v-model="searchContent"></el-input>
       </el-col>
@@ -21,21 +21,24 @@
     </el-table>
     <div class="icon-view" v-if="radio==2">
       <div class="icon-lists" v-if="files.length">
-        <el-card :class="cardClass" v-for="(item, index) in files" :body-style="{ padding: '0px' }" shadow="never">
+        <el-card :class="cardClass" v-for="(item, index) in files" :key="index" :body-style="{ padding: '0px' }" shadow="never">
           <svg class="image icon" aria-hidden="true">
             <use :xlink:href="formateFileType(item)"></use>
           </svg>
           <div style="padding:0 14px 14px;">
             <span class="file-name">{{item.name}}</span>
-            <span class="file-size">{{formateFileSize(item)}}</span>
             <div class="bottom clearfix">
               <time class="time">{{formatDate(item)}}</time>
-              <el-button type="text" class="button" @click="handleSetInfo(index, item)">编辑</el-button>
-              <el-button type="text" class="button" @click="download(index, item)">下载</el-button>
+              <span class="file-size">{{formateFileSize(item)}}</span>
+              <div class="operation">
+                <el-button type="text" class="button" @click="preView(index, item)">预览</el-button>
+                <el-button type="text" class="button" @click="handleSetInfo(index, item)">编辑</el-button>
+                <el-button type="text" class="button" @click="download(index, item)">下载</el-button>
+              </div>
             </div>
           </div>
         </el-card>
-        <div :class="emptyClass" v-for="item in (columns - files.length % columns)" v-if=" files.length % columns > 0">
+        <div :class="emptyClass" v-for="index in (columns - files.length % columns)" :key="index" v-show=" files.length % columns > 0">
         </div>
       </div>
       <div class="empty" v-else>
@@ -67,15 +70,22 @@ export default {
       emptyClass: 'empty-card'
     }
   },
-  // watch: {
-  //   isShowSearch(newVal) {
-  //     // 每次重新显示搜索框-重置搜索路径
-  //     if (newVal) {
-  //       this.$store.state.searchPath = '';
-  //     }
-  //   }
-  // },
   methods: {
+    preView(index, file){
+      const fileurl = this.$utils.getFileUrl(file)
+      const fileType = this.$utils.matchType(file.name)
+      if (fileType == 'excel' || fileType == 'word') {
+        window.open(fileurl)
+      } else {
+        import('./Preview.vue').then(Module => {
+          Module.createAndMount(Vue, {
+            fileurl,
+            domain: this.domain,
+            bucket: this.bucket
+          })
+        })
+      }
+    },
     handleSetInfo(index, file) {
       if (!file.info) file.info = {}
       const comp = createAndMount(
@@ -252,7 +262,7 @@ export default {
       overflow: hidden;
       text-overflow:ellipsis;
       white-space:nowrap;
-      width: 60%;
+      width: 100%;
     }
     .file-size{
       float: right;
@@ -274,13 +284,14 @@ export default {
       color: #999;
     }
     .bottom {
-      margin-top: 13px;
-      line-height: 12px;
+      margin-top: 6px;
+     .operation{
+       margin-top: 6px;
+     }
     }
     .button {
       padding: 0;
-      float: right;
-      margin-left: 6px;
+      margin-right: 10px;
     }
   }
   .icon-view .icon-lists{

@@ -2,7 +2,6 @@ const { BrowseCtrl } = require('tms-koa/lib/controller/fs')
 const { ResultData, ResultFault, ResultObjectNotFound } = require('tms-koa')
 const { LocalFS } = require('tms-koa/lib/model/fs/local')
 const glob = require('glob')
-const _ = require('lodash')
 const fs = require('fs')
 const pathObj = require('path')
 
@@ -47,16 +46,16 @@ class Browse extends BrowseCtrl {
    *
    */
   async listAll() {
-    let { dir, basename = '', dot } = this.request.body
-    let rootDir = _.get(this.fsConfig, ['local', 'rootDir'], '')
+    let { dir, basename = '' } = this.request.body
 
-    let path = dir ? rootDir + '/' + dir : rootDir
+    let localFS = new LocalFS(this.domain, this.bucket)
+    let path = localFS.fullpath(dir)
+
     let globInstance = new glob.Glob(path + '/**/*+(' + basename + ')*', { matchBase: true, sync: true })
 
     let dirs = []
     let files = []
-    // for (let file of globInstance.found) {
-    for (let file of globInstance) {
+    for (const file of globInstance.found) {
       let stats = fs.lstatSync(file)
       if (stats.isFile()) {
         //

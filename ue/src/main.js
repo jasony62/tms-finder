@@ -62,9 +62,9 @@ if (process.env.VUE_APP_AUTH_DISABLED !== 'Yes' && process.env.VUE_APP_AUTH_SERV
   /**
    * 请求中需要包含认证信息
    */
-  const LoginPromise = (function() {
+  const LoginPromise = (function () {
     let login = new Login(LoginSchema, fnGetCaptcha, fnGetJwt)
-    let ins = new TmsLockPromise(function() {
+    let ins = new TmsLockPromise(function () {
       return login.showAsDialog().then(token => {
         sessionStorage.setItem('access_token', token)
         return `Bearer ${token}`
@@ -73,7 +73,7 @@ if (process.env.VUE_APP_AUTH_DISABLED !== 'Yes' && process.env.VUE_APP_AUTH_SERV
     return ins
   })()
 
-  const getAccessToken = function() {
+  const getAccessToken = function () {
     // 如果正在登录，等待结果
     if (LoginPromise.isRunning()) {
       return LoginPromise.wait()
@@ -87,7 +87,7 @@ if (process.env.VUE_APP_AUTH_DISABLED !== 'Yes' && process.env.VUE_APP_AUTH_SERV
     return `Bearer ${token}`
   }
 
-  const onRetryAttempt = function(res) {
+  const onRetryAttempt = function (res) {
     if (res.data.code === 20001) {
       return LoginPromise.wait().then(() => {
         return true

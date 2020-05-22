@@ -19,7 +19,7 @@
       </el-col>
       <el-col :span="10">
         <el-menu class="el-menu__placeholder" mode="horizontal">
-          <el-menu-item index="currentDir">
+          <el-menu-item index="currentDir" class="currentDir">
             <div>
               当前目录：
               <span v-if="currentDir">{{currentDir.path}}</span>

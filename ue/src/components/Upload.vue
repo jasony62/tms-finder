@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import store from '@/store'
 import createUploadApi from '../apis/file/upload'
 import { Dialog, Form, FormItem, Input, Upload, Button } from 'element-ui'
 
@@ -100,6 +101,9 @@ const componentOptions = {
     },
     submitUpload() {
       this.$refs.upload.submit()
+      console.log(this.dir)
+      store.dispatch('list', { dir: {path: this.dir}, domain: this.domain, bucket: this.bucket })
+      this.$destroy()
     },
     handleRemove() {},
     handlePreview() {},

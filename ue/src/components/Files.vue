@@ -14,6 +14,7 @@
       <el-table-column prop="name" label="文件名"></el-table-column>
       <el-table-column fixed="right" label="操作" width="120">
         <template slot-scope="scope">
+          <el-button type="text" size="small" @click="preView(scope.$index, scope.row)">预览</el-button>
           <el-button type="text" size="small" @click="handleSetInfo(scope.$index, scope.row)">编辑</el-button>
           <el-button type="text" size="small" @click="download(scope.$index, scope.row)">下载</el-button>
         </template>
@@ -38,7 +39,7 @@
             </div>
           </div>
         </el-card>
-        <div :class="emptyClass" v-for="index in (columns - files.length % columns)" :key="index" v-show=" files.length % columns > 0">
+        <div :class="emptyClass" v-for="index in (columns - files.length % columns)" :key="index+'-only'" v-show=" files.length % columns > 0">
         </div>
       </div>
       <div class="empty" v-else>

@@ -127,4 +127,8 @@ export default {
 .el-menu__placeholder .el-menu-item.is-active {
   border-bottom: 0;
 }
+.currentDir{
+  width: 50%;
+  overflow: hidden
+}
 </style>

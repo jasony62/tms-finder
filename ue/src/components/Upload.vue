@@ -94,15 +94,16 @@ const componentOptions = {
           fileData,
           config
         )
-        .then(path => req.onSuccess(path))
+        .then(path => {
+          req.onSuccess(path)
+          store.dispatch('list', { dir: {path: this.dir}, domain: this.domain, bucket: this.bucket })
+        })
         .catch(err => {
           req.onError(err)
         })
     },
     submitUpload() {
       this.$refs.upload.submit()
-      console.log(this.dir)
-      store.dispatch('list', { dir: {path: this.dir}, domain: this.domain, bucket: this.bucket })
       this.$destroy()
     },
     handleRemove() {},

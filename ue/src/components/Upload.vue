@@ -22,7 +22,7 @@
         <el-input type="textarea" :rows="4" placeholder="请输入内容" v-model="info.comment"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">提交</el-button>
+        <el-button style="margin-left: 10px;" size="small" type="success" :loading="showLoading" @click="submitUpload">提交</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>
@@ -56,7 +56,8 @@ const componentOptions = {
       info: {
         comment: ''
       },
-      fileList: []
+      fileList: [],
+      showLoading: false
     }
   },
   mounted() {
@@ -96,15 +97,19 @@ const componentOptions = {
         )
         .then(path => {
           req.onSuccess(path)
-          store.dispatch('list', { dir: {path: this.dir}, domain: this.domain, bucket: this.bucket })
+          store.dispatch('list', { dir: {path: this.dir}, domain: this.domain, bucket: this.bucket }).then(()=>{
+            this.showLoading = false
+            this.$destroy()
+          })
         })
         .catch(err => {
+          this.showLoading = false
           req.onError(err)
         })
     },
     submitUpload() {
+      this.showLoading = true
       this.$refs.upload.submit()
-      this.$destroy()
     },
     handleRemove() {},
     handlePreview() {},

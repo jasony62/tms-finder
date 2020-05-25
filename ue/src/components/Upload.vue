@@ -68,6 +68,7 @@ const componentOptions = {
   },
   methods: {
     handleUpload(req) {
+      this.showLoading = true
       const fileData = new FormData()
       ;['name', 'lastModified', 'size', 'type'].forEach(key => {
         fileData.append(key, req.file[key])
@@ -108,7 +109,6 @@ const componentOptions = {
         })
     },
     submitUpload() {
-      this.showLoading = true
       this.$refs.upload.submit()
     },
     handleRemove() {},

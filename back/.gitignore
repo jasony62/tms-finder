@@ -2,6 +2,5 @@ node_modules/
 
 # application
 storage/
-.env.*
 public/
 config/*.local.js

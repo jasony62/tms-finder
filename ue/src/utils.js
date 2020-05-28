@@ -6,6 +6,13 @@ export default {
 
     return fileurl
   },
+  // 返回文件的完整缩略图url
+  getThumbUrl(file) {
+    const thumbServer = `${location.protocol}//${location.host}${process.env.VUE_APP_FS_SERVER}`
+    const thumbUrl = `${thumbServer}${file.thumb}`
+
+    return thumbUrl
+  },
   postMessage(callback) {
     let target = window.parent ? window.parent : window.opener ? window.opener : false
     if (target) {

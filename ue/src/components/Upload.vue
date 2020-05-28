@@ -100,7 +100,7 @@ const componentOptions = {
           req.onSuccess(path)
           store.dispatch('list', { dir: {path: this.dir}, domain: this.domain, bucket: this.bucket }).then(()=>{
             this.showLoading = false
-            this.$destroy()
+            this.onClose()
           })
         })
         .catch(err => {

@@ -23,6 +23,9 @@
     <div class="icon-view" v-if="radio==2">
       <div class="icon-lists" v-if="files.length">
         <el-card :class="cardClass" v-for="(item, index) in files" :key="index" :body-style="{ padding: '0px' }" shadow="never">
+          <div class="thumb">
+            <img :src="thumbUrl(item)" @load="imgload(index)" @error="imgError">
+          </div>
           <svg class="image icon" aria-hidden="true">
             <use :xlink:href="formateFileType(item)"></use>
           </svg>
@@ -72,6 +75,16 @@ export default {
     }
   },
   methods: {
+    imgload(index){
+      let card_body = document.getElementsByClassName('el-card__body')[index]
+      card_body.children[0].style.display="block"
+      card_body.children[1].style.display="none"
+      // card_body.removeChild(card_body.children[1])
+    },
+    imgError(e){
+      e.target.parentNode.style.display="none"
+      e.target.parentNode.parentNode.children[1].style.display="block"
+    },
     preView(index, file){
       const fileurl = this.$utils.getFileUrl(file)
       const fileType = this.$utils.matchType(file.name)
@@ -203,6 +216,9 @@ export default {
       }
       return iconId
     },
+    thumbUrl(file) {
+      return this.$utils.getThumbUrl(file)
+    },
     // 获取文件系统列表
     getFilesList() {
       this.$store.dispatch('schemas')
@@ -245,6 +261,17 @@ export default {
     .el-card{
       margin-bottom: 10px;
       width: 19%;
+      height: 240px;
+      .el-card__body{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .thumb{
+        text-align: center;
+        flex: 1;
+        margin-top: 20%;
+      }
     }
     .empty-card{
       margin-bottom: 10px;

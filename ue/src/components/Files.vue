@@ -79,7 +79,6 @@ export default {
       let card_body = document.getElementsByClassName('el-card__body')[index]
       card_body.children[0].style.display="block"
       card_body.children[1].style.display="none"
-      // card_body.removeChild(card_body.children[1])
     },
     imgError(e){
       e.target.parentNode.style.display="none"

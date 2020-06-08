@@ -22,13 +22,14 @@
         <el-input type="textarea" :rows="4" placeholder="请输入内容" v-model="info.comment"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">提交</el-button>
+        <el-button style="margin-left: 10px;" size="small" type="success" :loading="showLoading" @click="submitUpload">提交</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>
 </template>
 
 <script>
+import store from '@/store'
 import createUploadApi from '../apis/file/upload'
 import { Dialog, Form, FormItem, Input, Upload, Button } from 'element-ui'
 
@@ -55,7 +56,8 @@ const componentOptions = {
       info: {
         comment: ''
       },
-      fileList: []
+      fileList: [],
+      showLoading: false
     }
   },
   mounted() {
@@ -66,6 +68,7 @@ const componentOptions = {
   },
   methods: {
     handleUpload(req) {
+      this.showLoading = true
       const fileData = new FormData()
       ;['name', 'lastModified', 'size', 'type'].forEach(key => {
         fileData.append(key, req.file[key])
@@ -93,8 +96,15 @@ const componentOptions = {
           fileData,
           config
         )
-        .then(path => req.onSuccess(path))
+        .then(path => {
+          req.onSuccess(path)
+          store.dispatch('list', { dir: {path: this.dir}, domain: this.domain, bucket: this.bucket }).then(()=>{
+            this.showLoading = false
+            this.onClose()
+          })
+        })
         .catch(err => {
+          this.showLoading = false
           req.onError(err)
         })
     },

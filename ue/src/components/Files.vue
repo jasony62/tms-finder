@@ -14,6 +14,7 @@
       <el-table-column prop="name" label="文件名"></el-table-column>
       <el-table-column fixed="right" label="操作" width="120">
         <template slot-scope="scope">
+          <el-button type="text" size="small" @click="preView(scope.$index, scope.row)">预览</el-button>
           <el-button type="text" size="small" @click="handleSetInfo(scope.$index, scope.row)">编辑</el-button>
           <el-button type="text" size="small" @click="download(scope.$index, scope.row)">下载</el-button>
         </template>
@@ -22,6 +23,9 @@
     <div class="icon-view" v-if="radio==2">
       <div class="icon-lists" v-if="files.length">
         <el-card :class="cardClass" v-for="(item, index) in files" :key="index" :body-style="{ padding: '0px' }" shadow="never">
+          <div class="thumb">
+            <img :src="thumbUrl(item)" @load="imgload(index)" @error="imgError">
+          </div>
           <svg class="image icon" aria-hidden="true">
             <use :xlink:href="formateFileType(item)"></use>
           </svg>
@@ -38,7 +42,7 @@
             </div>
           </div>
         </el-card>
-        <div :class="emptyClass" v-for="index in (columns - files.length % columns)" :key="index" v-show=" files.length % columns > 0">
+        <div :class="emptyClass" v-for="index in (columns - files.length % columns)" :key="index+'-only'" v-show=" files.length % columns > 0">
         </div>
       </div>
       <div class="empty" v-else>
@@ -71,6 +75,15 @@ export default {
     }
   },
   methods: {
+    imgload(index){
+      let card_body = document.getElementsByClassName('el-card__body')[index]
+      card_body.children[0].style.display="block"
+      card_body.children[1].style.display="none"
+    },
+    imgError(e){
+      e.target.parentNode.style.display="none"
+      e.target.parentNode.parentNode.children[1].style.display="block"
+    },
     preView(index, file){
       const fileurl = this.$utils.getFileUrl(file)
       const fileType = this.$utils.matchType(file.name)
@@ -202,6 +215,9 @@ export default {
       }
       return iconId
     },
+    thumbUrl(file) {
+      return this.$utils.getThumbUrl(file)
+    },
     // 获取文件系统列表
     getFilesList() {
       this.$store.dispatch('schemas')
@@ -244,6 +260,17 @@ export default {
     .el-card{
       margin-bottom: 10px;
       width: 19%;
+      height: 240px;
+      .el-card__body{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .thumb{
+        text-align: center;
+        flex: 1;
+        margin-top: 20%;
+      }
     }
     .empty-card{
       margin-bottom: 10px;

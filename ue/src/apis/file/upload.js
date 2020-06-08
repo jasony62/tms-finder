@@ -4,7 +4,7 @@ export default function create(tmsAxios) {
   return {
     plain(query, fileData, config) {
       let url = `${baseApi}/plain`
-      if (query && query.dir) url += `?dir=${query.dir}`
+      if (query && query.dir) url += `?dir=${query.dir}&thumb=Y`
       return tmsAxios.post(url, fileData, config).then(rst => rst.data.result)
     },
     mkdir(query) {

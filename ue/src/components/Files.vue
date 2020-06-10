@@ -218,16 +218,9 @@ export default {
     thumbUrl(file) {
       return this.$utils.getThumbUrl(file)
     },
-    // 获取文件系统列表
-    getFilesList() {
-      this.$store.dispatch('schemas')
-    }
   },
   computed: {
     ...mapState(['schemas', 'files', 'refTree', 'radio']),
-  },
-  created() {
-    this.getFilesList()
   },
   mounted(){
     if (window.screen.width >= 1920) {

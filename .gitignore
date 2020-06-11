@@ -64,3 +64,4 @@ typings/
 dump.rdb
 
 # application
+.DS_Store

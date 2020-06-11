@@ -26,7 +26,7 @@ function onResultFault(res) {
     showClose: true,
     message: res.data.msg,
     type: 'error',
-    duration: 0
+    duration: 0,
   })
   return Promise.reject(new TmsIgnorableError(res.data))
 }
@@ -35,37 +35,39 @@ function onResponseRejected(err) {
   return Promise.reject(new TmsIgnorableError(err))
 }
 
+const RequireLogin = process.env.VUE_APP_AUTH_DISABLED !== 'Yes' && process.env.VUE_APP_AUTH_SERVER
+
 let rules = [] // axios拦截器规则
 /**
  * 用户认证
  */
-if (process.env.VUE_APP_AUTH_DISABLED !== 'Yes' && process.env.VUE_APP_AUTH_SERVER) {
+if (RequireLogin) {
   const { fnGetCaptcha, fnGetJwt } = auth
   const LoginSchema = [
     {
       key: process.env.VUE_APP_LOGIN_KEY_USERNAME || 'username',
       type: 'text',
-      placeholder: '用户名'
+      placeholder: '用户名',
     },
     {
       key: process.env.VUE_APP_LOGIN_KEY_PASSWORD || 'password',
       type: 'password',
-      placeholder: '密码'
+      placeholder: '密码',
     },
     {
       key: process.env.VUE_APP_LOGIN_KEY_PIN || 'pin',
       type: 'code',
-      placeholder: '验证码'
-    }
+      placeholder: '验证码',
+    },
   ]
   Vue.use(Login, { schema: LoginSchema, fnGetCaptcha, fnGetToken: fnGetJwt })
   /**
    * 请求中需要包含认证信息
    */
-  const LoginPromise = (function () {
+  const LoginPromise = (function() {
     let login = new Login(LoginSchema, fnGetCaptcha, fnGetJwt)
-    let ins = new TmsLockPromise(function () {
-      return login.showAsDialog().then(token => {
+    let ins = new TmsLockPromise(function() {
+      return login.showAsDialog().then((token) => {
         sessionStorage.setItem('access_token', token)
         return `Bearer ${token}`
       })
@@ -73,7 +75,7 @@ if (process.env.VUE_APP_AUTH_DISABLED !== 'Yes' && process.env.VUE_APP_AUTH_SERV
     return ins
   })()
 
-  const getAccessToken = function () {
+  const getAccessToken = function() {
     // 如果正在登录，等待结果
     if (LoginPromise.isRunning()) {
       return LoginPromise.wait()
@@ -87,7 +89,7 @@ if (process.env.VUE_APP_AUTH_DISABLED !== 'Yes' && process.env.VUE_APP_AUTH_SERV
     return `Bearer ${token}`
   }
 
-  const onRetryAttempt = function (res) {
+  const onRetryAttempt = function(res) {
     if (res.data.code === 20001) {
       return LoginPromise.wait().then(() => {
         return true
@@ -97,26 +99,28 @@ if (process.env.VUE_APP_AUTH_DISABLED !== 'Yes' && process.env.VUE_APP_AUTH_SERV
   }
   let accessTokenRule = Vue.TmsAxios.newInterceptorRule({
     requestHeaders: new Map([['Authorization', getAccessToken]]),
-    onRetryAttempt
+    onRetryAttempt,
   })
   rules.push(accessTokenRule)
 }
 
 let responseRule = Vue.TmsAxios.newInterceptorRule({
   onResultFault,
-  onResponseRejected
+  onResponseRejected,
 })
 rules.push(responseRule)
 
+/* API调用是否传递cookie */
+const config = {}
+if (/yes|true/i.test(process.env.VUE_APP_API_PASS_COOKIE)) config.withCredentials = true
+
 const tmsAxios = {}
-tmsAxios.file = Vue.TmsAxios({ name: 'file-api', rules })
-if (process.env.VUE_APP_AUTH_DISABLED !== 'Yes' && process.env.VUE_APP_AUTH_SERVER) {
-  tmsAxios.auth = Vue.TmsAxios({ name: 'auth-api' })
-}
+tmsAxios.file = Vue.TmsAxios({ name: 'file-api', rules, config })
+if (RequireLogin) tmsAxios.auth = Vue.TmsAxios({ name: 'auth-api' })
 Vue.use(ApiPlugin, { tmsAxios })
 
 new Vue({
   store,
   router,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount('#app')

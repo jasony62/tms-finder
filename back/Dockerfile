@@ -14,4 +14,4 @@ COPY . .
 
 RUN cnpm i
 
-CMD [ "node", "app" ]
+CMD [ "node", "server" ]

@@ -1,8 +1,5 @@
 {
   "editor.formatOnSave": true,
-  "[json]": {
-    "editor.defaultFormatter": "HookyQR.beautify"
-  },
   "prettier.semi": false,
   "prettier.singleQuote": true,
   "prettier.printWidth": 120,

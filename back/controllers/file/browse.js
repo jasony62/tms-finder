@@ -1,5 +1,5 @@
 const { BrowseCtrl } = require('tms-koa/lib/controller/fs')
-const { ResultData, ResultFault, ResultObjectNotFound } = require('tms-koa')
+const { ResultData } = require('tms-koa')
 const { LocalFS } = require('tms-koa/lib/model/fs/local')
 const glob = require('glob')
 const fs = require('fs')
@@ -66,7 +66,7 @@ class Browse extends BrowseCtrl {
           size: stats.size,
           createTime: Math.floor(stats.birthtimeMs),
           path: file,
-          info: fileInfo
+          info: fileInfo,
         })
       } else if (stats.isDirectory()) {
         let file2 = file.replace(path, '')

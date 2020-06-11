@@ -34,6 +34,7 @@
 
 | 变量                             | 说明                                                                  | 默认值    |
 | -------------------------------- | --------------------------------------------------------------------- | --------- |
+| TMS_APP_PORT                     | 后台服务端口                                                          | 3000      |
 | TMS_FINDER_MONGODB_HOST          | 记录上传文件信息的 mongodb 地址                                       | localhost |
 | TMS_FINDER_MONGODB_PORT          | 记录上传文件信息的 mongodb 端口                                       | 27017     |
 | TMS_FINDER_FS_ROOTDIR            | 上传文件在本地磁盘的存储位置                                          | storage   |

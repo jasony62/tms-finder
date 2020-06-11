@@ -2,7 +2,13 @@
   <div class="info">
     <tms-flex direction="column" :gap="gap" alignItems="stretch">
       <div v-if="schemas">
-        <el-table :data="files" stripe style="width: 100%" @row-dblclick="rowDbClick" v-if="radio==1">
+        <el-table
+          :data="files"
+          stripe
+          style="width: 100%"
+          @row-dblclick="rowDbClick"
+          v-if="radio==1"
+        >
           <el-table-column type="index" width="50"></el-table-column>
           <el-table-column v-for="(s, k) in schemas.properties" :key="k" :prop="k" :label="s.title"></el-table-column>
           <el-table-column fixed="right" label="操作" width="120">
@@ -14,9 +20,15 @@
         </el-table>
         <div class="icon-view" v-if="radio==2">
           <div class="icon-lists" v-if="files.length">
-            <el-card :class="cardClass" v-for="(item, index) in files" :key="index+'-only'" :body-style="{ padding: '0px' }" shadow="never">
+            <el-card
+              :class="cardClass"
+              v-for="(item, index) in files"
+              :key="index+'-only'"
+              :body-style="{ padding: '0px' }"
+              shadow="never"
+            >
               <svg class="icon" aria-hidden="true">
-                <use :xlink:href="formateFileType(item)"></use>
+                <use :xlink:href="formateFileType(item)" />
               </svg>
               <div style="padding:0 14px 14px;">
                 <span class="file-comment">{{item.comment}}</span>
@@ -26,12 +38,14 @@
                 </div>
               </div>
             </el-card>
-            <div :class="emptyClass" v-for="index in (columns - files.length % columns)" :key="index" v-show=" files.length % columns > 0">
-            </div>
+            <div
+              :class="emptyClass"
+              v-for="index in (columns - files.length % columns)"
+              :key="index"
+              v-show=" files.length % columns > 0"
+            ></div>
           </div>
-          <div class="empty" v-else>
-            暂无数据
-          </div>
+          <div class="empty" v-else>暂无数据</div>
         </div>
       </div>
       <tms-flex class="tms-pagination">
@@ -82,13 +96,17 @@ export default {
     this.batch.size = 12
   },
   mounted() {
-    this.$store.dispatch('schemas')
+    this.$store.dispatch({
+      type: 'schemas',
+      domain: this.domain,
+      bucket: this.bucket
+    })
     this.batchList(1)
     if (window.screen.width >= 1920) {
       this.columns = 10
       this.cardClass = 'el-card-2'
       this.emptyClass = 'empty-card-2'
-    }else{
+    } else {
       this.columns = 9
       this.cardClass = 'el-card'
       this.emptyClass = 'empty-card'
@@ -126,7 +144,7 @@ export default {
       this.$utils.postMessage(() => this.$utils.getFileUrl(file))
     },
     // 文件类型对应图标
-    formateFileType(data){
+    formateFileType(data) {
       const fileType = this.$utils.matchType(data.name)
       let iconId = ''
       switch (fileType) {
@@ -167,43 +185,43 @@ export default {
 }
 </script>
 <style lang="less">
-  .info{
-    display: flex;
-    flex-direction: column;
-    .el-card{
-      margin-bottom: 10px;
-      width: 10%;
-    }
-    .empty-card{
-      margin-bottom: 10px;
-      width: 10%;
-    }
-    .el-card-2{
-      margin-bottom: 10px;
-      width: 9%;
-    }
-    .empty-card-2{
-      margin-bottom: 10px;
-      width: 9%;
-    }
-    .empty{
-      width: 100%;
-      margin-top: 50px;
-      line-height: 60px;
-      text-align: center;
-      color: #909399;
-      border-top: 1px solid #ebeef5;
-      border-bottom: 1px solid #ebeef5;
-      font-size: 14px;
-    }
-    .bottom {
-      margin-top: 13px;
-      line-height: 12px;
-    }
-    .button {
-      padding: 0;
-      float: right;
-      margin-left: 6px;
-    }
+.info {
+  display: flex;
+  flex-direction: column;
+  .el-card {
+    margin-bottom: 10px;
+    width: 10%;
   }
+  .empty-card {
+    margin-bottom: 10px;
+    width: 10%;
+  }
+  .el-card-2 {
+    margin-bottom: 10px;
+    width: 9%;
+  }
+  .empty-card-2 {
+    margin-bottom: 10px;
+    width: 9%;
+  }
+  .empty {
+    width: 100%;
+    margin-top: 50px;
+    line-height: 60px;
+    text-align: center;
+    color: #909399;
+    border-top: 1px solid #ebeef5;
+    border-bottom: 1px solid #ebeef5;
+    font-size: 14px;
+  }
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
+  .button {
+    padding: 0;
+    float: right;
+    margin-left: 6px;
+  }
+}
 </style>

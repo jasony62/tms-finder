@@ -1,7 +1,7 @@
 <template>
   <div class="topbar">
     <el-row type="flex">
-      <el-col :span="4">
+      <el-col :span="4" v-if="canShiftView">
         <el-menu :default-active="activeIndex" mode="horizontal" @select="onMenuSelect">
           <el-menu-item index="manage">管理视图</el-menu-item>
           <el-menu-item index="storage">存储视图</el-menu-item>
@@ -53,7 +53,16 @@
 </template>
 <script>
 import Vue from 'vue'
-import { Row, Col, Menu, Submenu, MenuItem, Button, RadioButton, RadioGroup } from 'element-ui'
+import {
+  Row,
+  Col,
+  Menu,
+  Submenu,
+  MenuItem,
+  Button,
+  RadioButton,
+  RadioGroup
+} from 'element-ui'
 Vue.use(Row)
   .use(Col)
   .use(Menu)
@@ -71,7 +80,8 @@ export default {
   },
   data() {
     return {
-      radio: this.$store.state.radio
+      radio: this.$store.state.radio,
+      canShiftView: !/no|false/i.test(process.env.VUE_APP_CAN_SHIFT_VIEW)
     }
   },
   computed: {
@@ -80,7 +90,7 @@ export default {
     }
   },
   methods: {
-    selectRadio(value){
+    selectRadio(value) {
       this.$store.commit('radio', { radio: value })
     },
     onMenuSelect(name) {
@@ -102,7 +112,7 @@ export default {
           domain: this.domain,
           bucket: this.bucket
         })
-        this.$tmsOn('onMake',()=>{
+        this.$tmsOn('onMake', () => {
           this.$tmsEmit('reFresh')
         })
       })
@@ -114,8 +124,8 @@ export default {
           domain: this.domain,
           bucket: this.bucket
         })
-        this.$tmsOn('onRemove',()=>{
-          this.$store.commit('currentDir', {dir: null})
+        this.$tmsOn('onRemove', () => {
+          this.$store.commit('currentDir', { dir: null })
           this.$tmsEmit('reFresh')
         })
       })
@@ -127,8 +137,8 @@ export default {
 .el-menu__placeholder .el-menu-item.is-active {
   border-bottom: 0;
 }
-.currentDir{
+.currentDir {
   width: 50%;
-  overflow: hidden
+  overflow: hidden;
 }
 </style>

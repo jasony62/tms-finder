@@ -96,12 +96,6 @@ export default {
     this.batch.size = 12
   },
   mounted() {
-    this.$store.dispatch({
-      type: 'schemas',
-      domain: this.domain,
-      bucket: this.bucket
-    })
-    this.batchList(1)
     if (window.screen.width >= 1920) {
       this.columns = 10
       this.cardClass = 'el-card-2'
@@ -111,6 +105,15 @@ export default {
       this.cardClass = 'el-card'
       this.emptyClass = 'empty-card'
     }
+    this.$store
+      .dispatch({
+        type: 'schemas',
+        domain: this.domain,
+        bucket: this.bucket
+      })
+      .then(() => {
+        this.batchList(1)
+      })
   },
   methods: {
     batchList(page) {

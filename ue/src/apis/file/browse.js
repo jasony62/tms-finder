@@ -4,7 +4,7 @@ export default function create(tmsAxios) {
   return {
     schemas(domain, bucket) {
       const params = { domain, bucket }
-      return tmsAxios.get(`${baseApi}/schemas`, params).then((rst) => rst.data.result)
+      return tmsAxios.get(`${baseApi}/schemas`, { params }).then((rst) => rst.data.result)
     },
     list(dirName = '', domain, bucket) {
       const params = { dir: dirName }

@@ -63,14 +63,16 @@ config/log4js.js
 
 ### 环境变量
 
-| 变量                       | 说明                                                      | 默认值                   |
-| -------------------------- | --------------------------------------------------------- | ------------------------ |
-| VUE_APP_BASE_URL           | 应用的基础路径（域名后的子地址）                          | finder_ue                |
-| VUE_APP_AUTH_SERVER        | 用户鉴权 API 地址                                         | http://localhost:3000    |
-| VUE_APP_LOGIN_KEY_USERNAME | 用户鉴权 API 中用到的字段，用户名                         | username                 |
-| VUE_APP_LOGIN_KEY_PASSWORD | 用户鉴权 API 中用到的字段，密码                           | password                 |
-| VUE_APP_LOGIN_KEY_PIN      | 用户鉴权 API 中用到的字段，验证码                         | pin                      |
-| VUE_APP_API_SERVER         | 业务 API 地址                                             | http://localhost:3000    |
-| VUE_APP_FS_SERVER          | 文件下载服务起始地址。和后台服务`app.router.prefix`对应。 | http://localhost:3000/fs |
+| 变量                       | 说明                                                                     | 默认值                   |
+| -------------------------- | ------------------------------------------------------------------------ | ------------------------ |
+| VUE_APP_BASE_URL           | 应用的基础路径（域名后的子地址）                                         | finder_ue                |
+| VUE_APP_AUTH_SERVER        | 用户鉴权 API 地址                                                        | http://localhost:3000    |
+| VUE_APP_LOGIN_KEY_USERNAME | 用户鉴权 API 中用到的字段，用户名                                        | username                 |
+| VUE_APP_LOGIN_KEY_PASSWORD | 用户鉴权 API 中用到的字段，密码                                          | password                 |
+| VUE_APP_LOGIN_KEY_PIN      | 用户鉴权 API 中用到的字段，验证码                                        | pin                      |
+| VUE_APP_API_SERVER         | 业务 API 地址                                                            | http://localhost:3000    |
+| VUE_APP_FS_SERVER          | 文件下载服务起始地址。和后台服务`app.router.prefix`对应。                | http://localhost:3000/fs |
+| VUE_APP_CAN_SHIFT_VIEW     | 支持切换试图，用字符串`no`或`false`，不区分大小写，进行关闭。            | 是                       |
+| VUE_APP_API_PASS_COOKIE    | 调用后端`api`时是否允许传递`cookie`，字符串`yes`或`true`，不区分大小写。 | 否                       |
 
 # 参考

@@ -24,10 +24,10 @@ export default {
   },
   // 根据文件后缀判断文件类型
   matchType(fileName) {
-    var suffix = '';
-    var result = '';
+    let suffix = '';
+    let result = '';
     try {
-      var flieArr = fileName.split('.');
+      let flieArr = fileName.split('.');
       suffix = flieArr[flieArr.length - 1];
     } catch (err) {
       suffix = '';
@@ -38,7 +38,7 @@ export default {
       return result;
     }
     // 图片格式
-    var imglist = ['png', 'jpg', 'jpeg', 'bmp', 'gif'];
+    let imglist = ['png', 'jpg', 'jpeg', 'bmp', 'gif'];
     // 进行图片匹配
     result = imglist.some(function (item) {
       return item == suffix;
@@ -48,7 +48,7 @@ export default {
       return result;
     }
     // 匹配txt
-    var txtlist = ['txt'];
+    let txtlist = ['txt'];
     result = txtlist.some(function (item) {
       return item == suffix;
     });
@@ -57,7 +57,7 @@ export default {
       return result;
     }
     // 匹配 excel
-    var excelist = ['xls', 'xlsx'];
+    let excelist = ['xls', 'xlsx'];
     result = excelist.some(function (item) {
       return item == suffix;
     });
@@ -66,7 +66,7 @@ export default {
       return result;
     }
     // 匹配 word
-    var wordlist = ['doc', 'docx'];
+    let wordlist = ['doc', 'docx'];
     result = wordlist.some(function (item) {
       return item == suffix;
     });
@@ -75,7 +75,7 @@ export default {
       return result;
     }
     // 匹配 pdf
-    var pdflist = ['pdf'];
+    let pdflist = ['pdf'];
     result = pdflist.some(function (item) {
       return item == suffix;
     });
@@ -84,7 +84,7 @@ export default {
       return result;
     }
     // 匹配 ppt
-    var pptlist = ['ppt'];
+    let pptlist = ['ppt'];
     result = pptlist.some(function (item) {
       return item == suffix;
     });
@@ -93,7 +93,7 @@ export default {
       return result;
     }
     // 匹配 视频
-    var videolist = ['mp4', 'm2v', 'mkv'];
+    let videolist = ['mp4', 'm2v', 'mkv'];
     result = videolist.some(function (item) {
       return item == suffix;
     });
@@ -102,7 +102,7 @@ export default {
       return result;
     }
     // 匹配 音频
-    var radiolist = ['mp3', 'wav', 'wmv'];
+    let radiolist = ['mp3', 'wav', 'wmv'];
     result = radiolist.some(function (item) {
       return item == suffix;
     });

@@ -134,14 +134,14 @@ export default {
       })
     },
     // 格式化日期
-    formatDate(data) {
-      const date = new Date(data.createTime)
+     formatDate(data) {
+      const date = new Date(data.birthtime)
       return (
         date.getFullYear() +
         '年' +
         (date.getMonth() + 1) +
         '月' +
-        date.getDay() +
+        date.getDate() +
         '日'
       )
     },

@@ -12,13 +12,15 @@
 
 > cd tms-finder
 
-> docker-compose up -d
+单机运行
+
+> docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
 
 在浏览器中输入：http://localhost:8080/finder_ue/web
 
-可以通过新建`docker-compose.local.yml`设置需要的参数，执行如下启动命令：
+在实际环境中部署时，可以新建`docker-compose.override.yml`设置需要的参数，执行如下启动命令：
 
-> docker-compose -f docker-compose.yml -f docker-compose.local.yml up --build -d
+> docker-compose up --build -d
 
 # 关闭服务
 

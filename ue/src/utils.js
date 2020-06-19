@@ -14,7 +14,6 @@ export default {
     return thumbUrl
   },
   postMessage(callback) {
-    console.debug('window.name', window.name)
     let target = window.parent ? window.parent : window.opener ? window.opener : false
     if (target) {
       const data = typeof callback === 'function' ? callback() : callback

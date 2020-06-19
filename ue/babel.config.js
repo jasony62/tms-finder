@@ -5,25 +5,25 @@ module.exports = {
       'component',
       {
         libraryName: 'element-ui',
-        styleLibraryName: 'theme-chalk'
-      }
+        styleLibraryName: 'theme-chalk',
+      },
     ],
     [
       'import',
       {
         libraryName: 'vant',
         libraryDirectory: 'es',
-        style: true
+        style: true,
       },
-      'vant'
+      'vant',
     ],
     [
       'import',
       {
         libraryName: 'tms-vue-ui',
-        style: true
+        style: true,
       },
-      'tms-vue-ui'
-    ]
-  ]
+      'tms-vue-ui',
+    ],
+  ],
 }

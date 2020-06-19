@@ -1,7 +1,7 @@
 <template>
   <div class="topbar">
     <el-row type="flex">
-      <el-col :span="4" v-if="canShiftView">
+      <el-col :span="4" v-if="SupportMultiView">
         <el-menu :default-active="activeIndex" mode="horizontal" @select="onMenuSelect">
           <el-menu-item index="manage">管理视图</el-menu-item>
           <el-menu-item index="storage">存储视图</el-menu-item>
@@ -72,6 +72,9 @@ Vue.use(Row)
   .use(RadioButton)
   .use(RadioGroup)
 
+const SupportMultiView = !/no|false/i.test(
+  process.env.VUE_APP_SUPPORT_MULTI_VIEW
+)
 export default {
   props: {
     activeIndex: String,
@@ -81,7 +84,7 @@ export default {
   data() {
     return {
       radio: this.$store.state.radio,
-      canShiftView: !/no|false/i.test(process.env.VUE_APP_CAN_SHIFT_VIEW)
+      SupportMultiView
     }
   },
   computed: {

@@ -25,7 +25,7 @@ RUN echo VUE_APP_BASE_URL=$vue_app_base_url > .env && \
   echo VUE_APP_FS_SERVER=$vue_app_fs_server >> .env
 
 # 安装依赖包，构建代码
-RUN cnpm i && yarn build && yarn build-lib
+RUN cnpm i && npm run build && npm run build-lib
 
 # 标准基础镜像（部署阶段）
 FROM nginx:alpine

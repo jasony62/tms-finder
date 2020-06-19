@@ -15,19 +15,30 @@
       <el-table-column fixed="right" label="操作" width="120">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="preView(scope.$index, scope.row)">预览</el-button>
-          <el-button type="text" size="small" @click="handleSetInfo(scope.$index, scope.row)">编辑</el-button>
+          <el-button
+            type="text"
+            size="small"
+            @click="handleSetInfo(scope.$index, scope.row)"
+            v-if="SupportSetInfo"
+          >编辑</el-button>
           <el-button type="text" size="small" @click="download(scope.$index, scope.row)">下载</el-button>
         </template>
       </el-table-column>
     </el-table>
     <div class="icon-view" v-if="radio==2">
       <div class="icon-lists" v-if="files.length">
-        <el-card :class="cardClass" v-for="(item, index) in files" :key="index" :body-style="{ padding: '0px' }" shadow="never">
+        <el-card
+          :class="cardClass"
+          v-for="(item, index) in files"
+          :key="index"
+          :body-style="{ padding: '0px' }"
+          shadow="never"
+        >
           <div class="thumb">
-            <img :src="thumbUrl(item)" @load="imgload(index)" @error="imgError">
+            <img :src="thumbUrl(item)" @load="imgload(index)" @error="imgError" />
           </div>
           <svg class="image icon" aria-hidden="true">
-            <use :xlink:href="formateFileType(item)"></use>
+            <use :xlink:href="formateFileType(item)" />
           </svg>
           <div style="padding:0 14px 14px;">
             <span class="file-name">{{item.name}}</span>
@@ -36,25 +47,40 @@
               <span class="file-size">{{formateFileSize(item)}}</span>
               <div class="operation">
                 <el-button type="text" class="button" @click="preView(index, item)">预览</el-button>
-                <el-button type="text" class="button" @click="handleSetInfo(index, item)">编辑</el-button>
+                <el-button
+                  type="text"
+                  class="button"
+                  @click="handleSetInfo(index, item)"
+                  v-if="SupportSetInfo"
+                >编辑</el-button>
                 <el-button type="text" class="button" @click="download(index, item)">下载</el-button>
               </div>
             </div>
           </div>
         </el-card>
-        <div :class="emptyClass" v-for="index in (columns - files.length % columns)" :key="index+'-only'" v-show=" files.length % columns > 0">
-        </div>
+        <div
+          :class="emptyClass"
+          v-for="index in (columns - files.length % columns)"
+          :key="index+'-only'"
+          v-show=" files.length % columns > 0"
+        ></div>
       </div>
-      <div class="empty" v-else>
-        暂无数据
-      </div>
+      <div class="empty" v-else>暂无数据</div>
     </div>
   </div>
 </template>
 <script>
 import Vue from 'vue'
 import { mapState } from 'vuex'
-import { Table, TableColumn, Input, Row, Col, MessageBox, Card } from 'element-ui'
+import {
+  Table,
+  TableColumn,
+  Input,
+  Row,
+  Col,
+  MessageBox,
+  Card
+} from 'element-ui'
 Vue.use(Table)
   .use(TableColumn)
   .use(Input)
@@ -64,6 +90,8 @@ Vue.use(Table)
 
 import { createAndMount } from './Editor.vue'
 
+const SupportSetInfo = !/no|false/i.test(process.env.VUE_APP_SUPPORT_SET_INFO)
+
 export default {
   props: { domain: String, bucket: String },
   data() {
@@ -71,20 +99,21 @@ export default {
       searchContent: '',
       columns: 5,
       cardClass: 'el-card',
-      emptyClass: 'empty-card'
+      emptyClass: 'empty-card',
+      SupportSetInfo
     }
   },
   methods: {
-    imgload(index){
+    imgload(index) {
       let card_body = document.getElementsByClassName('el-card__body')[index]
-      card_body.children[0].style.display="block"
-      card_body.children[1].style.display="none"
+      card_body.children[0].style.display = 'block'
+      card_body.children[1].style.display = 'none'
     },
-    imgError(e){
-      e.target.parentNode.style.display="none"
-      e.target.parentNode.parentNode.children[1].style.display="block"
+    imgError(e) {
+      e.target.parentNode.style.display = 'none'
+      e.target.parentNode.parentNode.children[1].style.display = 'block'
     },
-    preView(index, file){
+    preView(index, file) {
       const fileurl = this.$utils.getFileUrl(file)
       const fileType = this.$utils.matchType(file.name)
       if (fileType == 'excel' || fileType == 'word') {
@@ -134,7 +163,7 @@ export default {
       })
     },
     // 格式化日期
-     formatDate(data) {
+    formatDate(data) {
       const date = new Date(data.birthtime)
       return (
         date.getFullYear() +
@@ -178,7 +207,7 @@ export default {
       }
     },
     // 文件类型对应图标
-    formateFileType(data){
+    formateFileType(data) {
       const fileType = this.$utils.matchType(data.name)
       let iconId = ''
       switch (fileType) {
@@ -217,17 +246,17 @@ export default {
     },
     thumbUrl(file) {
       return this.$utils.getThumbUrl(file)
-    },
+    }
   },
   computed: {
-    ...mapState(['schemas', 'files', 'refTree', 'radio']),
+    ...mapState(['schemas', 'files', 'refTree', 'radio'])
   },
-  mounted(){
+  mounted() {
     if (window.screen.width >= 1920) {
       this.columns = 7
       this.cardClass = 'el-card-2'
       this.emptyClass = 'empty-card-2'
-    }else{
+    } else {
       this.columns = 5
       this.cardClass = 'el-card'
       this.emptyClass = 'empty-card'
@@ -236,98 +265,98 @@ export default {
 }
 </script>
 <style lang="less">
-  .files{
-    display: flex;
-    flex-direction: column;
-    .el-input__inner {
-      height: 30px;
-      line-height: 30px;
+.files {
+  display: flex;
+  flex-direction: column;
+  .el-input__inner {
+    height: 30px;
+    line-height: 30px;
+  }
+  .el-input__inner {
+    height: 30px;
+    line-height: 30px;
+  }
+  .demo-input-suffix {
+    margin-top: 10px;
+  }
+  .el-card {
+    margin-bottom: 10px;
+    width: 19%;
+    height: 240px;
+    .el-card__body {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
-    .el-input__inner {
-      height: 30px;
-      line-height: 30px;
-    }
-    .demo-input-suffix {
-      margin-top: 10px;
-    }
-    .el-card{
-      margin-bottom: 10px;
-      width: 19%;
-      height: 240px;
-      .el-card__body{
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-      }
-      .thumb{
-        text-align: center;
-        flex: 1;
-        margin-top: 20%;
-      }
-    }
-    .empty-card{
-      margin-bottom: 10px;
-      width: 19%;
-    }
-    .el-card-2{
-      margin-bottom: 10px;
-      width: 13%;
-    }
-    .empty-card-2{
-      margin-bottom: 10px;
-      width: 13%;
-    }
-    .file-name{
-      display: inline-block;
-      overflow: hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-      width: 100%;
-    }
-    .file-size{
-      float: right;
-      font-size: 13px;
-      color: #999;
-    }
-    .empty{
-      width: 100%;
-      margin-top: 50px;
-      line-height: 60px;
+    .thumb {
       text-align: center;
-      color: #909399;
-      border-top: 1px solid #ebeef5;
-      border-bottom: 1px solid #ebeef5;
-      font-size: 14px;
-    }
-    .time {
-      font-size: 13px;
-      color: #999;
-    }
-    .bottom {
-      margin-top: 6px;
-     .operation{
-       margin-top: 6px;
-     }
-    }
-    .button {
-      padding: 0;
-      margin-right: 10px;
+      flex: 1;
+      margin-top: 20%;
     }
   }
-  .icon-view .icon-lists{
+  .empty-card {
+    margin-bottom: 10px;
+    width: 19%;
+  }
+  .el-card-2 {
+    margin-bottom: 10px;
+    width: 13%;
+  }
+  .empty-card-2 {
+    margin-bottom: 10px;
+    width: 13%;
+  }
+  .file-name {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     width: 100%;
-    padding: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    box-sizing: border-box;
   }
-  .clearfix:before,
-  .clearfix:after {
-    display: table;
-    content: "";
+  .file-size {
+    float: right;
+    font-size: 13px;
+    color: #999;
   }
-  .clearfix:after {
-    clear: both
+  .empty {
+    width: 100%;
+    margin-top: 50px;
+    line-height: 60px;
+    text-align: center;
+    color: #909399;
+    border-top: 1px solid #ebeef5;
+    border-bottom: 1px solid #ebeef5;
+    font-size: 14px;
   }
+  .time {
+    font-size: 13px;
+    color: #999;
+  }
+  .bottom {
+    margin-top: 6px;
+    .operation {
+      margin-top: 6px;
+    }
+  }
+  .button {
+    padding: 0;
+    margin-right: 10px;
+  }
+}
+.icon-view .icon-lists {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: '';
+}
+.clearfix:after {
+  clear: both;
+}
 </style>

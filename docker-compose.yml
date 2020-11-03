@@ -38,6 +38,8 @@ services:
         vue_app_login_key_username: username
         vue_app_login_key_password: password
         vue_app_login_key_pin: pin
+        vue_app_support_multi_view: 'No'
+        vue_app_support_set_info: 'No'
     image: tms-finder/ue:latest
     container_name: tms-finder-ue
     environment:

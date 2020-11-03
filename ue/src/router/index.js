@@ -12,36 +12,39 @@ const routes = [
   {
     path: `${VUE_APP_BASE_URL}/web/login`,
     component: Login,
-    name: 'login'
+    name: 'login',
   },
   {
     path: `${VUE_APP_BASE_URL}/web/manage`,
     name: 'manage',
     component: Manage,
-    props: route => ({ domain: route.query.domain, bucket: route.query.bucket })
+    props: (route) => ({ domain: route.query.domain, bucket: route.query.bucket }),
   },
   {
     path: `${VUE_APP_BASE_URL}/web/storage`,
     name: 'storage',
     component: Storage,
-    props: route => ({ domain: route.query.domain, bucket: route.query.bucket })
+    props: (route) => ({ domain: route.query.domain, bucket: route.query.bucket }),
   },
   {
     path: `${VUE_APP_BASE_URL}/web`,
     name: 'root',
-    component: Manage,
-    props: route => ({ domain: route.query.domain, bucket: route.query.bucket })
+    component: (() => {
+      /*如果设置了文件schema就默认进入管理视图，否则进入存储视图*/
+      return !/no|false/i.test(process.env.VUE_APP_SUPPORT_SET_INFO) ? Manage : Storage
+    })(),
+    props: (route) => ({ domain: route.query.domain, bucket: route.query.bucket }),
   },
   {
     path: '*',
-    component: NotFound
-  }
+    component: NotFound,
+  },
 ]
 Vue.use(VueRouter).use(TmsRouterHistoryPlugin)
 
 let router = new VueRouter({
   mode: 'history',
-  routes
+  routes,
 })
 
 router.beforeEach((to, from, next) => {

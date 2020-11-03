@@ -10,3 +10,4 @@ README.md
 LICENSE
 .vscode
 ecosystem.config.js
+config/*.local.js

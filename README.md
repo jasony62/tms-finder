@@ -14,7 +14,7 @@
 
 单机运行
 
-> docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
+> docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d back ue
 
 在浏览器中输入：http://localhost:8080/finder_ue/web
 
@@ -34,17 +34,17 @@
 
 ### 环境变量
 
-| 变量                             | 说明                                                                  | 默认值     |
-| -------------------------------- | --------------------------------------------------------------------- | ---------- |
-| TMS_APP_NAME                     | 后台服务名称                                                          | tms-finder |
-| TMS_APP_PORT                     | 后台服务端口                                                          | 3000       |
-| TMS_FINDER_MONGODB_HOST          | 记录上传文件信息的 mongodb 地址                                       | localhost  |
-| TMS_FINDER_MONGODB_PORT          | 记录上传文件信息的 mongodb 端口                                       | 27017      |
-| TMS_FINDER_FS_ROOTDIR            | 上传文件在本地磁盘的存储位置                                          | storage    |
-| TMS_FINDER_FS_CUSTOMNAME         | 用户自行指定上传文件的存储目录及命名                                  | true       |
-| TMS_FINDER_FS_MONGODB_SOURCE     | 记录上传文件信息的 mongodb 数据源，和配置文件`mongodb.js`中的内容对应 | master     |
-| TMS_FINDER_FS_MONGODB_DATABASE   | 记录上传文件信息的 mongodb 数据库                                     | upload     |
-| TMS_FINDER_FS_MONGODB_COLLECTION | 记录上传文件信息的 mongodb 集合                                       | files      |
+| 变量                             | 说明                                                                  | 默认值        |
+| -------------------------------- | --------------------------------------------------------------------- | ------------- |
+| TMS_APP_NAME                     | 后台服务名称                                                          | tms-finder    |
+| TMS_APP_PORT                     | 后台服务端口                                                          | 3000          |
+| TMS_FINDER_MONGODB_HOST          | 记录上传文件信息的 mongodb 地址                                       | localhost     |
+| TMS_FINDER_MONGODB_PORT          | 记录上传文件信息的 mongodb 端口                                       | 27017         |
+| TMS_FINDER_FS_ROOTDIR            | 上传文件在本地磁盘的存储位置                                          | /home/storage |
+| TMS_FINDER_FS_CUSTOMNAME         | 用户自行指定上传文件的存储目录及命名                                  | true          |
+| TMS_FINDER_FS_MONGODB_SOURCE     | 记录上传文件信息的 mongodb 数据源，和配置文件`mongodb.js`中的内容对应 | master        |
+| TMS_FINDER_FS_MONGODB_DATABASE   | 记录上传文件信息的 mongodb 数据库                                     | upload        |
+| TMS_FINDER_FS_MONGODB_COLLECTION | 记录上传文件信息的 mongodb 集合                                       | files         |
 
 TMS_FINDER_FS_CUSTOMNAME 这个不合理，因为每个 domain 的规则可能不一样
 
@@ -71,12 +71,13 @@ config/log4js.js
 | 变量                       | 说明                                                                     | 默认值                   |
 | -------------------------- | ------------------------------------------------------------------------ | ------------------------ |
 | VUE_APP_BASE_URL           | 应用的基础路径（域名后的子地址）                                         | finder_ue                |
-| VUE_APP_AUTH_SERVER        | 用户鉴权 API 地址                                                        | http://localhost:3000    |
-| VUE_APP_LOGIN_KEY_USERNAME | 用户鉴权 API 中用到的字段，用户名                                        | username                 |
-| VUE_APP_LOGIN_KEY_PASSWORD | 用户鉴权 API 中用到的字段，密码                                          | password                 |
-| VUE_APP_LOGIN_KEY_PIN      | 用户鉴权 API 中用到的字段，验证码                                        | pin                      |
-| VUE_APP_SUPPORT_MULTI_VIEW | 支持切换试图，用字符串`no`或`false`，不区分大小写，进行关闭。            | 是                       |
-| VUE_APP_SUPPORT_SET_INFO   | 支持指定文件扩展信息。                                                   | 是                       |
+| VUE_APP_AUTH_DISABLED      | 是否禁用认证，只有为`Yes`时生效                                          |                          |
+| VUE_APP_AUTH_SERVER        | 用户认证 API 地址                                                        | http://localhost:3000    |
+| VUE_APP_LOGIN_KEY_USERNAME | 用户登录 API 中用到的字段，用户名                                        | username                 |
+| VUE_APP_LOGIN_KEY_PASSWORD | 用户登录 API 中用到的字段，密码                                          | password                 |
+| VUE_APP_LOGIN_KEY_PIN      | 用户登录 API 中用到的字段，验证码                                        | pin                      |
+| VUE_APP_SUPPORT_MULTI_VIEW | 支持切换试图，用字符串`no`或`false`，不区分大小写，进行关闭。            | 否                       |
+| VUE_APP_SUPPORT_SET_INFO   | 支持指定文件扩展信息。                                                   | 否                       |
 | VUE_APP_API_SERVER         | 业务 API 地址                                                            | http://localhost:3000    |
 | VUE_APP_FS_SERVER          | 文件下载服务起始地址。和后台服务`app.router.prefix`对应。                | http://localhost:3000/fs |
 | VUE_APP_API_PASS_COOKIE    | 调用后端`api`时是否允许传递`cookie`，字符串`yes`或`true`，不区分大小写。 | 否                       |

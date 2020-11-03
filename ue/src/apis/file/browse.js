@@ -3,8 +3,12 @@ const baseApi = (process.env.VUE_APP_API_SERVER || '') + '/file/browse'
 export default function create(tmsAxios) {
   return {
     schemas(domain, bucket) {
-      const params = { domain, bucket }
-      return tmsAxios.get(`${baseApi}/schemas`, { params }).then((rst) => rst.data.result)
+      if (!/no|false/i.test(process.env.VUE_APP_SUPPORT_SET_INFO)) {
+        const params = { domain, bucket }
+        return tmsAxios.get(`${baseApi}/schemas`, { params }).then((rst) => rst.data.result)
+      } else {
+        return Promise.resolve({})
+      }
     },
     list(dirName = '', domain, bucket) {
       const params = { dir: dirName }

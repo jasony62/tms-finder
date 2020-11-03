@@ -2,30 +2,63 @@
   <div class="files">
     <div class="demo-input-suffix row">
       <el-col :span="6" :offset="16">
-        <el-input placeholder="全站搜索-请输入文件名名称" suffix-icon="el-icon-search" v-model="searchContent"></el-input>
+        <el-input
+          placeholder="全站搜索-请输入文件名名称"
+          suffix-icon="el-icon-search"
+          v-model="searchContent"
+        ></el-input>
       </el-col>
       <el-col :span="1">
-        <el-button type="primary" size="small" @click="overallSearch">搜索</el-button>
+        <el-button type="primary" size="small" @click="overallSearch"
+          >搜索</el-button
+        >
       </el-col>
     </div>
-    <el-table :data="files" stripe style="width: 100%" @row-dblclick="rowDbClick" v-if="radio==1">
-      <el-table-column prop="createTime" label="日期" width="180" :formatter="formatDate"></el-table-column>
-      <el-table-column prop="size" label="大小" width="180" :formatter="formateFileSize"></el-table-column>
+    <el-table
+      :data="files"
+      stripe
+      style="width: 100%"
+      @row-dblclick="rowDbClick"
+      v-if="radio == 1"
+    >
+      <el-table-column
+        prop="createTime"
+        label="日期"
+        width="180"
+        :formatter="formatDate"
+      ></el-table-column>
+      <el-table-column
+        prop="size"
+        label="大小"
+        width="180"
+        :formatter="formateFileSize"
+      ></el-table-column>
       <el-table-column prop="name" label="文件名"></el-table-column>
       <el-table-column fixed="right" label="操作" width="120">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="preView(scope.$index, scope.row)">预览</el-button>
+          <el-button
+            type="text"
+            size="small"
+            @click="preView(scope.$index, scope.row)"
+            >预览</el-button
+          >
           <el-button
             type="text"
             size="small"
             @click="handleSetInfo(scope.$index, scope.row)"
             v-if="SupportSetInfo"
-          >编辑</el-button>
-          <el-button type="text" size="small" @click="download(scope.$index, scope.row)">下载</el-button>
+            >编辑</el-button
+          >
+          <el-button
+            type="text"
+            size="small"
+            @click="download(scope.$index, scope.row)"
+            >下载</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
-    <div class="icon-view" v-if="radio==2">
+    <div class="icon-view" v-if="radio == 2">
       <div class="icon-lists" v-if="files.length">
         <el-card
           :class="cardClass"
@@ -35,34 +68,49 @@
           shadow="never"
         >
           <div class="thumb">
-            <img :src="thumbUrl(item)" @load="imgload(index)" @error="imgError" />
+            <img
+              :src="thumbUrl(item)"
+              @load="imgload(index)"
+              @error="imgError"
+            />
           </div>
           <svg class="image icon" aria-hidden="true">
             <use :xlink:href="formateFileType(item)" />
           </svg>
-          <div style="padding:0 14px 14px;">
-            <span class="file-name">{{item.name}}</span>
+          <div style="padding: 0 14px 14px">
+            <span class="file-name">{{ item.name }}</span>
             <div class="bottom clearfix">
-              <time class="time">{{formatDate(item)}}</time>
-              <span class="file-size">{{formateFileSize(item)}}</span>
+              <time class="time">{{ formatDate(item) }}</time>
+              <span class="file-size">{{ formateFileSize(item) }}</span>
               <div class="operation">
-                <el-button type="text" class="button" @click="preView(index, item)">预览</el-button>
+                <el-button
+                  type="text"
+                  class="button"
+                  @click="preView(index, item)"
+                  >预览</el-button
+                >
                 <el-button
                   type="text"
                   class="button"
                   @click="handleSetInfo(index, item)"
                   v-if="SupportSetInfo"
-                >编辑</el-button>
-                <el-button type="text" class="button" @click="download(index, item)">下载</el-button>
+                  >编辑</el-button
+                >
+                <el-button
+                  type="text"
+                  class="button"
+                  @click="download(index, item)"
+                  >下载</el-button
+                >
               </div>
             </div>
           </div>
         </el-card>
         <div
           :class="emptyClass"
-          v-for="index in (columns - files.length % columns)"
-          :key="index+'-only'"
-          v-show=" files.length % columns > 0"
+          v-for="index in columns - (files.length % columns)"
+          :key="index + '-only'"
+          v-show="files.length % columns > 0"
         ></div>
       </div>
       <div class="empty" v-else>暂无数据</div>
@@ -79,14 +127,9 @@ import {
   Row,
   Col,
   MessageBox,
-  Card
+  Card,
 } from 'element-ui'
-Vue.use(Table)
-  .use(TableColumn)
-  .use(Input)
-  .use(Row)
-  .use(Col)
-  .use(Card)
+Vue.use(Table).use(TableColumn).use(Input).use(Row).use(Col).use(Card)
 
 import { createAndMount } from './Editor.vue'
 
@@ -100,7 +143,7 @@ export default {
       columns: 5,
       cardClass: 'el-card',
       emptyClass: 'empty-card',
-      SupportSetInfo
+      SupportSetInfo,
     }
   },
   methods: {
@@ -116,14 +159,14 @@ export default {
     preView(index, file) {
       const fileurl = this.$utils.getFileUrl(file)
       const fileType = this.$utils.matchType(file.name)
-      if (fileType == 'excel' || fileType == 'word') {
+      if (/excel|word|ppt|pdf/.test(fileType)) {
         window.open(fileurl)
       } else {
-        import('./Preview.vue').then(Module => {
+        import('./Preview.vue').then((Module) => {
           Module.createAndMount(Vue, {
             fileurl,
             domain: this.domain,
-            bucket: this.bucket
+            bucket: this.bucket,
           })
         })
       }
@@ -138,7 +181,7 @@ export default {
         this.domain,
         this.bucket
       )
-      comp.$on('onClose', info => {
+      comp.$on('onClose', (info) => {
         Object.assign(file.info, info)
       })
     },
@@ -146,7 +189,7 @@ export default {
       const fileurl = this.$utils.getFileUrl(file)
       MessageBox.confirm(fileurl, file.name, {
         confirmButtonText: '下载',
-        cancelButtonText: '取消'
+        cancelButtonText: '取消',
       }).then(() => {
         window.open(fileurl)
       })
@@ -159,7 +202,7 @@ export default {
       this.$store.dispatch({
         type: 'overallSearch',
         dir: '',
-        basename: this.searchContent
+        basename: this.searchContent,
       })
     },
     // 格式化日期
@@ -246,10 +289,10 @@ export default {
     },
     thumbUrl(file) {
       return this.$utils.getThumbUrl(file)
-    }
+    },
   },
   computed: {
-    ...mapState(['schemas', 'files', 'refTree', 'radio'])
+    ...mapState(['schemas', 'files', 'refTree', 'radio']),
   },
   mounted() {
     if (window.screen.width >= 1920) {
@@ -261,7 +304,7 @@ export default {
       this.cardClass = 'el-card'
       this.emptyClass = 'empty-card'
     }
-  }
+  },
 }
 </script>
 <style lang="less">

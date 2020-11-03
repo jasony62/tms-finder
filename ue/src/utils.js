@@ -82,7 +82,7 @@ export default {
       return result
     }
     // 匹配 ppt
-    let pptlist = ['ppt']
+    let pptlist = ['ppt', 'pptx']
     result = pptlist.some(function(item) {
       return item == suffix
     })

@@ -9,20 +9,26 @@ COPY . .
 
 # 生成.env文件
 ARG vue_app_base_url
+ARG vue_app_auth_disabled
 ARG vue_app_auth_server
 ARG vue_app_login_key_username=username
 ARG vue_app_login_key_password=password
 ARG vue_app_login_key_pin=pin
 ARG vue_app_api_server
 ARG vue_app_fs_server
+ARG vue_app_support_multi_view
+ARG vue_app_support_set_info
 
 RUN echo VUE_APP_BASE_URL=$vue_app_base_url > .env && \
+  echo VUE_APP_AUTH_DISABLED=$vue_app_auth_disabled >> .env && \
   echo VUE_APP_AUTH_SERVER=$vue_app_auth_server >> .env && \
   echo VUE_APP_LOGIN_KEY_USERNAME=$vue_app_login_key_username >> .env && \
   echo VUE_APP_LOGIN_KEY_PASSWORD=$vue_app_login_key_password  >> .env && \
   echo VUE_APP_LOGIN_KEY_PIN=$vue_app_login_key_pin  >> .env && \
   echo VUE_APP_API_SERVER=$vue_app_api_server >> .env && \
-  echo VUE_APP_FS_SERVER=$vue_app_fs_server >> .env
+  echo VUE_APP_FS_SERVER=$vue_app_fs_server >> .env && \
+  echo VUE_APP_SUPPORT_MULTI_VIEW=$vue_app_support_multi_view >> .env && \
+  echo VUE_APP_SUPPORT_SET_INFO=$vue_app_support_set_info >> .env
 
 # 安装依赖包，构建代码
 RUN cnpm i && npm run build && npm run build-lib

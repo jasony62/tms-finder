@@ -1,40 +1,39 @@
 <template>
   <el-dialog
-    class="abow_dialog"
+    class="preview_dialog"
     title="文件预览"
     :closeOnClickModal="false"
     :visible="true"
     @close="onClose"
-    width="90%"
+    width="320px"
     top="4vh"
   >
+    <div>{{ file.path }}</div>
     <div>
-      <iframe
-        id="iframe"
-        width="100%"
-        height="100%"
-        frameborder="0"
-        :src="fileurl"
-        marginwidth="0"
-        marginheight="0"
-        scrolling="auto"
-        @load="iframeLoad"
-      ></iframe>
+      <tms-janus-audio :server="server" :file="audioFile"></tms-janus-audio>
     </div>
   </el-dialog>
 </template>
 
 <script>
 import { Dialog } from 'element-ui'
+import { JANUS_SERVER as server } from '../lib/global'
+import { TmsJanusAudio } from 'tms-janus-play'
 
 const componentOptions = {
-  components: { 'el-dialog': Dialog },
+  components: { 'el-dialog': Dialog, TmsJanusAudio },
   props: {
     tmsAxiosName: { type: String },
     fileurl: String,
     file: Object,
     domain: String,
     bucket: String,
+  },
+  data() {
+    return {
+      server,
+      audioFile: 'sine-8k-10s.mp3',
+    }
   },
   mounted() {
     document.body.appendChild(this.$el)
@@ -43,10 +42,6 @@ const componentOptions = {
     document.body.removeChild(this.$el)
   },
   methods: {
-    iframeLoad() {
-      var ifm = document.getElementById('iframe')
-      ifm.height = document.documentElement.clientHeight - 157
-    },
     onClose() {
       this.$destroy()
     },
@@ -69,14 +64,14 @@ export function createAndMount(Vue, props) {
 }
 </script>
 <style lang="less">
-.abow_dialog {
+.preview_dialog {
   display: flex;
   justify-content: center;
   align-items: Center;
   overflow: hidden;
   .el-dialog {
     margin: 0 auto !important;
-    height: 90%;
+    height: 240px;
     overflow: hidden;
   }
   .el-dialog__body {
@@ -85,7 +80,7 @@ export function createAndMount(Vue, props) {
     top: 54px;
     bottom: 0;
     right: 0;
-    padding: 0;
+    padding: 10px 20px;
     z-index: 1;
     overflow: hidden;
   }

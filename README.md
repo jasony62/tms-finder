@@ -50,6 +50,8 @@ TMS_FINDER_FS_CUSTOMNAME 这个不合理，因为每个 domain 的规则可能�
 
 ### 配置文件
 
+服务端基于`tms-koa`实现，可以通过自定义配置文件覆盖默认设置。配置文件中的配置项可参考`tms-koa`项目。
+
 config/app.js
 
 ---
@@ -68,18 +70,25 @@ config/log4js.js
 
 ### 环境变量
 
-| 变量                       | 说明                                                                     | 默认值                   |
-| -------------------------- | ------------------------------------------------------------------------ | ------------------------ |
-| VUE_APP_BASE_URL           | 应用的基础路径（域名后的子地址）                                         | finder_ue                |
-| VUE_APP_AUTH_DISABLED      | 是否禁用认证，只有为`Yes`时生效                                          |                          |
-| VUE_APP_AUTH_SERVER        | 用户认证 API 地址                                                        | http://localhost:3000    |
-| VUE_APP_LOGIN_KEY_USERNAME | 用户登录 API 中用到的字段，用户名                                        | username                 |
-| VUE_APP_LOGIN_KEY_PASSWORD | 用户登录 API 中用到的字段，密码                                          | password                 |
-| VUE_APP_LOGIN_KEY_PIN      | 用户登录 API 中用到的字段，验证码                                        | pin                      |
-| VUE_APP_SUPPORT_MULTI_VIEW | 支持切换试图，用字符串`no`或`false`，不区分大小写，进行关闭。            | 否                       |
-| VUE_APP_SUPPORT_SET_INFO   | 支持指定文件扩展信息。                                                   | 否                       |
-| VUE_APP_API_SERVER         | 业务 API 地址                                                            | http://localhost:3000    |
-| VUE_APP_FS_SERVER          | 文件下载服务起始地址。和后台服务`app.router.prefix`对应。                | http://localhost:3000/fs |
-| VUE_APP_API_PASS_COOKIE    | 调用后端`api`时是否允许传递`cookie`，字符串`yes`或`true`，不区分大小写。 | 否                       |
+| 变量                         | 说明                                                                                      | 默认值                   |
+| ---------------------------- | ----------------------------------------------------------------------------------------- | ------------------------ |
+| VUE_APP_BASE_URL             | 应用的基础路径（域名后的子地址）                                                          | finder_ue                |
+| VUE_APP_API_SERVER           | 业务 API 地址                                                                             | http://localhost:3000    |
+| VUE_APP_FS_SERVER            | 文件下载服务起始地址。和后台服务`app.router.prefix`对应。                                 | http://localhost:3000/fs |
+| **用户认证**                 |                                                                                           |                          |
+| VUE_APP_AUTH_DISABLED        | 是否禁用认证，只有为`Yes`时生效                                                           |                          |
+| VUE_APP_AUTH_SERVER          | 用户认证 API 地址                                                                         | http://localhost:3000    |
+| VUE_APP_LOGIN_KEY_USERNAME   | 用户登录 API 中用到的字段，用户名                                                         | username                 |
+| VUE_APP_LOGIN_KEY_PASSWORD   | 用户登录 API 中用到的字段，密码                                                           | password                 |
+| VUE_APP_LOGIN_KEY_PIN        | 用户登录 API 中用到的字段，验证码                                                         | pin                      |
+| VUE_APP_API_PASS_COOKIE      | 调用后端`api`时是否允许传递`cookie`，字符串`yes`或`true`，不区分大小写。                  | 否                       |
+| **视图**                     |                                                                                           |                          |
+| VUE_APP_SUPPORT_SET_INFO     | 支持指定文件扩展信息，用字符串`no`或`false`，不区分大小写，进行关闭。                     |                          |
+| VUE_APP_SUPPORT_MULTI_VIEW   | 支持切换试图，用字符串`no`或`false`，不区分大小写，进行关闭。只有支持文件扩展信息才打开。 |                          |
+| **媒体服务**                 |                                                                                           |                          |
+| VUE_APP_TMS_JANUS_SUPPORT    | 是否支持对接媒体服务器地址，用字符串`yes`或`true`，不区分大小写，打开。                   |                          |
+| VUE_APP_TMS_JANUS_ADDRESS    | 媒体服务器地址。                                                                          |                          |
+| VUE_APP_TMS_JANUS_HTTP_PORT  | 媒体服务器端口。                                                                          |                          |
+| VUE_APP_TMS_JANUS_HTTPS_PORT | 媒体服务器端口。                                                                          |                          |
 
 # 参考

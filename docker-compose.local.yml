@@ -18,6 +18,7 @@ services:
       - TMS_FINDER_FS_ROOTDIR=/home/storage
     volumes:
       - ./back/storage:/home/storage # 指定文件服务的外部存储位置（rootDir）
+      # - ./back/config/app.local.js:/home/node/app/config/app.local.js # 指定本地配置文件
 
   ue:
     build:

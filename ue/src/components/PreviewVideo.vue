@@ -8,33 +8,33 @@
     width="90%"
     top="4vh"
   >
+    <div>WebRTC mp4</div>
+    <div>{{ fileurl }}</div>
     <div>
-      <iframe
-        id="iframe"
-        width="100%"
-        height="100%"
-        frameborder="0"
-        :src="fileurl"
-        marginwidth="0"
-        marginheight="0"
-        scrolling="auto"
-        @load="iframeLoad"
-      ></iframe>
+      <tms-janus-mp4 :server="server" :file="mp4File"></tms-janus-mp4>
     </div>
   </el-dialog>
 </template>
 
 <script>
 import { Dialog } from 'element-ui'
+import { JANUS_SERVER as server } from '../lib/global'
+import { TmsJanusMp4 } from 'tms-janus-play'
 
 const componentOptions = {
-  components: { 'el-dialog': Dialog },
+  components: { 'el-dialog': Dialog, TmsJanusMp4 },
   props: {
     tmsAxiosName: { type: String },
     fileurl: String,
     file: Object,
     domain: String,
     bucket: String,
+  },
+  data() {
+    return {
+      server,
+      mp4File: 'sine-8k-testsrc2-baseline31-gop10-10s.mp4',
+    }
   },
   mounted() {
     document.body.appendChild(this.$el)
@@ -43,10 +43,6 @@ const componentOptions = {
     document.body.removeChild(this.$el)
   },
   methods: {
-    iframeLoad() {
-      var ifm = document.getElementById('iframe')
-      ifm.height = document.documentElement.clientHeight - 157
-    },
     onClose() {
       this.$destroy()
     },

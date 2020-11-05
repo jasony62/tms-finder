@@ -39,7 +39,7 @@
           <el-button
             type="text"
             size="small"
-            @click="preView(scope.$index, scope.row)"
+            @click="preview(scope.$index, scope.row)"
             >预览</el-button
           >
           <el-button
@@ -156,17 +156,39 @@ export default {
       e.target.parentNode.style.display = 'none'
       e.target.parentNode.parentNode.children[1].style.display = 'block'
     },
-    preView(index, file) {
+    preview(index, file) {
       const fileurl = this.$utils.getFileUrl(file)
       const fileType = this.$utils.matchType(file.name)
+      // 是否配置了Janus媒体服务器
+      const isSupportJanus = /yes|true/i.test(
+        process.env.VUE_APP_TMS_JANUS_SUPPORT
+      )
+      const { domain, bucket } = this
       if (/excel|word|ppt|pdf/.test(fileType)) {
         window.open(fileurl)
+      } else if (isSupportJanus && /radio/.test(fileType)) {
+        import('./PreviewAudio.vue').then((Module) => {
+          Module.createAndMount(Vue, {
+            fileurl,
+            file,
+            domain,
+            bucket,
+          })
+        })
+      } else if (isSupportJanus && /video/.test(fileType)) {
+        import('./PreviewVideo.vue').then((Module) => {
+          Module.createAndMount(Vue, {
+            fileurl,
+            domain,
+            bucket,
+          })
+        })
       } else {
         import('./Preview.vue').then((Module) => {
           Module.createAndMount(Vue, {
             fileurl,
-            domain: this.domain,
-            bucket: this.bucket,
+            domain,
+            bucket,
           })
         })
       }

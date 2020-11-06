@@ -18,7 +18,7 @@
 
 <script>
 import { Dialog } from 'element-ui'
-import { JANUS_SERVER as server } from '../lib/global'
+import { JANUS_SERVER as server } from '../tms-janus'
 import { TmsJanusMp4 } from 'tms-janus-play'
 
 const componentOptions = {

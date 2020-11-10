@@ -44,9 +44,11 @@ services:
     container_name: tms-finder-ue
     environment:
       - NGINX_WEB_BASE_URL=/finder_ue
-      - NGINX_ACCESS_CONTROL_ALLOW_ORIGIN=*
+      - NGINX_ACCESS_CONTROL_ALLOW_ORIGIN=* # 允许跨域访问
     # ports:
     #   - '8080:80'
+    env_file:
+      - ./sample.env
 
   ue_any:
     build:

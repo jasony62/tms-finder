@@ -10,7 +10,7 @@ export const JANUS_SERVER = (() => {
     if (parseInt(process.env.VUE_APP_TMS_JANUS_HTTP_PORT) > 0)
       server += `:${parseInt(process.env.VUE_APP_TMS_JANUS_HTTP_PORT)}`
   } else {
-    server = `http://${address}`
+    server = `https://${address}`
     if (parseInt(process.env.VUE_APP_TMS_JANUS_HTTPS_PORT) > 0)
       server += `:${parseInt(process.env.VUE_APP_TMS_JANUS_HTTPS_PORT)}`
   }

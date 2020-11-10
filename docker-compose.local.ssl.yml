@@ -1,0 +1,40 @@
+version: '3.7'
+services:
+  mongodb:
+    # volumes:
+    #   - ./mongodb/data:/data/db
+    ports:
+      - '27017:27017'
+    # logging:
+    # driver: 'none'
+
+  back:
+    ports:
+      - '3000:3000'
+    environment:
+      # - TMS_APP_PORT=3000
+      - TMS_FINDER_MONGODB_HOST=mongodb
+      - TMS_FINDER_MONGODB_PORT=27017
+      - TMS_FINDER_FS_ROOTDIR=/home/storage
+    volumes:
+      - ./back/storage:/home/storage # 指定文件服务的外部存储位置（rootDir）
+      # - ./back/config/app.local.js:/home/node/app/config/app.local.js # 指定本地配置文件
+
+  ue:
+    build:
+      args:
+        vue_app_auth_server: https://localhost:3000
+        vue_app_api_server: https://localhost:3000
+        vue_app_fs_server: https://localhost:3000/fs
+    ports:
+      - '8443:443'
+
+  ue_any:
+    build:
+      context: ./ue_any
+      args:
+        vue_app_auth_server: https://localhost:3000
+        vue_app_api_server: https://localhost:3000
+        vue_app_upload_lib_url: https://localhost:8080/finder_ue/lib
+    ports:
+      - '8444:443'

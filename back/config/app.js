@@ -1,6 +1,12 @@
 let appConfig = {
   name: process.env.TMS_APP_NAME || 'tms-finder', // 如需自定义可在项目根目录下创建/back/.env文件配置成环境变量
   port: process.env.TMS_APP_PORT || 3000, // 如需自定义可在项目根目录下创建/back/.env文件配置成环境变量
+  https: {
+    disabled: !!process.env.TMS_APP_HTTPS,
+    port: parseInt(process.env.TMS_APP_HTTPS_PORT),
+    key: process.env.TMS_APP_HTTPS_SSL_KEY,
+    cert: process.env.TMS_APP_HTTPS_SSL_CERT,
+  },
   router: {
     auth: {
       prefix: '', // 鉴权接口调用url的前缀

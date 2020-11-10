@@ -91,4 +91,16 @@ config/log4js.js
 | VUE_APP_TMS_JANUS_HTTP_PORT  | 媒体服务器端口。                                                                          |                          |
 | VUE_APP_TMS_JANUS_HTTPS_PORT | 媒体服务器端口。                                                                          |                          |
 
+# https
+
+前后端支持`https`访问。
+
+## ue
+
+通过在配置文件`.env`中指定环境变量`VUE_APP_WEB_SERVER_HTTPS_PORT`，可以在本地启用前端服务时使用`https`。
+
+通过在容器配置文件中指定`SSL_CERTIFICATE`和`SSL_CERTIFICATE_KEY`指定证书，通过容器运行前端服务时使用`https`。
+
+## back
+
 # 参考

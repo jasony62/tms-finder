@@ -85,7 +85,7 @@ export function createAndMount(Vue, props) {
     top: 54px;
     bottom: 0;
     right: 0;
-    padding: 0;
+    padding: 10px 20px;
     z-index: 1;
     overflow: hidden;
   }

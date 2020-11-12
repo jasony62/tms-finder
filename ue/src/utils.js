@@ -8,6 +8,7 @@ export default {
   },
   // 返回文件的完整缩略图url
   getThumbUrl(file) {
+    if (!file.thumb) return ''
     const fserver = process.env.VUE_APP_FS_SERVER || `${location.protocol}//${location.host}:${location.port}`
     const thumbUrl = `${fserver}${file.thumb}`
 

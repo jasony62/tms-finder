@@ -55,6 +55,13 @@
             @click="download(scope.$index, scope.row)"
             >下载</el-button
           >
+          <el-button
+            type="text"
+            size="small"
+            @click="pick(scope.$index, scope.row)"
+            v-if="SupportPickFile"
+            >选取</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -86,7 +93,7 @@
                 <el-button
                   type="text"
                   class="button"
-                  @click="preView(index, item)"
+                  @click="preview(index, item)"
                   >预览</el-button
                 >
                 <el-button
@@ -101,6 +108,13 @@
                   class="button"
                   @click="download(index, item)"
                   >下载</el-button
+                >
+                <el-button
+                  type="text"
+                  class="button"
+                  @click="pick(index, item)"
+                  v-if="SupportPickFile"
+                  >选取</el-button
                 >
               </div>
             </div>
@@ -134,6 +148,7 @@ Vue.use(Table).use(TableColumn).use(Input).use(Row).use(Col).use(Card)
 import { createAndMount } from './Editor.vue'
 
 const SupportSetInfo = !/no|false/i.test(process.env.VUE_APP_SUPPORT_SET_INFO)
+const SupportPickFile = /yes|true/i.test(process.env.VUE_APP_SUPPORT_PICK_FILE)
 
 export default {
   props: { domain: String, bucket: String },
@@ -144,6 +159,7 @@ export default {
       cardClass: 'el-card',
       emptyClass: 'empty-card',
       SupportSetInfo,
+      SupportPickFile,
     }
   },
   methods: {
@@ -215,6 +231,9 @@ export default {
       }).then(() => {
         window.open(fileurl)
       })
+    },
+    pick(index, file) {
+      this.$utils.postMessage(() => this.$utils.getFileUrl(file))
     },
     rowDbClick(file) {
       this.$utils.postMessage(() => this.$utils.getFileUrl(file))
@@ -356,7 +375,11 @@ export default {
     .thumb {
       text-align: center;
       flex: 1;
-      margin-top: 20%;
+      padding: 8px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
   .empty-card {

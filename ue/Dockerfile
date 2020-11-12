@@ -23,6 +23,7 @@ ARG vue_app_tms_janus_support
 ARG vue_app_tms_janus_address
 ARG vue_app_tms_janus_http_port
 ARG vue_app_tms_janus_https_port
+ARG vue_app_support_pick_file
 
 RUN echo VUE_APP_BASE_URL=$vue_app_base_url > .env && \
   echo VUE_APP_AUTH_DISABLED=$vue_app_auth_disabled >> .env && \
@@ -35,6 +36,7 @@ RUN echo VUE_APP_BASE_URL=$vue_app_base_url > .env && \
   echo VUE_APP_FS_SERVER=$vue_app_fs_server >> .env && \
   echo VUE_APP_SUPPORT_MULTI_VIEW=$vue_app_support_multi_view >> .env && \
   echo VUE_APP_SUPPORT_SET_INFO=$vue_app_support_set_info >> .env && \
+  echo VUE_APP_SUPPORT_PICK_FILE=$vue_app_support_pick_file >> .env && \
   echo VUE_APP_TMS_JANUS_SUPPORT=$vue_app_tms_janus_support >> .env && \
   echo VUE_APP_TMS_JANUS_ADDRESS=$vue_app_tms_janus_address >> .env && \
   echo VUE_APP_TMS_JANUS_HTTP_PORT=$vue_app_tms_janus_http_port >> .env && \

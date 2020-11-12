@@ -10,6 +10,7 @@ COPY . .
 # 生成.env文件
 ARG vue_app_base_url
 ARG vue_app_auth_disabled
+ARG vue_app_api_pass_cookie
 ARG vue_app_auth_server
 ARG vue_app_login_key_username=username
 ARG vue_app_login_key_password=password
@@ -25,6 +26,7 @@ ARG vue_app_tms_janus_https_port
 
 RUN echo VUE_APP_BASE_URL=$vue_app_base_url > .env && \
   echo VUE_APP_AUTH_DISABLED=$vue_app_auth_disabled >> .env && \
+  echo VUE_APP_API_PASS_COOKIE=$vue_app_api_pass_cookie >> .env && \
   echo VUE_APP_AUTH_SERVER=$vue_app_auth_server >> .env && \
   echo VUE_APP_LOGIN_KEY_USERNAME=$vue_app_login_key_username >> .env && \
   echo VUE_APP_LOGIN_KEY_PASSWORD=$vue_app_login_key_password  >> .env && \

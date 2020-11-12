@@ -14,7 +14,7 @@
 
 单机运行
 
-> docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d back ue
+> docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d mongodb back ue
 
 在浏览器中输入：http://localhost:8080/finder_ue/web
 
@@ -28,7 +28,9 @@
 
 # 应用配置
 
-> docker-compose -f docker-compose.yml -f docker-compose.xxxx.yml up -d
+复制`docker-compose.local.yml`或`docker-compose.local.ssl.yml`文件为`docker-compose.override.yml`
+
+> docker-compose up -d mongodb back ue
 
 ## 服务端（back）
 
@@ -38,10 +40,12 @@
 | -------------------------------- | --------------------------------------------------------------------- | ------------- |
 | TMS_APP_NAME                     | 后台服务名称                                                          | tms-finder    |
 | TMS_APP_PORT                     | 后台服务端口                                                          | 3000          |
-| TMS_FINDER_MONGODB_HOST          | 记录上传文件信息的 mongodb 地址                                       | localhost     |
-| TMS_FINDER_MONGODB_PORT          | 记录上传文件信息的 mongodb 端口                                       | 27017         |
+| **文件存储**                     |                                                                       |               |
 | TMS_FINDER_FS_ROOTDIR            | 上传文件在本地磁盘的存储位置                                          | /home/storage |
 | TMS_FINDER_FS_CUSTOMNAME         | 用户自行指定上传文件的存储目录及命名                                  | true          |
+| **记录文件扩展信息**             |                                                                       |               |
+| TMS_FINDER_MONGODB_HOST          | 记录上传文件信息的 mongodb 地址                                       | localhost     |
+| TMS_FINDER_MONGODB_PORT          | 记录上传文件信息的 mongodb 端口                                       | 27017         |
 | TMS_FINDER_FS_MONGODB_SOURCE     | 记录上传文件信息的 mongodb 数据源，和配置文件`mongodb.js`中的内容对应 | master        |
 | TMS_FINDER_FS_MONGODB_DATABASE   | 记录上传文件信息的 mongodb 数据库                                     | upload        |
 | TMS_FINDER_FS_MONGODB_COLLECTION | 记录上传文件信息的 mongodb 集合                                       | files         |
@@ -65,6 +69,17 @@ config/fs.js
 ---
 
 config/log4js.js
+
+---
+
+定制配置文件
+
+在`docker-compose.override.yml`中通过`volumnes`将配置文件的定制版本复制到容器中。例如：
+
+```
+- ./back/config/app.local.js:/home/node/app/config/app.local.js
+- ./back/config/fs.local.js:/home/node/app/config/fs.local.js
+```
 
 ## 用户端（ue）
 
@@ -90,6 +105,10 @@ config/log4js.js
 | VUE_APP_TMS_JANUS_ADDRESS    | 媒体服务器地址。                                                                          |                          |
 | VUE_APP_TMS_JANUS_HTTP_PORT  | 媒体服务器端口。                                                                          |                          |
 | VUE_APP_TMS_JANUS_HTTPS_PORT | 媒体服务器端口。                                                                          |                          |
+
+前端的环境变量需要构建时生效。
+
+在`docker-compose.override.yml`文件中设置参数，设置后需要重新构建。
 
 # https
 

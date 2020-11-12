@@ -65,3 +65,6 @@ dump.rdb
 
 # application
 .DS_Store
+
+# docker
+docker-compose.override.yml

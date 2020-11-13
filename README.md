@@ -1,4 +1,4 @@
-`tms-finder`项目是一个在线文档管理系统，`back`目录下是用`node`实现的后端服务，`ue`目录下是用`Vue`实现的用户端应用，`build`后会部署到`nginx`中。上传文件时用户可以输入文件的描述信息（可配置），文件会存在放在服务端指定的本地硬盘上（可配置），描述信息会保存在指定的`mongodb`中（可配置）。
+`tms-finder`项目是一个在线文件管理系统，`back`目录下是用`node`实现的后端服务，`ue`目录下是用`Vue`实现的用户端应用，`build`后会部署到`nginx`中。上传文件时用户可以输入文件的描述信息（可配置），文件会存在放在服务端指定的本地硬盘上（可配置），描述信息会保存在指定的`mongodb`中（可配置）。
 
 这个项目是**开箱即用**的，在安装好`docker`和`docker-compose`的机器上，从`github`拉取代码，执行`docker-compose up -d`命令就可以把整个应用运行起来。
 
@@ -8,7 +8,7 @@
 
 # 启动服务
 
-> git clone https://github.com/jasony62/tms-finder
+> git clone ttps://github.com/jasony62/tms-finder
 
 > cd tms-finder
 
@@ -38,8 +38,14 @@
 
 | 变量                             | 说明                                                                  | 默认值        |
 | -------------------------------- | --------------------------------------------------------------------- | ------------- |
-| TMS_APP_NAME                     | 后台服务名称                                                          | tms-finder    |
-| TMS_APP_PORT                     | 后台服务端口                                                          | 3000          |
+| TMS_KOA_NAME                     | 后台服务名称                                                          | tms-finder    |
+| TMS_KOA_PORT                     | 后台服务端口                                                          | 3000          |
+| TMS_KOA_LOG4JS_LEVEL             | 日志级别                                                              | debug         |
+| **https**                        |                                                                       |               |
+| TMS_KOA_HTTPS                    | 是否支持 https                                                        |               |
+| TMS_KOA_HTTPS_PORT               | https 端口                                                            |               |
+| TMS_APP_HTTPS_SSL_CERT           | ssl 证书存放路径                                                      |               |
+| TMS_APP_HTTPS_SSL_KEY            | ssl 密钥存放路径                                                      |               |
 | **文件存储**                     |                                                                       |               |
 | TMS_FINDER_FS_ROOTDIR            | 上传文件在本地磁盘的存储位置                                          | /home/storage |
 | TMS_FINDER_FS_CUSTOMNAME         | 用户自行指定上传文件的存储目录及命名                                  | true          |
@@ -111,15 +117,19 @@ config/log4js.js
 
 在`docker-compose.override.yml`文件中设置参数，设置后需要重新构建。
 
-# https
+# 使用 ssl 证书
 
-前后端支持`https`访问。
+在宿主机上存放 ssl 证书文件。
+
+在`docker-compose.override.yml`文件中，将 ssl 证书存放目录映射到容器中的指定位置，例如：/usr/local/etc/ssl。
+
+在`back`服务下指定环境变量`TMS_APP_HTTPS_SSL_CERT`和`TMS_APP_HTTPS_SSL_KEY`对应的文件位置。
 
 ## ue
 
 通过在配置文件`.env`中指定环境变量`VUE_APP_WEB_SERVER_HTTPS_PORT`，可以在本地启用前端服务时使用`https`。
 
-通过在容器配置文件中指定`SSL_CERTIFICATE`和`SSL_CERTIFICATE_KEY`指定证书，通过容器运行前端服务时使用`https`。
+通过在容器配置文件中指定`TMS_APP_HTTPS_SSL_CERT`和`TMS_APP_HTTPS_SSL_KEY`指定证书，通过容器运行前端服务时使用`https`。
 
 ## back
 

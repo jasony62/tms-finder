@@ -12,13 +12,13 @@ services:
     ports:
       - '3000:3000'
     environment:
-      # - TMS_APP_PORT=3000
+      # - TMS_KOA_PORT=3000
       - TMS_FINDER_MONGODB_HOST=mongodb
       - TMS_FINDER_MONGODB_PORT=27017
       - TMS_FINDER_FS_ROOTDIR=/home/storage
     volumes:
       - ./back/storage:/home/storage # 指定文件服务的外部存储位置（rootDir）
-      # - ./back/config/app.local.js:/home/node/app/config/app.local.js # 指定本地配置文件
+      # - ./back/config/app.local.js:/home/node/app/config/app.local.ssl.js # 指定本地配置文件
 
   ue:
     build:

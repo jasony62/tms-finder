@@ -1,6 +1,6 @@
 const { ImageCtrl } = require('tms-koa/lib/controller/fs/image')
-const { ResultData, ResultFault, ResultObjectNotFound } = require('tms-koa')
 
+/** 图片文件控制器 */
 class Image extends ImageCtrl {
   constructor(...args) {
     super(...args)

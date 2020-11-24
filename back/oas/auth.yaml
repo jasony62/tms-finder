@@ -1,0 +1,19 @@
+paths:
+  /auth/authorize:
+    post:
+      tags:
+        - 认证 
+      summary: 登录换取token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: 登录成功

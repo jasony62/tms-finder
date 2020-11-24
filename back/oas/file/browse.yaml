@@ -1,0 +1,13 @@
+paths:
+  /file/browse/list:
+    get:
+      tags:
+        - browse 
+      summary: 返回指定目录下的文件列表
+      parameters:
+        - $ref: '#/components/parameters/domain'
+        - $ref: '#/components/parameters/bucket'
+        - $ref: '#/components/parameters/dir'
+      responses:
+        200:
+          $ref: '#/components/responses/ResponseFileList'

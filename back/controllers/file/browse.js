@@ -5,12 +5,31 @@ const glob = require('glob')
 const fs = require('fs')
 const pathObj = require('path')
 
+/** 查看文件 */
 class Browse extends BrowseCtrl {
   constructor(...args) {
     super(...args)
   }
   /**
+   * @swagger
    *
+   * /file/browser/listAll:
+   *   get:
+   *     tags:
+   *       - browse
+   *     summary: 全局查找文件
+   *     parameters:
+   *       - $ref: '#/components/parameters/domain'
+   *       - $ref: '#/components/parameters/bucket'
+   *       - $ref: '#/components/parameters/dir'
+   *       - name: basename
+   *         description: 过滤条件
+   *         in: query
+   *         schema:
+   *           type: string
+   *     responses:
+   *       200:
+   *         $ref: '#/components/responses/ResponseFileList'
    */
   async listAll() {
     let { dir, basename = '' } = this.request.body

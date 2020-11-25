@@ -50,8 +50,12 @@ components:
           properties:
             files:
               type: array
+              items:
+                type: object
             dirs:
               type: array
+              items:
+                type: object
   examples:
   parameters:
     domain:

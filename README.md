@@ -22,6 +22,10 @@
 
 > docker-compose up --build -d
 
+启动 API 在线文档
+
+> docker-compose -f docker-compose.swagger.yml -f docker-compose.swagger.override.yml up swager-ui swagger-editor
+
 # 关闭服务
 
 > docker-compose down

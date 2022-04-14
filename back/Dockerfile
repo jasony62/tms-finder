@@ -1,4 +1,4 @@
-FROM node:12.10.0-alpine
+FROM node:16.9.1-alpine3.14
 
 # 设置时区
 RUN sed -i 's?http://dl-cdn.alpinelinux.org/?https://mirrors.aliyun.com/?' /etc/apk/repositories && \
@@ -6,13 +6,14 @@ RUN sed -i 's?http://dl-cdn.alpinelinux.org/?https://mirrors.aliyun.com/?' /etc/
   cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
   apk del tzdata
 
-RUN npm install cnpm -g
+RUN yarn config set registry https://registry.npm.taobao.org --global && \
+  yarn config set disturl https://npm.taobao.org/dist --global
 
 WORKDIR /home/node/app
 
 COPY ./package.json ./
 
-RUN cnpm i --production
+RUN yarn install --production
 
 COPY . .
 

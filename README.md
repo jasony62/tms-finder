@@ -6,17 +6,37 @@
 
 这个项目是**编码友好**的，程序员可以有选择地使用 docker，前后端都可以在容器外运行，方便调试代码。
 
+# 文件说明
+
+| 目录/文件 | 说明                                                 |
+| --------- | ---------------------------------------------------- |
+| doc       | 说明文档                                             |
+| docker    | 在 docker 环境中运行项目的 docker compose 位置文件。 |
+| mongodb   | 存储业务数据的 mongodb。                             |
+| back      | 项目的后段服务。                                     |
+| ue        | 项目的前端界面。                                     |
+
 # 启动服务
 
 > git clone ttps://github.com/jasony62/tms-finder
 
 > cd tms-finder
 
-单机运行
+单机运行，进入`docker`目录。
+
+构造镜像
+
+必须要把参数补全
+
+> docker-compose -f docker-compose.yml -f docker-compose.local.yml build ue
+
+运行镜像
 
 > docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d mongodb back ue
 
 在浏览器中输入：http://localhost:8080/finder_ue/web
+
+默认用户名和口令：root/root。可通过 back/config/app.js 文件修改。
 
 在实际环境中部署时，可以新建`docker-compose.override.yml`设置需要的参数，执行如下启动命令：
 

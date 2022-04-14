@@ -1,8 +1,8 @@
 version: '3.7'
 services:
   mongodb:
-    # volumes:
-    #   - ./mongodb/data:/data/db
+    volumes:
+      - ../volumes/mongodb/data:/data/db
     ports:
       - '27017:27017'
     # logging:
@@ -17,8 +17,8 @@ services:
       - TMS_FINDER_MONGODB_PORT=27017
       - TMS_FINDER_FS_ROOTDIR=/home/storage
     volumes:
-      - ./back/storage:/home/storage # 指定文件服务的外部存储位置（rootDir）
-      # - ./back/config/app.local.js:/home/node/app/config/app.local.js # 指定本地配置文件
+      - ../volumes/files:/home/storage # 指定文件服务的外部存储位置（rootDir）
+      # - ../back/config/app.local.js:/home/node/app/config/app.local.js # 指定本地配置文件
 
   ue:
     build:
@@ -31,7 +31,6 @@ services:
 
   ue_any:
     build:
-      context: ./ue_any
       args:
         vue_app_auth_server: http://localhost:3000
         vue_app_api_server: http://localhost:3000

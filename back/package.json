@@ -10,11 +10,12 @@
   "author": "jasony62",
   "license": "MIT",
   "dependencies": {
-    "glob": "^7.1.5",
-    "log4js": "^6.1.0",
-    "mongodb": "^3.5.2",
-    "redis": "^3.0.2",
-    "tms-db": "^0.0.10",
-    "tms-koa": "^0.0.59"
+    "glob": "8.0.1",
+    "log4js": "6.4.4",
+    "mongodb": "4.5.0",
+    "redis": "4.0.6",
+    "sharp": "^0.30.3",
+    "tms-db": "0.0.12",
+    "tms-koa": "0.0.71"
   }
 }

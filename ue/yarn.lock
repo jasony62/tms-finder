@@ -9505,10 +9505,10 @@ tms-janus-play@^0.0.3:
   resolved "https://registry.yarnpkg.com/tms-janus-play/-/tms-janus-play-0.0.3.tgz#0e56bf421a046b8bb9e46aecec47b7edccf9bd53"
   integrity sha512-I6ONtqjLrDPfDUE+cYISuM6Xt5jjRXEtMMUDQ/rfpdDq4H2l1F4On2joS3y38ldVE7jJCv9SnVzHcLHx/1ZHTg==
 
-tms-vue-ui@^0.0.43:
-  version "0.0.43"
-  resolved "https://registry.yarnpkg.com/tms-vue-ui/-/tms-vue-ui-0.0.43.tgz#8fbd3001d79b1913d2ecd45ece13fd3c589a17b5"
-  integrity sha512-3AnmOKFT0gLoCpkb9ReZ5gcZHofcy+lIMRjV6y0ad0ngyhfXxjyBfI+RpkQqh1zs3p7OVBrbvP1xLUzqw+Eg+w==
+tms-vue-ui@0.0.51:
+  version "0.0.51"
+  resolved "https://registry.npmmirror.com/tms-vue-ui/-/tms-vue-ui-0.0.51.tgz#8867e141fe7d5615470bf42ede558d8da956bdb0"
+  integrity sha512-OWi+6yg3xJN0lPg1ImtxWjgo0m+lRxFbsM4XYEqgLCY3Izoejt8BsdLenrdNrmXLz5FyTMmCwBtV/OOO9syFgA==
   dependencies:
     element-ui "^2.12.0"
     lodash "^4.17.15"

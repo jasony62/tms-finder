@@ -1,8 +1,9 @@
 # 标准基础镜像（构建阶段）
-FROM node:alpine
+FROM node:16.9.1-alpine3.14
 
-RUN npm install cnpm -g
-
+RUN yarn config set registry https://registry.npm.taobao.org --global && \
+  yarn config set disturl https://npm.taobao.org/dist --global
+  
 WORKDIR /home/node/app
 
 COPY . .
@@ -43,7 +44,7 @@ RUN echo VUE_APP_BASE_URL=$vue_app_base_url > .env && \
   echo VUE_APP_TMS_JANUS_HTTPS_PORT=$vue_app_tms_janus_https_port >> .env
 
 # 安装依赖包，构建代码
-RUN cnpm i && npm run build && npm run build-lib
+RUN yarn && yarn build && yarn build-lib
 
 # 标准基础镜像（部署阶段）
 FROM nginx:alpine

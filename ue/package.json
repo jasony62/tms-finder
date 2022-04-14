@@ -16,7 +16,7 @@
     "tms-form-vant": "^0.0.5",
     "tms-janus-play": "^0.0.3",
     "tms-vue": "^0.0.9",
-    "tms-vue-ui": "^0.0.43",
+    "tms-vue-ui": "0.0.51",
     "vant": "^2.2.11",
     "vue": "^2.6.10",
     "vue-router": "^3.1.3",

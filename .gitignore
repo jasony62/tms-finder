@@ -68,3 +68,5 @@ dump.rdb
 
 # docker
 *.override.yml
+
+volumes/

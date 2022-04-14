@@ -2,19 +2,11 @@
   <el-dialog title="文件上传" :closeOnClickModal="false" :visible="true" @close="onClose">
     <el-form :label-position="'left'" label-width="80px">
       <el-form-item label="当前目录">
-        <div>{{dir}}</div>
+        <div>{{ dir }}</div>
       </el-form-item>
       <el-form-item label="上传文件">
-        <el-upload
-          ref="upload"
-          :data="info"
-          :action="''"
-          :http-request="handleUpload"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="fileList"
-          :auto-upload="false"
-        >
+        <el-upload ref="upload" :data="info" :action="''" :http-request="handleUpload" :on-preview="handlePreview"
+          :on-remove="handleRemove" :file-list="fileList" :auto-upload="false">
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
         </el-upload>
       </el-form-item>
@@ -22,7 +14,8 @@
         <el-input type="textarea" :rows="4" placeholder="请输入内容" v-model="info.comment"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button style="margin-left: 10px;" size="small" type="success" :loading="showLoading" @click="submitUpload">提交</el-button>
+        <el-button style="margin-left: 10px;" size="small" type="success" :loading="showLoading" @click="submitUpload">
+          提交</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>
@@ -70,9 +63,9 @@ const componentOptions = {
     handleUpload(req) {
       this.showLoading = true
       const fileData = new FormData()
-      ;['name', 'lastModified', 'size', 'type'].forEach(key => {
-        fileData.append(key, req.file[key])
-      })
+        ;['name', 'lastModified', 'size', 'type'].forEach(key => {
+          fileData.append(key, req.file[key])
+        })
       if (req.data) {
         Object.keys(req.data).forEach(key => {
           fileData.append(key, req.data[key])
@@ -96,9 +89,9 @@ const componentOptions = {
           fileData,
           config
         )
-        .then(path => {
+        .then(({ path }) => {
           req.onSuccess(path)
-          store.dispatch('list', { dir: {path: this.dir}, domain: this.domain, bucket: this.bucket }).then(()=>{
+          store.dispatch('list', { dir: { path: this.dir }, domain: this.domain, bucket: this.bucket }).then(() => {
             this.showLoading = false
             this.onClose()
           })
@@ -111,8 +104,8 @@ const componentOptions = {
     submitUpload() {
       this.$refs.upload.submit()
     },
-    handleRemove() {},
-    handlePreview() {},
+    handleRemove() { },
+    handlePreview() { },
     onClose() {
       this.$destroy()
     }

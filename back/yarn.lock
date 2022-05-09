@@ -46,6 +46,17 @@
   dependencies:
     vary "^1.1.2"
 
+"@koa/router@^10.1.1":
+  version "10.1.1"
+  resolved "https://registry.npmjs.org/@koa/router/-/router-10.1.1.tgz#8e5a85c9b243e0bc776802c0de564561e57a5f78"
+  integrity sha512-ORNjq5z4EmQPriKbR0ER3k4Gh7YGNhWDL7JBW+8wXDrHLbWYKYSJaOJ9aN06npF5tbTxe2JBOsurpJDAvjiXKw==
+  dependencies:
+    debug "^4.1.1"
+    http-errors "^1.7.3"
+    koa-compose "^4.1.0"
+    methods "^1.1.2"
+    path-to-regexp "^6.1.0"
+
 "@log4js-node/log4js-api@^1.0.2":
   version "1.0.2"
   resolved "https://registry.npmmirror.com/@log4js-node/log4js-api/-/log4js-api-1.0.2.tgz#7a8143fb33f077df3e579dca7f18fea74a02ec8b"
@@ -892,17 +903,6 @@ koa-convert@^2.0.0:
     co "^4.6.0"
     koa-compose "^4.1.0"
 
-koa-router@^10.1.1:
-  version "10.1.1"
-  resolved "https://registry.npmmirror.com/koa-router/-/koa-router-10.1.1.tgz#20809f82648518b84726cd445037813cd99f17ff"
-  integrity sha512-z/OzxVjf5NyuNO3t9nJpx7e1oR3FSBAauiwXtMQu4ppcnuNZzTaQ4p21P8A6r2Es8uJJM339oc4oVW+qX7SqnQ==
-  dependencies:
-    debug "^4.1.1"
-    http-errors "^1.7.3"
-    koa-compose "^4.1.0"
-    methods "^1.1.2"
-    path-to-regexp "^6.1.0"
-
 koa-send@^5.0.0:
   version "5.0.1"
   resolved "https://registry.npmmirror.com/koa-send/-/koa-send-5.0.1.tgz#39dceebfafb395d0d60beaffba3a70b4f543fe79"
@@ -1592,12 +1592,13 @@ tms-db@0.0.12:
     lodash "^4.17.15"
     sqlstring "^2.3.1"
 
-tms-koa@0.0.72:
-  version "0.0.72"
-  resolved "https://registry.npmmirror.com/tms-koa/-/tms-koa-0.0.72.tgz#23a0d272d5929d2eb31bae6bf88b3109586272aa"
-  integrity sha512-2oIkHHgJdYKUEo3TEHW0/ffAlMypSfZka8cmPWxiNPxklRefRwxD8lIEgZQ0Mq+wTS3RojLaUkF7+NC1KcdHYg==
+tms-koa@0.0.76:
+  version "0.0.76"
+  resolved "https://registry.npmjs.org/tms-koa/-/tms-koa-0.0.76.tgz#e949e750a427fcd98351dfe8cb974fa3408eb6eb"
+  integrity sha512-wtiCvANFlzW0sqaCYTAJEll/JXxXULEKU+sdudcVlqdyNKYjTGGr92i3B/kKFExiUaHKJST8/lciUsg1hmA69A==
   dependencies:
     "@koa/cors" "^3.3.0"
+    "@koa/router" "^10.1.1"
     "@log4js-node/log4js-api" "^1.0.2"
     axios "^0.26.1"
     dotenv-flow "^3.1.0"
@@ -1605,7 +1606,6 @@ tms-koa@0.0.72:
     jsonwebtoken "^8.5.1"
     koa "^2.8.1"
     koa-body "^4.1.1"
-    koa-router "^10.1.1"
     koa-send "^5.0.0"
     koa-static "^5.0.0"
     lodash "^4.17.15"

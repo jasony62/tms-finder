@@ -115,27 +115,27 @@ config/log4js.js
 
 ### 环境变量
 
-| 变量                         | 说明                                                                                      | 默认值                |
-| ---------------------------- | ----------------------------------------------------------------------------------------- | --------------------- |
-| VUE_APP_BASE_URL             | 应用的基础路径（域名后的子地址）                                                          | finder_ue             |
-| VUE_APP_API_SERVER           | 业务 API 地址                                                                             | http://localhost:3000 |
-| VUE_APP_FS_SERVER            | 文件下载服务起始地址。不需要包括后台服务`app.router.prefix`。                             | http://localhost:3000 |
-| **用户认证**                 |                                                                                           |                       |
-| VUE_APP_AUTH_DISABLED        | 是否禁用认证，只有为`Yes`时生效                                                           |                       |
-| VUE_APP_AUTH_SERVER          | 用户认证 API 地址                                                                         | http://localhost:3000 |
-| VUE_APP_LOGIN_KEY_USERNAME   | 用户登录 API 中用到的字段，用户名                                                         | username              |
-| VUE_APP_LOGIN_KEY_PASSWORD   | 用户登录 API 中用到的字段，密码                                                           | password              |
-| VUE_APP_LOGIN_KEY_PIN        | 用户登录 API 中用到的字段，验证码                                                         | pin                   |
-| VUE_APP_API_PASS_COOKIE      | 调用后端`api`时是否允许传递`cookie`，字符串`yes`或`true`，不区分大小写。                  | 否                    |
-| **页面设置**                 |                                                                                           |                       |
-| VUE_APP_SUPPORT_SET_INFO     | 支持指定文件扩展信息，用字符串`no`或`false`，不区分大小写，进行关闭。                     |                       |
-| VUE_APP_SUPPORT_MULTI_VIEW   | 支持切换试图，用字符串`no`或`false`，不区分大小写，进行关闭。只有支持文件扩展信息才打开。 |                       |
-| VUE_APP_SUPPORT_PICK_FILE    | 是否在文件列表页面支持**选取**操作，用字符串`yes`或`true`，不区分大小写，打开。           |                       |
-| **媒体服务**                 |                                                                                           |                       |
-| VUE_APP_TMS_JANUS_SUPPORT    | 是否支持对接媒体服务器地址，用字符串`yes`或`true`，不区分大小写，打开。                   |                       |
-| VUE_APP_TMS_JANUS_ADDRESS    | 媒体服务器地址。                                                                          |                       |
-| VUE_APP_TMS_JANUS_HTTP_PORT  | 媒体服务器端口。                                                                          |                       |
-| VUE_APP_TMS_JANUS_HTTPS_PORT | 媒体服务器端口。                                                                          |                       |
+| 变量                      | 说明                                                                                      | 默认值                |
+| ------------------------- | ----------------------------------------------------------------------------------------- | --------------------- |
+| VITE_BASE_URL             | 应用的基础路径（域名后的子地址）                                                          | finder_ue             |
+| VITE_API_SERVER           | 业务 API 地址                                                                             | http://localhost:3000 |
+| VITE_FS_SERVER            | 文件下载服务起始地址。不需要包括后台服务`app.router.prefix`。                             | http://localhost:3000 |
+| **用户认证**              |                                                                                           |                       |
+| VITE_AUTH_DISABLED        | 是否禁用认证，只有为`Yes`时生效                                                           |                       |
+| VITE_AUTH_SERVER          | 用户认证 API 地址                                                                         | http://localhost:3000 |
+| VITE_LOGIN_KEY_USERNAME   | 用户登录 API 中用到的字段，用户名                                                         | username              |
+| VITE_LOGIN_KEY_PASSWORD   | 用户登录 API 中用到的字段，密码                                                           | password              |
+| VITE_LOGIN_KEY_PIN        | 用户登录 API 中用到的字段，验证码                                                         | pin                   |
+| VITE_API_PASS_COOKIE      | 调用后端`api`时是否允许传递`cookie`，字符串`yes`或`true`，不区分大小写。                  | 否                    |
+| **页面设置**              |                                                                                           |                       |
+| VITE_SUPPORT_SET_INFO     | 支持指定文件扩展信息，用字符串`no`或`false`，不区分大小写，进行关闭。                     |                       |
+| VITE_SUPPORT_MULTI_VIEW   | 支持切换试图，用字符串`no`或`false`，不区分大小写，进行关闭。只有支持文件扩展信息才打开。 |                       |
+| VITE_SUPPORT_PICK_FILE    | 是否在文件列表页面支持**选取**操作，用字符串`yes`或`true`，不区分大小写，打开。           |                       |
+| **媒体服务**              |                                                                                           |                       |
+| VITE_TMS_JANUS_SUPPORT    | 是否支持对接媒体服务器地址，用字符串`yes`或`true`，不区分大小写，打开。                   |                       |
+| VITE_TMS_JANUS_ADDRESS    | 媒体服务器地址。                                                                          |                       |
+| VITE_TMS_JANUS_HTTP_PORT  | 媒体服务器端口。                                                                          |                       |
+| VITE_TMS_JANUS_HTTPS_PORT | 媒体服务器端口。                                                                          |                       |
 
 前端的环境变量需要构建时生效。
 
@@ -151,7 +151,7 @@ config/log4js.js
 
 ## ue
 
-通过在配置文件`.env`中指定环境变量`VUE_APP_WEB_SERVER_HTTPS_PORT`，可以在本地启用前端服务时使用`https`。
+通过在配置文件`.env`中指定环境变量`VITE_WEB_SERVER_HTTPS_PORT`，可以在本地启用前端服务时使用`https`。
 
 通过在容器配置文件中指定`TMS_APP_HTTPS_SSL_CERT`和`TMS_APP_HTTPS_SSL_KEY`指定证书，通过容器运行前端服务时使用`https`。
 

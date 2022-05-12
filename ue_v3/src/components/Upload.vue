@@ -21,109 +21,71 @@
   </el-dialog>
 </template>
 
-<script>
-import store from '@/store'
-import createUploadApi from '../apis/file/upload'
-import { Dialog, Form, FormItem, Input, Upload, Button } from 'element-ui'
-
-const componentOptions = {
-  components: {
-    'el-dialog': Dialog,
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-input': Input,
-    'el-upload': Upload,
-    'el-button': Button
-  },
-  props: {
-    tmsAxiosName: String,
+<script setup lang="ts">
+  import { ref, onMounted, onBeforeUnmount } from 'vue'
+  import facStore from '@/store'
+  import createUploadApi from '../apis/file/upload'
+  import { ElDialog, ElForm, ElFormItem, ElInput, ElUpload, ElButton } from 'element-plus'
+  const store = facStore()
+  const props = defineProps({
+    tmsAxiosName: {
+      type: String,
+      default: 'file-api'
+    },
     dir: {
       type: String,
       default: ''
     },
     domain: String,
     bucket: String
-  },
-  data() {
-    return {
-      info: {
-        comment: ''
-      },
-      fileList: [],
-      showLoading: false
+  })
+  const { dir, domain, bucket, tmsAxiosName } = props;
+  const info = ref({comment: ''});
+  const fileList = ref([]);
+  const showLoading = ref(false);
+  const upload = ref(null)
+  const handleUpload = (req: any) => {
+    showLoading.value = true
+    const fileData = new FormData();
+    ['name', 'lastModified', 'size', 'type'].forEach(key => {
+      fileData.append(key, req.file[key])
+    })
+    if (req.data) {
+      Object.keys(req.data).forEach(key => {
+        fileData.append(key, req.data[key])
+      })
     }
-  },
-  mounted() {
-    document.body.appendChild(this.$el)
-  },
-  beforeDestroy() {
-    document.body.removeChild(this.$el)
-  },
-  methods: {
-    handleUpload(req) {
-      this.showLoading = true
-      const fileData = new FormData()
-        ;['name', 'lastModified', 'size', 'type'].forEach(key => {
-          fileData.append(key, req.file[key])
-        })
-      if (req.data) {
-        Object.keys(req.data).forEach(key => {
-          fileData.append(key, req.data[key])
-        })
-      }
-      fileData.append('file', req.file)
+    fileData.append('file', req.file)
 
-      const headers = { 'Content-Type': 'multipart/form-data' }
-      const config = {
-        headers,
-        onUploadProgress: progressEvent => {
-          const percentCompleted = Math.floor(
-            (progressEvent.loaded * 100) / progressEvent.total
-          )
-          req.onProgress({ percent: percentCompleted })
-        }
-      }
-      createUploadApi(this.TmsAxios(this.tmsAxiosName))
-        .plain(
-          { dir: this.dir, domain: this.domain, bucket: this.bucket },
-          fileData,
-          config
+    const headers = { 'Content-Type': 'multipart/form-data' }
+    const config = {
+      headers,
+      onUploadProgress: (progressEvent: any) => {
+        const percentCompleted = Math.floor(
+                (progressEvent.loaded * 100) / progressEvent.total
         )
-        .then(({ path }) => {
-          req.onSuccess(path)
-          store.dispatch('list', { dir: { path: this.dir }, domain: this.domain, bucket: this.bucket }).then(() => {
-            this.showLoading = false
-            this.onClose()
-          })
-        })
-        .catch(err => {
-          this.showLoading = false
+        req.onProgress({ percent: percentCompleted })
+      }
+    }
+    createUploadApi.plain({ dir: dir, domain: domain, bucket: bucket }, fileData, config)
+      .then(({ path }) => {
+        req.onSuccess(path);
+        store.list({path: dir}, domain, bucket).then(() => {
+          showLoading.value = false
+          onClose()
+      }).catch((err: any) => {
+          showLoading.value = false
           req.onError(err)
         })
-    },
-    submitUpload() {
-      this.$refs.upload.submit()
-    },
-    handleRemove() { },
-    handlePreview() { },
-    onClose() {
-      this.$destroy()
-    }
+      })
   }
-}
-
-export default componentOptions
-
-export function createAndMount(Vue, props) {
-  const CompClass = Vue.extend(componentOptions)
-
-  const propsData = {
-    tmsAxiosName: 'file-api'
+  const submitUpload = () => {
+    console.log(upload);
+    upload?.value.submit()
   }
-  if (props && typeof props === 'object') Object.assign(propsData, props)
-
-  new CompClass({
-    propsData
-  }).$mount()
-}
+  const handleRemove = () => { }
+  const chandlePreview = () => { }
+  const onClose = () => {
+    // this.$destroy()
+  }
 </script>

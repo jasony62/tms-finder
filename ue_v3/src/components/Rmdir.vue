@@ -11,72 +11,39 @@
   </el-dialog>
 </template>
 
-<script>
-
-import createUploadApi from '../apis/file/upload'
-import { Dialog, Form, FormItem, Input, Button, Message } from 'element-ui'
-
-const componentOptions = {
-  components: {
-    'el-dialog': Dialog,
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-input': Input,
-    'el-button': Button
-  },
-  props: {
-    tmsAxiosName: String,
+<script setup lang="ts">
+  import { ref, onMounted, onBeforeUnmount } from 'vue'
+  import { TmsAxios } from 'tms-vue3'
+  import createUploadApi from '../apis/file/upload'
+  import { ElDialog, ElForm, ElFormItem, ElInput, ElButton, ElMessage } from 'element-plus'
+  const props = defineProps({
+    tmsAxiosName: {
+      type: String,
+      default: 'file-api'
+    },
     dir: {
       type: String,
-      default: ''
+      default: '21212'
     },
     domain: String,
     bucket: String
-  },
-  data() {
-    return {}
-  },
-  mounted() {
-    document.body.appendChild(this.$el)
-  },
-  beforeDestroy() {
-    document.body.removeChild(this.$el)
-  },
-  methods: {
-    submitMkdir() {
-      if (this.dir) {
-        createUploadApi(this.TmsAxios(this.tmsAxiosName))
-          .rmdir({ dir: this.dir, domain: this.domain, bucket: this.bucket })
-          .then(res=>{
-            if (res=='ok') {
-              Message({
-                message: '目录删除成功！',
-                type: 'success'
-              });
-            }
-          this.$tmsEmit('onRemove')
-          this.onClose()
+  })
+  const {dir, domain, bucket, tmsAxiosName} = props
+  const submitMkdir = () => {
+    if (dir) {
+      createUploadApi.rmdir({ dir: dir, domain: domain, bucket: bucket })
+        .then((res:any)=>{
+          if (res=='ok') {
+            ElMessage({
+              message: '目录删除成功！',
+              type: 'success'
+            });
+          }
+          onClose()
         })
-      }
-    },
-    onClose() {
-      this.$destroy()
     }
   }
-}
-
-export default componentOptions
-
-export function createAndMount(Vue, props) {
-  const CompClass = Vue.extend(componentOptions)
-
-  const propsData = {
-    tmsAxiosName: 'file-api'
+  const onClose = () => {
+    // this.$destroy()
   }
-  if (props && typeof props === 'object') Object.assign(propsData, props)
-
-  new CompClass({
-    propsData
-  }).$mount()
-}
 </script>

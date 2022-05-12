@@ -48,14 +48,19 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import Vue from 'vue'
+import { computed, ref, inject } from 'vue';
+import { dialogInjectionKey } from 'gitart-vue-dialog'
 import facStore from '@/store'
+import Rmdir from './Rmdir.vue'
+import Upload from './Upload.vue'
+import Mkdir from './Mkdir.vue'
 const props = defineProps({
   activeIndex: { type: String },
   domain: { type: String },
   bucket: { type: String }
 })
+const {activeIndex, domain, bucket} = props
+const $dialog = inject(dialogInjectionKey)
 
 const store = facStore()
 
@@ -76,38 +81,55 @@ const currentDir = computed(() => {
 })
 
 const upload = () => {
-  import('./Upload.vue').then((Module:any) => {
+  $dialog?.addDialog({ component: Upload, props: {
+      dir: currentDir ? currentDir.path : null,
+      domain: domain,
+      bucket: bucket
+    }
+  })
+  /*import('./Upload.vue').then((Module:any) => {
     Module.createAndMount(Vue, {
       dir: currentDir ? currentDir.path : null,
       domain: props.domain,
       bucket: props.bucket
     })
-  })
+  })*/
 }
 
 const mkdir = () => {
-  import('./Mkdir.vue').then((Module:any) => {
+  $dialog?.addDialog({ component: Mkdir, props: {
+      dir: currentDir ? currentDir.path : null,
+      bucket: bucket
+    }
+  })
+  /*import('./Mkdir.vue').then((Module:any) => {
     Module.createAndMount(Vue, {
       dir: currentDir ? currentDir?.path : null,
       bucket: props.bucket
     })
-    /*this.$tmsOn('onMake', () => {
+    /!*this.$tmsOn('onMake', () => {
       this.$tmsEmit('reFresh')
-    })*/
-  })
+    })*!/
+  })*/
 }
 const rmdir = () => {
-  import('./Rmdir.vue').then((Module: any) => {
+  $dialog?.addDialog({ component: Rmdir, props: {
+      dir: currentDir ? currentDir.path : null,
+      domain: domain,
+      bucket: bucket
+    }
+  })
+  /*import('./Rmdir.vue').then((Module: any) => {
     Module.createAndMount(Vue, {
       dir: currentDir ? currentDir.path : null,
       domain: props.domain,
       bucket: props.bucket
     })
-    /*this.$tmsOn('onRemove', () => {
+    /!*this.$tmsOn('onRemove', () => {
       this.$store.commit('currentDir', { dir: null })
       this.$tmsEmit('reFresh')
-    })*/
-  })
+    })*!/
+  })*/
 }
 </script>
 <style scoped>

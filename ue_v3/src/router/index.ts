@@ -3,12 +3,13 @@ import Login from '../views/Login.vue'
 import Storage from '../views/Storage.vue'
 import Manage from '../views/Manage.vue'
 import NotFound from '../views/NotFound.vue'
-
+import Register from '../views/Register.vue'
+import Smscode from '../views/Smscode.vue'
 const VITE_BASE_URL = typeof import.meta.env.VITE_BASE_URL === 'string' ? import.meta.env.VITE_BASE_URL : ''
 
 const routes = [
   {
-    path: `${VITE_BASE_URL}/web/login`,
+    path: `${VITE_BASE_URL}/login`,
     name: 'login',
     component: Login,
   },
@@ -17,6 +18,18 @@ const routes = [
     name: 'manage',
     props: (route: any) => ({ domain: route.query.domain, bucket: route.query.bucket }),
     component: Manage,
+  },
+  {
+    path: `${VITE_BASE_URL}/register`,
+    name: 'register',
+    component: Register,
+    props: true,
+  },
+  {
+    path: `${VITE_BASE_URL}/smscode`,
+    name: 'smscode',
+    component: Smscode,
+    props: true,
   },
   {
     path: `${VITE_BASE_URL}/web/storage`,
@@ -35,7 +48,7 @@ const routes = [
   },
   {
     path: '/',
-    component: NotFound,
+    redirect: { name: 'root' },
   },
 ]
 

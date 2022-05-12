@@ -1,4 +1,4 @@
-<template></template>
+<template>
   <div class="grid place-items-center h-screen">
     <div class="border-2 rounded w-1/4">
       <login
@@ -9,7 +9,7 @@
         :on-fail="fnFailLogin"
       >
       </login>
-      <!-- <div class="flex flex-nowrap pb-4">
+      <div class="flex flex-nowrap pb-4">
         <router-link class="flex-grow pl-4" :to="{ path: 'Smscode' }"
           >短信登录</router-link
         >
@@ -18,7 +18,7 @@
           :to="{ path: 'register' }"
           >注册</router-link
         >
-      </div> -->
+      </div>
     </div>
   </div>
 </template>

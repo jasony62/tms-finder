@@ -72,7 +72,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, inject, onMounted, ref } from 'vue'
+import { computed, inject, onMounted, ref, toRaw } from 'vue'
 import { dialogInjectionKey } from 'gitart-vue-dialog'
 import facStore from '@/store'
 import utils from '@/utils'
@@ -104,7 +104,7 @@ const columns = ref(5)
 const cardClass = ref('el-card')
 const emptyClass = ref('empty-card')
 
-const schemas = store.schemas
+const schemas = computed(() => store.schemas)
 
 const files = computed(() => {
   return store.files
@@ -157,8 +157,10 @@ const preview = (file: Tms_Finder_File) => {
 }
 const setInfo = (file: Tms_Finder_File) => {
   if (!file.info) file.info = {}
-  console.log('ssss', schemas)
-  $dialog?.addDialog({ component: Editor, props: { domain, bucket, schemas, path: file.path, info: file.info } })
+  $dialog?.addDialog({
+    component: Editor,
+    props: { domain, bucket, schemas: toRaw(schemas), path: file.path, info: file.info },
+  })
 }
 
 const download = (index, file) => {
@@ -265,7 +267,7 @@ const thumbUrl = (file) => {
   return utils.getThumbUrl(file)
 }
 
-onMounted(() => {
+onMounted(async () => {
   if (window.screen.width >= 1920) {
     columns.value = 7
     cardClass.value = 'el-card-2'
@@ -275,6 +277,7 @@ onMounted(() => {
     cardClass.value = 'el-card'
     emptyClass.value = 'empty-card'
   }
+  await store.getSchemas(bucket, domain)
 })
 </script>
 <style lang="scss">

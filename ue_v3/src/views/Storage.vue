@@ -18,6 +18,7 @@ import Tree from '../components/Tree.vue'
 import Files from '../components/Files.vue'
 
 defineProps({
-  domain: { type: String }, bucket: { type: String }
+  domain: { type: String },
+  bucket: { type: String },
 })
 </script>

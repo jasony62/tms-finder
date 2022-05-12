@@ -22,7 +22,7 @@ export default defineStore('webfs', {
     setViewStyle(value: string) {
       this.viewStyle = value
     },
-    getSchemas(bucket: string, domain: string) {
+    getSchemas(bucket?: string, domain?: string) {
       return new Promise((resolve) => {
         browseApi.schemas(domain, bucket).then((schemas: any) => {
           this.schemas = schemas
@@ -30,7 +30,7 @@ export default defineStore('webfs', {
         })
       })
     },
-    list(dir, domain: string, bucket: string) {
+    list(dir, domain?: string, bucket?: string) {
       return new Promise((resolve) => {
         browseApi.list(dir.path, domain, bucket).then((listData) => {
           let { dirs, files } = listData

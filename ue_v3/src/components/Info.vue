@@ -1,68 +1,73 @@
 <template>
   <div class="info">
-    <tms-flex direction="column" :gap="gap" alignItems="stretch">
-      <div v-if="schemas">
-        <el-table :data="files" stripe style="width: 100%" @row-dblclick="rowDbClick" v-if="viewStyle == 1">
-          <el-table-column type="index" width="50"></el-table-column>
-          <el-table-column v-for="(s, k) in schemas.properties" :key="k" :prop="k" :label="s.title"></el-table-column>
-          <el-table-column fixed="right" label="操作" width="120">
-            <template slot-scope="scope">
-              <el-button type="text" size="small" @click="handleSetInfo(scope.$index, scope.row)">编辑</el-button>
-              <el-button type="text" size="small" @click="download(scope.$index, scope.row)">下载</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div class="icon-view" v-if="viewStyle == '2'">
-          <div class="icon-lists" v-if="files.length">
-            <el-card
-              :class="cardClass"
-              v-for="(item, index) in files"
-              :key="index + '-only'"
-              :body-style="{ padding: '0px' }"
-              shadow="never"
-            >
-              <svg class="icon" aria-hidden="true">
-                <use :xlink:href="formateFileType(item)" />
-              </svg>
-              <div style="padding: 0 14px 14px">
-                <span class="file-comment">{{ item.comment }}</span>
-                <div class="bottom clearfix">
-                  <el-button type="text" class="button" @click="handleSetInfo(index, item)">编辑</el-button>
-                  <el-button type="text" class="button" @click="download(index, item)">下载</el-button>
-                </div>
+    <div v-if="schemas">
+      <el-table :data="files" stripe style="width: 100%" @row-dblclick="rowDbClick" v-if="viewStyle == '1'">
+        <el-table-column type="index" width="50"></el-table-column>
+        <el-table-column v-for="(s, k) in schemas.properties" :key="k" :prop="k" :label="s.title"></el-table-column>
+        <el-table-column fixed="right" label="操作" width="120">
+          <template #default="scope">
+            <el-button @click="setInfo(scope.row)">编辑</el-button>
+            <el-button @click="download(scope.row)">下载</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="icon-view" v-if="viewStyle == '2'">
+        <div class="icon-lists" v-if="files.length">
+          <el-card
+            :class="cardClass"
+            v-for="(item, index) in files"
+            :key="index + '-only'"
+            :body-style="{ padding: '0px' }"
+            shadow="never"
+          >
+            <svg class="icon" aria-hidden="true">
+              <use :xlink:href="formateFileType(item)" />
+            </svg>
+            <div style="padding: 0 14px 14px">
+              <span class="file-comment">{{ item.comment }}</span>
+              <div class="bottom clearfix">
+                <el-button @click="setInfo(item)">编辑</el-button>
+                <el-button @click="download(item)">下载</el-button>
               </div>
-            </el-card>
-            <div
-              :class="emptyClass"
-              v-for="index in columns - (files.length % columns)"
-              :key="index"
-              v-show="files.length % columns > 0"
-            ></div>
-          </div>
-          <div class="empty" v-else>暂无数据</div>
+            </div>
+          </el-card>
+          <div
+            :class="emptyClass"
+            v-for="index in columns - (files.length % columns)"
+            :key="index"
+            v-show="files.length % columns > 0"
+          ></div>
         </div>
+        <div class="empty" v-else>暂无数据</div>
       </div>
-      <tms-flex class="tms-pagination">
-        <el-pagination
-          background
-          v-model:currentPage="batch.page"
-          :page-sizes="[10, 20, 30]"
-          v-model:pageSize="batch.size"
-          layout="total, sizes, prev, pager, next"
-          :total="batch.total"
-        ></el-pagination>
-      </tms-flex>
-    </tms-flex>
+    </div>
+    <el-pagination
+      background
+      v-model:currentPage="batch.page"
+      :page-sizes="[10, 20, 30]"
+      v-model:pageSize="batch.size"
+      layout="total, sizes, prev, pager, next"
+      :total="batch.total"
+    ></el-pagination>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed, inject, onMounted, reactive, ref, toRaw, watch } from 'vue'
+import { dialogInjectionKey } from 'gitart-vue-dialog'
 import { Batch } from 'tms-vue3'
-import { computed, onMounted, reactive, ref, watch } from 'vue'
 import facStore from '@/store'
 import manageApi from '@/apis/file/manage'
 import utils from '@/utils'
-// import { createAndMount } from './Editor.vue'
+import Editor from './Editor.vue'
+
+type Tms_Finder_File = {
+  name: string
+  path: string
+  size: number
+  birthtime: number
+  info: any
+}
 
 const props = defineProps({
   domain: { type: String },
@@ -70,9 +75,9 @@ const props = defineProps({
 })
 
 const store = facStore()
+const $dialog = inject(dialogInjectionKey)
 
 const { domain, bucket } = props
-const gap = 4
 const files = ref([])
 
 const batch = reactive(new Batch(manageApi.list, domain, bucket))
@@ -103,21 +108,14 @@ const batchList = (page: number) => {
   })
 }
 
-const handleSetInfo = (index: any, file: any) => {
-  // const comp = createAndMount(
-  //   Vue,
-  //   this.schemas,
-  //   file.path,
-  //   file,
-  //   this.domain,
-  //   this.bucket
-  // )
-  // comp.$on('onClose', info => {
-  //   Object.assign(file, info)
-  // })
+const setInfo = (file: any) => {
+  $dialog?.addDialog({
+    component: Editor,
+    props: { domain, bucket, schemas: toRaw(schemas), path: file.path, info: file.info },
+  })
 }
 
-const download = (index: any, file: any) => {
+const download = (file: any) => {
   // const fileurl = this.$utils.getFileUrl(file)
   // MessageBox.confirm(fileurl, file.name, {
   //   confirmButtonText: '下载',

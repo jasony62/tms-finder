@@ -17,8 +17,7 @@ const props = defineProps({
   domain: { type: String, required: true },
   bucket: { type: String },
 })
-
-const { path, info, domain, bucket } = props
+const { schemas, path, info, domain, bucket } = props
 
 const dialogVisible = ref(true)
 
@@ -26,6 +25,7 @@ const onClose = () => {
   // this.$emit('onClose', this.info)
   // this.$destroy()
 }
+
 const onSubmit = (newInfo: any) => {
   createBrowseApi.setInfo(path, info, domain, bucket).then(() => {
     Object.assign(info, newInfo)

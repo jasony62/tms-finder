@@ -5,6 +5,7 @@ specifiers:
   '@vitejs/plugin-vue': ^2.3.1
   autoprefixer: ^10.4.7
   element-plus: ^2.2.0
+  gitart-vue-dialog: ^2.0.5
   pinia: ^2.0.14
   postcss: ^8.4.13
   sass: ^1.51.0
@@ -21,6 +22,7 @@ specifiers:
 
 dependencies:
   element-plus: 2.2.0_vue@3.2.33
+  gitart-vue-dialog: 2.0.5_vue@3.2.33
   pinia: 2.0.14_ytvqwwdyss532bvoq2clv4ed5m
   tms-vue3: 0.0.4_vue@3.2.33
   tms-vue3-ui: 0.0.24
@@ -976,6 +978,14 @@ packages:
     resolution: {integrity: sha512-sY22aA6xchAzprjyqmSEQv4UbAAzRN0L2dQB0NlN5acTTK9Don6nhoc3eAbUnpZiCANAMfd/+40kVdKfFygohg==}
     engines: {node: '>=10'}
     dev: true
+
+  /gitart-vue-dialog/2.0.5_vue@3.2.33:
+    resolution: {integrity: sha512-HEBOU4USXYL/FMrGM/rFtZ1fx6xS8mOMjP8xDZ4vrBvZCHglX3p/UsdQONIbRjQR5Hj+BGX97LBaFpf+0bFudA==}
+    peerDependencies:
+      vue: ^3.2.6
+    dependencies:
+      vue: 3.2.33
+    dev: false
 
   /glob-parent/5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}

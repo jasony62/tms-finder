@@ -1,7 +1,8 @@
 export default {
   // 返回文件的完整url
   getFileUrl(file) {
-    const fserver = import.meta.env.VITE_APP_FS_SERVER || `${location.protocol}//${location.host}:${location.port}`
+    console.log(location.host)
+    const fserver = import.meta.env.VITE_FS_SERVER || `${location.protocol}//${location.host}`
     const fileurl = `${fserver}${file.path}`
 
     return fileurl
@@ -9,7 +10,7 @@ export default {
   // 返回文件的完整缩略图url
   getThumbUrl(file) {
     if (!file.thumb) return ''
-    const fserver = import.meta.env.VITE_APP_FS_SERVER || `${location.protocol}//${location.host}:${location.port}`
+    const fserver = import.meta.env.VITE_FS_SERVER || `${location.protocol}//${location.host}`
     const thumbUrl = `${fserver}${file.thumb}`
 
     return thumbUrl

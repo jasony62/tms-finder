@@ -1,14 +1,6 @@
 <template>
-  <el-dialog
-    class="abow_dialog"
-    title="文件预览"
-    :closeOnClickModal="false"
-    :visible="true"
-    @close="onClose"
-    width="90%"
-    top="4vh"
-  >
-    <div>
+  <div id="preview">
+    <el-dialog title="文件预览" :closeOnClickModal="false" v-model="dialogVisible" :fullscreen="true">
       <iframe
         id="iframe"
         width="100%"
@@ -18,76 +10,33 @@
         marginwidth="0"
         marginheight="0"
         scrolling="auto"
-        @load="iframeLoad"
       ></iframe>
-    </div>
-  </el-dialog>
+    </el-dialog>
+  </div>
 </template>
 
-<script>
-import { Dialog } from 'element-ui'
+<script setup lang="ts">
+import { ref } from 'vue'
 
-const componentOptions = {
-  components: { 'el-dialog': Dialog },
-  props: {
-    tmsAxiosName: { type: String },
-    fileurl: String,
-    file: Object,
-    domain: String,
-    bucket: String,
-  },
-  mounted() {
-    document.body.appendChild(this.$el)
-  },
-  beforeDestroy() {
-    document.body.removeChild(this.$el)
-  },
-  methods: {
-    iframeLoad() {
-      var ifm = document.getElementById('iframe')
-      ifm.height = document.documentElement.clientHeight - 157
-    },
-    onClose() {
-      this.$destroy()
-    },
-  },
-}
+defineProps({
+  fileurl: String,
+})
 
-export default componentOptions
-
-export function createAndMount(Vue, props) {
-  const CompClass = Vue.extend(componentOptions)
-
-  const propsData = {
-    tmsAxiosName: 'file-api',
-  }
-  if (props && typeof props === 'object') Object.assign(propsData, props)
-
-  new CompClass({
-    propsData,
-  }).$mount()
-}
+const dialogVisible = ref(true)
 </script>
-<style lang="less">
-.abow_dialog {
-  display: flex;
-  justify-content: center;
-  align-items: Center;
-  overflow: hidden;
-  .el-dialog {
-    margin: 0 auto !important;
-    height: 90%;
-    overflow: hidden;
+
+<style lang="scss">
+#preview {
+  .el-dialog.is-fullscreen {
+    @apply flex flex-col;
+
+    .el-dialog__body {
+      @apply flex-grow overflow-auto;
+    }
   }
-  .el-dialog__body {
-    position: absolute;
-    left: 0;
-    top: 54px;
-    bottom: 0;
-    right: 0;
-    padding: 10px 20px;
-    z-index: 1;
-    overflow: hidden;
+
+  iframe {
+    height: 100%;
   }
 }
 </style>

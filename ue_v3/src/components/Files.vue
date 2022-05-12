@@ -74,20 +74,25 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, inject, onMounted, ref } from 'vue'
+import { dialogInjectionKey } from 'gitart-vue-dialog'
 import facStore from '@/store'
 import utils from '@/utils'
+import Preview from './Preview.vue'
+import PreviewVue from './Preview.vue'
 
 const SupportSetInfo = !/no|false/i.test(import.meta.env.VITE_SUPPORT_SET_INFO)
 const SupportPickFile = /yes|true/i.test(import.meta.env.VITE_SUPPORT_PICK_FILE)
 
-defineProps({
+const props = defineProps({
   domain: { type: String },
   bucket: { type: String },
 })
 
 const store = facStore()
+const $dialog = inject(dialogInjectionKey)
 
+const { domain, bucket } = props
 const searchContent = ref('')
 const columns = ref(5)
 const cardClass = ref('el-card')
@@ -112,8 +117,8 @@ const imgError = (e) => {
   e.target.parentNode.parentNode.children[1].style.display = 'block'
 }
 const preview = (index, file) => {
-  // const fileurl = this.$utils.getFileUrl(file)
-  // const fileType = this.$utils.matchType(file.name)
+  const fileurl = utils.getFileUrl(file)
+  const fileType = utils.matchType(file.name)
   // // 是否配置了Janus媒体服务器
   // const isSupportJanus = /yes|true/i.test(
   //   process.env.VUE_APP_TMS_JANUS_SUPPORT
@@ -139,13 +144,9 @@ const preview = (index, file) => {
   //     })
   //   })
   // } else {
-  //   import('./Preview.vue').then((Module) => {
-  //     Module.createAndMount(Vue, {
-  //       fileurl,
-  //       domain,
-  //       bucket,
-  //     })
-  //   })
+  // import('./Preview.vue').then((Module) => {
+  $dialog?.addDialog({ component: Preview, props: { fileurl } })
+  // })
   // }
 }
 const handleSetInfo = (index, file) => {

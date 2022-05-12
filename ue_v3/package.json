@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "element-plus": "^2.2.0",
+    "gitart-vue-dialog": "^2.0.5",
     "pinia": "^2.0.14",
     "tms-vue3": "^0.0.4",
     "tms-vue3-ui": "^0.0.24",

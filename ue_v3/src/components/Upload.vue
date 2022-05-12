@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="文件上传" :closeOnClickModal="false" :visible="true" @close="onClose">
+  <el-dialog title="文件上传" :closeOnClickModal="false" v-model="dialogVisible">
     <el-form :label-position="'left'" label-width="80px">
       <el-form-item label="当前目录">
         <div>{{ dir }}</div>
@@ -22,16 +22,13 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted, onBeforeUnmount } from 'vue'
+  import { ref, inject } from 'vue'
   import facStore from '@/store'
   import createUploadApi from '../apis/file/upload'
-  import { ElDialog, ElForm, ElFormItem, ElInput, ElUpload, ElButton } from 'element-plus'
   const store = facStore()
+  import { dialogInjectionKey } from 'gitart-vue-dialog'
+  const $dialog = inject(dialogInjectionKey)
   const props = defineProps({
-    tmsAxiosName: {
-      type: String,
-      default: 'file-api'
-    },
     dir: {
       type: String,
       default: ''
@@ -39,10 +36,11 @@
     domain: String,
     bucket: String
   })
-  const { dir, domain, bucket, tmsAxiosName } = props;
+  const { dir, domain, bucket } = props;
   const info = ref({comment: ''});
   const fileList = ref([]);
   const showLoading = ref(false);
+  const dialogVisible = ref(true);
   const upload = ref(null)
   const handleUpload = (req: any) => {
     showLoading.value = true
@@ -80,12 +78,9 @@
       })
   }
   const submitUpload = () => {
-    console.log(upload);
     upload?.value.submit()
+    $dialog.removeDialog(0)
   }
   const handleRemove = () => { }
   const chandlePreview = () => { }
-  const onClose = () => {
-    // this.$destroy()
-  }
 </script>

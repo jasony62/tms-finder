@@ -87,13 +87,6 @@ const upload = () => {
       bucket: bucket
     }
   })
-  /*import('./Upload.vue').then((Module:any) => {
-    Module.createAndMount(Vue, {
-      dir: currentDir ? currentDir.path : null,
-      domain: props.domain,
-      bucket: props.bucket
-    })
-  })*/
 }
 
 const mkdir = () => {
@@ -102,15 +95,6 @@ const mkdir = () => {
       bucket: bucket
     }
   })
-  /*import('./Mkdir.vue').then((Module:any) => {
-    Module.createAndMount(Vue, {
-      dir: currentDir ? currentDir?.path : null,
-      bucket: props.bucket
-    })
-    /!*this.$tmsOn('onMake', () => {
-      this.$tmsEmit('reFresh')
-    })*!/
-  })*/
 }
 const rmdir = () => {
   $dialog?.addDialog({ component: Rmdir, props: {
@@ -119,17 +103,6 @@ const rmdir = () => {
       bucket: bucket
     }
   })
-  /*import('./Rmdir.vue').then((Module: any) => {
-    Module.createAndMount(Vue, {
-      dir: currentDir ? currentDir.path : null,
-      domain: props.domain,
-      bucket: props.bucket
-    })
-    /!*this.$tmsOn('onRemove', () => {
-      this.$store.commit('currentDir', { dir: null })
-      this.$tmsEmit('reFresh')
-    })*!/
-  })*/
 }
 </script>
 <style scoped>

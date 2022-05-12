@@ -2,7 +2,11 @@
   <div class="files">
     <div class="demo-input-suffix row">
       <el-col :span="6" :offset="16">
-        <el-input placeholder="全站搜索-请输入文件名名称" suffix-icon="el-icon-search" v-model="searchContent"></el-input>
+        <el-input
+          placeholder="全站搜索-请输入文件名名称"
+          suffix-icon="el-icon-search"
+          v-model="searchContent"
+        ></el-input>
       </el-col>
       <el-col :span="1">
         <el-button type="primary" size="small" @click="overallSearch">搜索</el-button>
@@ -19,15 +23,21 @@
             编辑
           </el-button>
           <el-button type="default" size="small" @click="download(scope.$index, scope.row)">下载</el-button>
-          <el-button type="default" size="small" @click="pick(scope.$index, scope.row)" v-if="SupportPickFile">选取
+          <el-button type="default" size="small" @click="pick(scope.$index, scope.row)" v-if="SupportPickFile"
+            >选取
           </el-button>
         </template>
       </el-table-column>
     </el-table>
     <div class="icon-view" v-if="viewStyle === '2'">
       <div class="icon-lists" v-if="files.length">
-        <el-card :class="cardClass" v-for="(item, index) in files" :key="index" :body-style="{ padding: '0px' }"
-          shadow="never">
+        <el-card
+          :class="cardClass"
+          v-for="(item, index) in files"
+          :key="index"
+          :body-style="{ padding: '0px' }"
+          shadow="never"
+        >
           <div class="thumb">
             <img :src="thumbUrl(item)" @load="imgload(index)" @error="imgError" />
           </div>
@@ -41,36 +51,48 @@
               <span class="file-size">{{ formateFileSize(item) }}</span>
               <div class="operation">
                 <el-button type="default" class="button" @click="preview(index, item)">预览</el-button>
-                <el-button type="default" class="button" @click="handleSetInfo(index, item)" v-if="SupportSetInfo">编辑
+                <el-button type="default" class="button" @click="handleSetInfo(index, item)" v-if="SupportSetInfo"
+                  >编辑
                 </el-button>
                 <el-button type="default" class="button" @click="download(index, item)">下载</el-button>
-                <el-button type="default" class="button" @click="pick(index, item)" v-if="SupportPickFile">选取
+                <el-button type="default" class="button" @click="pick(index, item)" v-if="SupportPickFile"
+                  >选取
                 </el-button>
               </div>
             </div>
           </div>
         </el-card>
-        <div :class="emptyClass" v-for="index in columns - (files.length % columns)" :key="index + '-only'"
-          v-show="files.length % columns > 0"></div>
+        <div
+          :class="emptyClass"
+          v-for="index in columns - (files.length % columns)"
+          :key="index + '-only'"
+          v-show="files.length % columns > 0"
+        ></div>
       </div>
       <div class="empty" v-else>暂无数据</div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, inject, onMounted, ref } from 'vue'
+import { dialogInjectionKey } from 'gitart-vue-dialog'
 import facStore from '@/store'
 import utils from '@/utils'
+import Preview from './Preview.vue'
+import PreviewVue from './Preview.vue'
 
-const SupportSetInfo = !/no|false/i.test(import.meta.env.VUE_APP_SUPPORT_SET_INFO)
-const SupportPickFile = /yes|true/i.test(import.meta.env.VUE_APP_SUPPORT_PICK_FILE)
+const SupportSetInfo = !/no|false/i.test(import.meta.env.VITE_SUPPORT_SET_INFO)
+const SupportPickFile = /yes|true/i.test(import.meta.env.VITE_SUPPORT_PICK_FILE)
 
-defineProps({
-  domain: { type: String }, bucket: { type: String }
+const props = defineProps({
+  domain: { type: String },
+  bucket: { type: String },
 })
 
 const store = facStore()
+const $dialog = inject(dialogInjectionKey)
 
+const { domain, bucket } = props
 const searchContent = ref('')
 const columns = ref(5)
 const cardClass = ref('el-card')
@@ -95,8 +117,8 @@ const imgError = (e) => {
   e.target.parentNode.parentNode.children[1].style.display = 'block'
 }
 const preview = (index, file) => {
-  // const fileurl = this.$utils.getFileUrl(file)
-  // const fileType = this.$utils.matchType(file.name)
+  const fileurl = utils.getFileUrl(file)
+  const fileType = utils.matchType(file.name)
   // // 是否配置了Janus媒体服务器
   // const isSupportJanus = /yes|true/i.test(
   //   process.env.VUE_APP_TMS_JANUS_SUPPORT
@@ -122,13 +144,9 @@ const preview = (index, file) => {
   //     })
   //   })
   // } else {
-  //   import('./Preview.vue').then((Module) => {
-  //     Module.createAndMount(Vue, {
-  //       fileurl,
-  //       domain,
-  //       bucket,
-  //     })
-  //   })
+  // import('./Preview.vue').then((Module) => {
+  $dialog?.addDialog({ component: Preview, props: { fileurl } })
+  // })
   // }
 }
 const handleSetInfo = (index, file) => {
@@ -145,6 +163,7 @@ const handleSetInfo = (index, file) => {
   //   Object.assign(file.info, info)
   // })
 }
+
 const download = (index, file) => {
   // const fileurl = this.$utils.getFileUrl(file)
   // MessageBox.confirm(fileurl, file.name, {
@@ -154,12 +173,15 @@ const download = (index, file) => {
   //   window.open(fileurl)
   // })
 }
-const pick = (index, file) => {
-  // this.$utils.postMessage(() => this.$utils.getFileUrl(file))
+
+const pick = (index: number, file: any) => {
+  utils.postMessage(() => utils.getFileUrl(file))
 }
+
 const rowDbClick = (file) => {
   // this.$utils.postMessage(() => this.$utils.getFileUrl(file))
 }
+
 // 全局搜索
 const overallSearch = () => {
   // this.$store.dispatch({
@@ -171,14 +193,7 @@ const overallSearch = () => {
 // 格式化日期
 const formatDate = (data) => {
   const date = new Date(data.birthtime)
-  return (
-    date.getFullYear() +
-    '年' +
-    (date.getMonth() + 1) +
-    '月' +
-    date.getDate() +
-    '日'
-  )
+  return date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日'
 }
 // 格式化文件大小
 const formateFileSize = (data) => {

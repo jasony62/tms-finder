@@ -1592,10 +1592,10 @@ tms-db@0.0.12:
     lodash "^4.17.15"
     sqlstring "^2.3.1"
 
-tms-koa@0.0.76:
-  version "0.0.76"
-  resolved "https://registry.npmjs.org/tms-koa/-/tms-koa-0.0.76.tgz#e949e750a427fcd98351dfe8cb974fa3408eb6eb"
-  integrity sha512-wtiCvANFlzW0sqaCYTAJEll/JXxXULEKU+sdudcVlqdyNKYjTGGr92i3B/kKFExiUaHKJST8/lciUsg1hmA69A==
+tms-koa@0.0.77:
+  version "0.0.77"
+  resolved "https://registry.npmjs.org/tms-koa/-/tms-koa-0.0.77.tgz#8c4c8f6ee31a65c3a30c150cc2615b9bd192619e"
+  integrity sha512-W8DZtIJjARiuCgRse0+mJIoFXCM/1CeTOfNRplgfWfh0Bp9E4LlBwrBdCbKGOMJA8qJD6tQJ6JzXU4baXcZXLg==
   dependencies:
     "@koa/cors" "^3.3.0"
     "@koa/router" "^10.1.1"

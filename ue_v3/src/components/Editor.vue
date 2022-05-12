@@ -1,58 +1,35 @@
 <template>
-  <el-dialog title="文件信息" :closeOnClickModal="false" :visible="true" @close="onClose">
-    <el-json-doc :schema="schemas" :doc="info" v-on:submit="onSubmit"></el-json-doc>
+  <el-dialog title="文件信息" :fullscreen="true" :closeOnClickModal="false" v-model="dialogVisible" @close="onClose">
+    <json-doc ref="jsonDocEditor" :schema="schemas" :value="info"></json-doc>
   </el-dialog>
 </template>
 
-<script>
-import createBrowseApi from '../apis/file/browse'
+<script setup lang="ts">
+import createBrowseApi from '@/apis/file/browse'
+import { JsonDoc } from 'tms-vue3-ui'
+import 'tms-vue3-ui/dist/es/json-doc/style/tailwind.scss'
+import { ref } from 'vue'
 
-const componentOptions = {
-  props: {
-    tmsAxiosName: { type: String },
-    schemas: { type: Object },
-    path: { type: String },
-    info: { type: Object },
-    domain: String,
-    bucket: String
-  },
-  mounted() {
-    document.body.appendChild(this.$el)
-  },
-  beforeDestroy() {
-    document.body.removeChild(this.$el)
-  },
-  methods: {
-    onClose() {
-      this.$emit('onClose', this.info)
-      this.$destroy()
-    },
-    onSubmit(info) {
-      createBrowseApi(this.TmsAxios(this.tmsAxiosName))
-        .setInfo(this.path, info, this.domain, this.bucket)
-        .then(() => {
-          Object.assign(this.info, info)
-          this.onClose()
-        })
-    }
-  }
+const props = defineProps({
+  schemas: { type: Object, required: true },
+  path: { type: String, required: true },
+  info: { type: Object },
+  domain: { type: String, required: true },
+  bucket: { type: String },
+})
+
+const { path, info, domain, bucket } = props
+
+const dialogVisible = ref(true)
+
+const onClose = () => {
+  // this.$emit('onClose', this.info)
+  // this.$destroy()
 }
-
-export default componentOptions
-
-export function createAndMount(Vue, schemas, path, info, domain, bucket) {
-  const CompClass = Vue.extend(componentOptions)
-  const comp = new CompClass({
-    propsData: {
-      tmsAxiosName: 'file-api',
-      schemas,
-      path,
-      info,
-      domain,
-      bucket
-    }
+const onSubmit = (newInfo: any) => {
+  createBrowseApi.setInfo(path, info, domain, bucket).then(() => {
+    Object.assign(info, newInfo)
+    onClose()
   })
-  comp.$mount()
-  return comp
 }
 </script>

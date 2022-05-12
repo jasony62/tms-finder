@@ -8,7 +8,7 @@ export default {
       const params = { domain, bucket }
       return TmsAxios.ins('file-api')
         .get(`${base}/schemas`, { params })
-        .then((rst) => rst.data.result)
+        .then((rst: any) => rst.data.result)
     } else {
       return Promise.resolve({})
     }
@@ -19,22 +19,22 @@ export default {
     if (bucket !== undefined) params.bucket = bucket
     return TmsAxios.ins('file-api')
       .get(`${base}/list`, { params })
-      .then((rst) => {
+      .then((rst: any) => {
         rst.data.result.files.forEach((f) => {
           if (typeof f.info !== 'object') f.info = {}
         })
         return rst.data.result
       })
   },
-  setInfo(path: string, info, domain: string, bucket: string) {
+  setInfo(path: string, info: any, domain: string, bucket: string) {
     const params = { path, domain, bucket }
     return TmsAxios.ins('file-api')
       .post(`${base}/setInfo`, info, { params })
-      .then((rst) => rst.data.result)
+      .then((rst: any) => rst.data.result)
   },
   overallSearch(params) {
     return TmsAxios.ins('file-api')
       .post(`${base}/listAll`, params)
-      .then((rst) => rst.data.result)
+      .then((rst: any) => rst.data.result)
   },
 }

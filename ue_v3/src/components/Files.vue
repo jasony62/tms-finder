@@ -18,10 +18,8 @@
       <el-table-column prop="name" label="文件名"></el-table-column>
       <el-table-column fixed="right" label="操作" width="240">
         <template #default="scope">
-          <el-button type="default" size="small" @click="preview(scope.$index, scope.row)">预览</el-button>
-          <el-button type="default" size="small" @click="handleSetInfo(scope.$index, scope.row)" v-if="SupportSetInfo">
-            编辑
-          </el-button>
+          <el-button type="default" size="small" @click="preview(scope.row)">预览</el-button>
+          <el-button type="default" size="small" @click="setInfo(scope.row)" v-if="SupportSetInfo">编辑</el-button>
           <el-button type="default" size="small" @click="download(scope.$index, scope.row)">下载</el-button>
           <el-button type="default" size="small" @click="pick(scope.$index, scope.row)" v-if="SupportPickFile"
             >选取
@@ -51,7 +49,7 @@
               <span class="file-size">{{ formateFileSize(item) }}</span>
               <div class="operation">
                 <el-button type="default" class="button" @click="preview(index, item)">预览</el-button>
-                <el-button type="default" class="button" @click="handleSetInfo(index, item)" v-if="SupportSetInfo"
+                <el-button type="default" class="button" @click="setInfo(index, item)" v-if="SupportSetInfo"
                   >编辑
                 </el-button>
                 <el-button type="default" class="button" @click="download(index, item)">下载</el-button>
@@ -79,7 +77,15 @@ import { dialogInjectionKey } from 'gitart-vue-dialog'
 import facStore from '@/store'
 import utils from '@/utils'
 import Preview from './Preview.vue'
-import PreviewVue from './Preview.vue'
+import Editor from './Editor.vue'
+
+type Tms_Finder_File = {
+  name: string
+  path: string
+  size: number
+  birthtime: number
+  info: any
+}
 
 const SupportSetInfo = !/no|false/i.test(import.meta.env.VITE_SUPPORT_SET_INFO)
 const SupportPickFile = /yes|true/i.test(import.meta.env.VITE_SUPPORT_PICK_FILE)
@@ -116,7 +122,7 @@ const imgError = (e) => {
   e.target.parentNode.style.display = 'none'
   e.target.parentNode.parentNode.children[1].style.display = 'block'
 }
-const preview = (index, file) => {
+const preview = (file: Tms_Finder_File) => {
   const fileurl = utils.getFileUrl(file)
   const fileType = utils.matchType(file.name)
   // // 是否配置了Janus媒体服务器
@@ -149,19 +155,10 @@ const preview = (index, file) => {
   // })
   // }
 }
-const handleSetInfo = (index, file) => {
-  // if (!file.info) file.info = {}
-  // const comp = createAndMount(
-  //   Vue,
-  //   this.schemas,
-  //   file.path,
-  //   file.info,
-  //   this.domain,
-  //   this.bucket
-  // )
-  // comp.$on('onClose', (info) => {
-  //   Object.assign(file.info, info)
-  // })
+const setInfo = (file: Tms_Finder_File) => {
+  if (!file.info) file.info = {}
+  console.log('ssss', schemas)
+  $dialog?.addDialog({ component: Editor, props: { domain, bucket, schemas, path: file.path, info: file.info } })
 }
 
 const download = (index, file) => {

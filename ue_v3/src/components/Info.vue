@@ -12,7 +12,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div class="icon-view" v-if="viewStyle == 2">
+        <div class="icon-view" v-if="viewStyle == '2'">
           <div class="icon-lists" v-if="files.length">
             <el-card
               :class="cardClass"

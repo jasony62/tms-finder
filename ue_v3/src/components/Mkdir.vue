@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新建目录" :closeOnClickModal="false" :visible="true" @close="onClose">
+  <el-dialog title="新建目录" :closeOnClickModal="false" v-model="dialogVisible">
     <el-form :label-position="'left'" label-width="80px">
       <el-form-item label="目录名">
         <el-input type="text" placeholder="请输入目录名" v-model="info.dir"></el-input>
@@ -12,14 +12,12 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted, onBeforeUnmount } from 'vue'
+  import { ref, provide, inject } from 'vue'
   import createUploadApi from '../apis/file/upload'
-  import { ElDialog, ElForm, ElFormItem, ElInput, ElButton, ElMessage } from 'element-plus'
+  import { ElMessage } from 'element-plus'
+  import { dialogInjectionKey } from 'gitart-vue-dialog'
+  const $dialog = inject(dialogInjectionKey)
   const props = defineProps({
-    tmsAxiosName: {
-      type: String,
-      default: 'file-api'
-    },
     dir: {
       type: String,
       default: ''
@@ -27,10 +25,11 @@
     domain: String,
     bucket: String
   })
-  const { dir, domain, bucket, tmsAxiosName } = props;
+  const { dir, domain, bucket } = props;
   const info = ref({
     dir: dir ? dir + '/目录名' : '目录名'
   });
+  const dialogVisible = ref(true)
   const submitMkdir = () => {
     if (info.value.dir) {
       createUploadApi.mkdir({ dir: info.value.dir, domain: domain, bucket: bucket })
@@ -41,12 +40,8 @@
               type: 'success'
             });
           }
-          /*this.$tmsEmit('onMake')
-          this.onClose()*/
+          $dialog.removeDialog(0)
         })
     }
-  }
-  const onClose = () => {
-    // this.$destroy()
   }
 </script>

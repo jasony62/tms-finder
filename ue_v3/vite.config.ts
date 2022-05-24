@@ -12,5 +12,10 @@ export default defineConfig({
   plugins: [vue()],
   server: {
     port: 9010,
+    proxy: {
+      '/auth': 'http://localhost:3000',
+      '/api/admin': 'http://localhost:3000',
+
+  }
   },
 })

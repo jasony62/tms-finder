@@ -1,13 +1,19 @@
 function fnVerify(userData: { [key: string]: string }) {
-  let { mobile, pin, code } = userData
-  console.info('sms user data', { mobile, pin, code })
+  let { uname, password, pin } = userData
+  console.info('register user data', { uname, password, pin })
   return Promise.resolve({
     code: 0,
     msg: '成功',
     result: { access_token: '89898989' },
   })
 }
-
+function fnSendSmsCode() {
+  return Promise.resolve({
+    code: 0,
+    msg: '成功',
+    result: { access_token: '89898989' },
+  })
+}
 const schema = [
   {
     // 当前双向绑定的属性名
@@ -17,15 +23,10 @@ const schema = [
     placeholder: '请输入手机号',
   },
   {
-    key: 'pin',
-    type: 'captcha',
-    placeholder: '请输入验证码',
-  },
-  {
     key: 'code',
     type: 'smscode',
-    placeholder: '请输入验证码',
+    placeholder: '请出入验证码',
   },
 ]
 
-export { fnSendCode, fnVerify, schema, fnSendSmsCode }
+export { schema, fnVerify, fnSendSmsCode }

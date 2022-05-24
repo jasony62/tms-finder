@@ -24,33 +24,33 @@
 </template>
 
 <script setup lang="ts">
-import { Login, LoginResponse } from "tms-vue3-ui";
-import "tms-vue3-ui/dist/es/login/style/tailwind.scss";
-import { schema } from "@/data/login";
-import apiLogin from "@/apis/auth";
-import { setLocalToken } from "@/global";
-import router from "@/router/index";
-import { ElMessage } from "element-plus";
-import { TmsAxios } from "tms-vue3";
-const { fnCaptcha, fnLogin } = apiLogin;
+import { Login, LoginResponse } from 'tms-vue3-ui'
+import 'tms-vue3-ui/dist/es/login/style/tailwind.scss'
+import { schema } from '@/data/login'
+import apiLogin from '@/apis/login'
+import { setLocalToken } from '@/global'
+import router from '@/router/index'
+import { ElMessage } from 'element-plus'
+import { TmsAxios } from 'tms-vue3'
+const { fnCaptcha, fnLogin } = apiLogin
 
 const fnSuccessLogin = (response: LoginResponse) => {
   if (response.result && response.result.access_token) {
-    setLocalToken(response.result.access_token);
+    setLocalToken(response.result.access_token)
     const rulesObj: any = {
       requestHeaders: new Map([
-        ["Authorization", `Bearer ${response.result.access_token}`],
+        ['Authorization', `Bearer ${response.result.access_token}`],
       ]),
-    };
+    }
 
-    let rule = TmsAxios.newInterceptorRule(rulesObj);
-    TmsAxios.ins({ name: "file-api", rules: [rule] });
-    TmsAxios.ins({ name: "auth-api" });
-    router.push("/web");
+    let rule = TmsAxios.newInterceptorRule(rulesObj)
+    TmsAxios.ins({ name: 'mongodb-api', rules: [rule] })
+    TmsAxios.ins({ name: 'auth-api' })
+    router.push('/web/manage')
   }
-};
+}
 
 const fnFailLogin = (response: LoginResponse) => {
-  ElMessage.error(response.msg || "登录失败");
-};
+  ElMessage.error(response.msg || '登录失败')
+}
 </script>

@@ -27,12 +27,12 @@
 import { Login, LoginResponse } from 'tms-vue3-ui'
 import 'tms-vue3-ui/dist/es/login/style/tailwind.scss'
 import { schema } from '@/data/login'
-import apiLogin from '@/apis/login'
+import apiAuth from '@/apis/auth'
 import { setLocalToken } from '@/global'
 import router from '@/router/index'
 import { ElMessage } from 'element-plus'
 import { TmsAxios } from 'tms-vue3'
-const { fnCaptcha, fnLogin } = apiLogin
+const { fnCaptcha, fnLogin } = apiAuth
 
 const fnSuccessLogin = (response: LoginResponse) => {
   if (response.result && response.result.access_token) {
@@ -46,7 +46,7 @@ const fnSuccessLogin = (response: LoginResponse) => {
     let rule = TmsAxios.newInterceptorRule(rulesObj)
     TmsAxios.ins({ name: 'file-api', rules: [rule] })
     TmsAxios.ins({ name: 'auth-api' })
-    router.push('/web/manage')
+    router.push('/web')
   }
 }
 

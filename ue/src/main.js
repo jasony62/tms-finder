@@ -15,11 +15,7 @@ Vue.config.productionTip = false
 
 Vue.prototype.$utils = utils
 
-Vue.use(TmsAxiosPlugin)
-  .use(TmsErrorPlugin)
-  .use(TmsEventPlugin)
-  .use(Frame)
-  .use(Flex)
+Vue.use(TmsAxiosPlugin).use(TmsErrorPlugin).use(TmsEventPlugin).use(Frame).use(Flex)
 
 function onResultFault(res) {
   Message({
@@ -64,9 +60,9 @@ if (RequireLogin) {
   /**
    * 请求中需要包含认证信息
    */
-  const LoginPromise = (function() {
+  const LoginPromise = (function () {
     let login = new Login(LoginSchema, fnGetCaptcha, fnGetJwt)
-    let ins = new TmsLockPromise(function() {
+    let ins = new TmsLockPromise(function () {
       return login.showAsDialog().then((token) => {
         sessionStorage.setItem('access_token', token)
         return `Bearer ${token}`
@@ -75,7 +71,7 @@ if (RequireLogin) {
     return ins
   })()
 
-  const getAccessToken = function() {
+  const getAccessToken = function () {
     // 如果正在登录，等待结果
     if (LoginPromise.isRunning()) {
       return LoginPromise.wait()
@@ -89,7 +85,7 @@ if (RequireLogin) {
     return `Bearer ${token}`
   }
 
-  const onRetryAttempt = function(res) {
+  const onRetryAttempt = function (res) {
     if (res.data.code === 20001) {
       return LoginPromise.wait().then(() => {
         return true
@@ -114,9 +110,28 @@ rules.push(responseRule)
 const config = {}
 if (/yes|true/i.test(process.env.VUE_APP_API_PASS_COOKIE)) config.withCredentials = true
 
+function getQueryVariable(variable) {
+  var query = window.location.search.substring(1)
+  var vars = query.split('&')
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split('=')
+    if (pair[0] == variable) {
+      return `Bearer ${pair[1]}`
+    }
+  }
+  return false
+}
+
 const tmsAxios = {}
+if (RequireLogin) {
+  tmsAxios.auth = Vue.TmsAxios({ name: 'auth-api' })
+} else {
+  let accessTokenRule = Vue.TmsAxios.newInterceptorRule({
+    requestHeaders: new Map([['Authorization', getQueryVariable('access_token')]]),
+  })
+  rules.push(accessTokenRule)
+}
 tmsAxios.file = Vue.TmsAxios({ name: 'file-api', rules, config })
-if (RequireLogin) tmsAxios.auth = Vue.TmsAxios({ name: 'auth-api' })
 Vue.use(ApiPlugin, { tmsAxios })
 
 new Vue({

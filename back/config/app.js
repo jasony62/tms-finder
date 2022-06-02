@@ -38,11 +38,15 @@ let appConfig = {
         // 默认用户组
         {
           id: 1,
+          bucket_id: 1,
+          bucket: 'ctsi',
           username: 'root',
           password: 'root',
         },
       ],
     },
+    /* 检查bucket参数，支持多租户访问 */
+    bucket: { validator: './config/bucket.js' },
   },
 }
 

@@ -9,57 +9,21 @@
         ></el-input>
       </el-col>
       <el-col :span="1">
-        <el-button type="primary" size="small" @click="overallSearch"
-          >搜索</el-button
-        >
+        <el-button type="primary" size="small" @click="overallSearch">搜索</el-button>
       </el-col>
     </div>
-    <el-table
-      :data="files"
-      stripe
-      style="width: 100%"
-      @row-dblclick="rowDbClick"
-      v-if="radio == 1"
-    >
-      <el-table-column
-        prop="createTime"
-        label="日期"
-        width="180"
-        :formatter="formatDate"
-      ></el-table-column>
-      <el-table-column
-        prop="size"
-        label="大小"
-        width="180"
-        :formatter="formateFileSize"
-      ></el-table-column>
+    <el-table :data="files" stripe style="width: 100%" @row-dblclick="rowDbClick" v-if="radio == 1">
+      <el-table-column prop="createTime" label="日期" width="180" :formatter="formatDate"></el-table-column>
+      <el-table-column prop="size" label="大小" width="180" :formatter="formateFileSize"></el-table-column>
       <el-table-column prop="name" label="文件名"></el-table-column>
       <el-table-column fixed="right" label="操作" width="120">
         <template slot-scope="scope">
-          <el-button
-            type="text"
-            size="small"
-            @click="preview(scope.$index, scope.row)"
-            >预览</el-button
-          >
-          <el-button
-            type="text"
-            size="small"
-            @click="handleSetInfo(scope.$index, scope.row)"
-            v-if="SupportSetInfo"
+          <el-button type="text" size="small" @click="preview(scope.$index, scope.row)">预览</el-button>
+          <el-button type="text" size="small" @click="handleSetInfo(scope.$index, scope.row)" v-if="SupportSetInfo"
             >编辑</el-button
           >
-          <el-button
-            type="text"
-            size="small"
-            @click="download(scope.$index, scope.row)"
-            >下载</el-button
-          >
-          <el-button
-            type="text"
-            size="small"
-            @click="pick(scope.$index, scope.row)"
-            v-if="SupportPickFile"
+          <el-button type="text" size="small" @click="download(scope.$index, scope.row)">下载</el-button>
+          <el-button type="text" size="small" @click="pick(scope.$index, scope.row)" v-if="SupportPickFile"
             >选取</el-button
           >
         </template>
@@ -75,11 +39,7 @@
           shadow="never"
         >
           <div class="thumb">
-            <img
-              :src="thumbUrl(item)"
-              @load="imgload(index)"
-              @error="imgError"
-            />
+            <img :src="thumbUrl(item)" @load="imgload(index)" @error="imgError" />
           </div>
           <svg class="image icon" aria-hidden="true">
             <use :xlink:href="formateFileType(item)" />
@@ -90,32 +50,12 @@
               <time class="time">{{ formatDate(item) }}</time>
               <span class="file-size">{{ formateFileSize(item) }}</span>
               <div class="operation">
-                <el-button
-                  type="text"
-                  class="button"
-                  @click="preview(index, item)"
-                  >预览</el-button
-                >
-                <el-button
-                  type="text"
-                  class="button"
-                  @click="handleSetInfo(index, item)"
-                  v-if="SupportSetInfo"
+                <el-button type="text" class="button" @click="preview(index, item)">预览</el-button>
+                <el-button type="text" class="button" @click="handleSetInfo(index, item)" v-if="SupportSetInfo"
                   >编辑</el-button
                 >
-                <el-button
-                  type="text"
-                  class="button"
-                  @click="download(index, item)"
-                  >下载</el-button
-                >
-                <el-button
-                  type="text"
-                  class="button"
-                  @click="pick(index, item)"
-                  v-if="SupportPickFile"
-                  >选取</el-button
-                >
+                <el-button type="text" class="button" @click="download(index, item)">下载</el-button>
+                <el-button type="text" class="button" @click="pick(index, item)" v-if="SupportPickFile">选取</el-button>
               </div>
             </div>
           </div>
@@ -134,15 +74,7 @@
 <script>
 import Vue from 'vue'
 import { mapState } from 'vuex'
-import {
-  Table,
-  TableColumn,
-  Input,
-  Row,
-  Col,
-  MessageBox,
-  Card,
-} from 'element-ui'
+import { Table, TableColumn, Input, Row, Col, MessageBox, Card } from 'element-ui'
 Vue.use(Table).use(TableColumn).use(Input).use(Row).use(Col).use(Card)
 
 import { createAndMount } from './Editor.vue'
@@ -176,9 +108,7 @@ export default {
       const fileurl = this.$utils.getFileUrl(file)
       const fileType = this.$utils.matchType(file.name)
       // 是否配置了Janus媒体服务器
-      const isSupportJanus = /yes|true/i.test(
-        process.env.VUE_APP_TMS_JANUS_SUPPORT
-      )
+      const isSupportJanus = /yes|true/i.test(process.env.VUE_APP_TMS_JANUS_SUPPORT)
       const { domain, bucket } = this
       if (/excel|word|ppt|pdf/.test(fileType)) {
         window.open(fileurl)
@@ -211,14 +141,7 @@ export default {
     },
     handleSetInfo(index, file) {
       if (!file.info) file.info = {}
-      const comp = createAndMount(
-        Vue,
-        this.schemas,
-        file.path,
-        file.info,
-        this.domain,
-        this.bucket
-      )
+      const comp = createAndMount(Vue, this.schemas, file.path, file.info, this.domain, this.bucket)
       comp.$on('onClose', (info) => {
         Object.assign(file.info, info)
       })
@@ -233,10 +156,16 @@ export default {
       })
     },
     pick(index, file) {
-      this.$utils.postMessage(() => this.$utils.getFileUrl(file))
+      this.$utils.postMessage(() => ({
+        name: file.name,
+        url: this.$utils.getFileUrl(file),
+      }))
     },
     rowDbClick(file) {
-      this.$utils.postMessage(() => this.$utils.getFileUrl(file))
+      this.$utils.postMessage(() => ({
+        name: file.name,
+        url: this.$utils.getFileUrl(file),
+      }))
     },
     // 全局搜索
     overallSearch() {
@@ -249,14 +178,7 @@ export default {
     // 格式化日期
     formatDate(data) {
       const date = new Date(data.birthtime)
-      return (
-        date.getFullYear() +
-        '年' +
-        (date.getMonth() + 1) +
-        '月' +
-        date.getDate() +
-        '日'
-      )
+      return date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日'
     },
     // 格式化文件大小
     formateFileSize(data) {

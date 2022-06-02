@@ -44,7 +44,7 @@ const fnSuccessLogin = (response: LoginResponse) => {
     }
 
     let rule = TmsAxios.newInterceptorRule(rulesObj)
-    TmsAxios.ins({ name: 'mongodb-api', rules: [rule] })
+    TmsAxios.ins({ name: 'file-api', rules: [rule] })
     TmsAxios.ins({ name: 'auth-api' })
     router.push('/web/manage')
   }

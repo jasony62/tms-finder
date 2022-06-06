@@ -12,7 +12,7 @@
     "gitart-vue-dialog": "^2.0.5",
     "pinia": "^2.0.14",
     "tms-vue3": "^0.0.4",
-    "tms-vue3-ui": "^0.0.30",
+    "tms-vue3-ui": "^0.0.36",
     "vue": "^3.2.25",
     "vue-router": "4"
   },
@@ -27,6 +27,7 @@
     "tailwindcss": "^3.0.24",
     "typescript": "^4.5.4",
     "vite": "^2.9.7",
-    "vue-tsc": "^0.34.7"
+    "vue-tsc": "^0.34.7",
+    "tms-koa-account": "^0.0.7"
   }
 }

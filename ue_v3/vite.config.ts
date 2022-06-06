@@ -15,7 +15,6 @@ export default defineConfig({
     proxy: {
       '/auth': 'http://localhost:3000',
       '/api/admin': 'http://localhost:3000',
-
-  }
+    }
   },
 })

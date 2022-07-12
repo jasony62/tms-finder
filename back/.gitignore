@@ -5,3 +5,4 @@ storage/
 public/
 config/*.local.js
 .env.*
+_lowdb.json

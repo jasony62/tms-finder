@@ -19,11 +19,9 @@ import { ElMessage } from 'element-plus'
 import 'tms-vue3-ui/dist/es/register/style/tailwind.scss'
 
 import { schema } from '@/data/register'
-import apiLogin from '@/apis/login'
-import apiRegister from '@/apis/register'
+import apiAuth from '@/apis/auth'
 import router from '@/router/index'
-const { fnCaptcha } = apiLogin
-const { fnRegister } = apiRegister
+const { fnCaptcha, fnRegister } = apiAuth
 const showRegisterDialog = () => {
   Register.open({ schema, fnCaptcha, fnRegister })
 }

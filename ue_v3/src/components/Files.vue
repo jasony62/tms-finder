@@ -2,17 +2,18 @@
   <div class="files">
     <div class="demo-input-suffix row">
       <el-col :span="6" :offset="16">
-        <el-input
-          placeholder="全站搜索-请输入文件名名称"
-          suffix-icon="el-icon-search"
-          v-model="searchContent"
-        ></el-input>
+        <el-input placeholder="全站搜索-请输入文件名名称" suffix-icon="el-icon-search" v-model="searchContent"></el-input>
       </el-col>
-      <el-col :span="1">
+      <el-col :span="1" class="offset-btn">
         <el-button type="primary" size="small" @click="overallSearch">搜索</el-button>
       </el-col>
+      <el-col :span="1" class="offset-btn">
+        <el-button type="primary" size="small" @click="drawer = true">执行插件</el-button>
+      </el-col>
     </div>
-    <el-table :data="files" stripe style="width: 100%" @row-dblclick="rowDbClick" v-if="viewStyle === '1'">
+    <el-table ref="multipleTableRef" :data="files" stripe style="width: 100%" @row-dblclick="rowDbClick"
+      v-if="viewStyle === '1'">
+      <el-table-column type="selection" width="55" />
       <el-table-column prop="createTime" label="日期" width="180" :formatter="formatDate"></el-table-column>
       <el-table-column prop="size" label="大小" width="180" :formatter="formateFileSize"></el-table-column>
       <el-table-column prop="name" label="文件名"></el-table-column>
@@ -21,21 +22,15 @@
           <el-button type="default" size="small" @click="preview(scope.row)">预览</el-button>
           <el-button type="default" size="small" @click="setInfo(scope.row)" v-if="SupportSetInfo">编辑</el-button>
           <el-button type="default" size="small" @click="download(scope.$index, scope.row)">下载</el-button>
-          <el-button type="default" size="small" @click="pick(scope.$index, scope.row)" v-if="SupportPickFile"
-            >选取
+          <el-button type="default" size="small" @click="pick(scope.$index, scope.row)" v-if="SupportPickFile">选取
           </el-button>
         </template>
       </el-table-column>
     </el-table>
     <div class="icon-view" v-if="viewStyle === '2'">
       <div class="icon-lists" v-if="files.length">
-        <el-card
-          :class="cardClass"
-          v-for="(item, index) in files"
-          :key="index"
-          :body-style="{ padding: '0px' }"
-          shadow="never"
-        >
+        <el-card :class="cardClass" v-for="(item, index) in files" :key="index" :body-style="{ padding: '0px' }"
+          shadow="never">
           <div class="thumb">
             <img :src="thumbUrl(item)" @load="imgload(index)" @error="imgError" />
           </div>
@@ -49,35 +44,46 @@
               <span class="file-size">{{ formateFileSize(item) }}</span>
               <div class="operation">
                 <el-button type="default" class="button" @click="preview(index, item)">预览</el-button>
-                <el-button type="default" class="button" @click="setInfo(index, item)" v-if="SupportSetInfo"
-                  >编辑
+                <el-button type="default" class="button" @click="setInfo(index, item)" v-if="SupportSetInfo">编辑
                 </el-button>
                 <el-button type="default" class="button" @click="download(index, item)">下载</el-button>
-                <el-button type="default" class="button" @click="pick(index, item)" v-if="SupportPickFile"
-                  >选取
+                <el-button type="default" class="button" @click="pick(index, item)" v-if="SupportPickFile">选取
                 </el-button>
               </div>
             </div>
           </div>
         </el-card>
-        <div
-          :class="emptyClass"
-          v-for="index in columns - (files.length % columns)"
-          :key="index + '-only'"
-          v-show="files.length % columns > 0"
-        ></div>
+        <div :class="emptyClass" v-for="index in columns - (files.length % columns)" :key="index + '-only'"
+          v-show="files.length % columns > 0"></div>
       </div>
       <div class="empty" v-else>暂无数据</div>
     </div>
+    <el-drawer v-model="drawer" title="I am the title" :with-header="false">
+      <div v-for="p in pluginList" style="margin-top: 10px">
+        <el-button v-if="p.transData === 'nothing'" type="success" plain @click="handlePlugin(p)">{{ p.title }}
+        </el-button>
+        <el-dropdown v-else>
+          <el-button type="success" plain>{{ p.title }}<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+          <template #dropdown>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="handlePlugin(p, 'all')">按全部</el-dropdown-item>
+              <el-dropdown-item @click.native="handlePlugin(p)">按选中</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </div>
+    </el-drawer>
   </div>
 </template>
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, toRaw } from 'vue'
+import { computed, inject, onMounted, ref, toRaw, watch } from 'vue'
 import { dialogInjectionKey } from 'gitart-vue-dialog'
 import facStore from '@/store'
 import utils from '@/utils'
 import Preview from './Preview.vue'
 import Editor from './Editor.vue'
+import { ElTable, ElMessage } from 'element-plus'
+import apiPlugin from "@/apis/plugin";
 
 type Tms_Finder_File = {
   name: string
@@ -109,6 +115,11 @@ const schemas = computed(() => store.schemas)
 const files = computed(() => {
   return store.files
 })
+const pluginList = ref([]);
+
+
+
+const multipleTableRef = ref<InstanceType<typeof ElTable>>()
 const viewStyle = computed(() => {
   return store.viewStyle
 })
@@ -174,10 +185,7 @@ const download = (index, file) => {
 }
 
 const pick = (index: number, file: any) => {
-  utils.postMessage(() => ({
-      name: file.name,
-      url: utils.getFileUrl(file),
-  }))
+  utils.postMessage(() => utils.getFileUrl(file))
 }
 
 const rowDbClick = (file) => {
@@ -280,8 +288,49 @@ onMounted(async () => {
     cardClass.value = 'el-card'
     emptyClass.value = 'empty-card'
   }
-  await store.getSchemas(bucket, domain)
+  // await store.getSchemas(bucket, domain)
+  // 获取可使用插件
+  new Promise(resolve => {
+    resolve([{ title: '测试fs', name: 'files' }])
+  }).then(res => {
+    pluginList.value.push(...res)
+  })
 })
+/*watch(files, async (newvalue, oldvalue) => {
+  const suffix = newvalue.map(i => i.name.split('.')[1])
+  const suffixSet = [...new Set(suffix)]
+  try{
+    const data = await apiPlugin.list(suffix.join(','))
+    pluginList.value = data.result
+  }catch (e) {
+    console.log(e);
+  }
+})*/
+const drawer = ref(false);
+const handlePlugin = (plugin: any, filter: string) => {
+  // 调用接口执行插件内容
+  const selectRows = multipleTableRef.value?.getSelectionRows();
+  if (!filter && selectRows.length === 0) {
+    ElMessage({
+      message: '无选中的数据',
+      type: 'warning',
+    })
+    return
+  }
+  const names = selectRows.map(i => i.name);
+  // 调用插件接口
+  apiPlugin.execute({ names, pluginName: plugin.name, filter, dir: store.currentDir?.path }).then((res: any) => {
+    const data = res.result;
+    const msgs = data.map(i => {
+      return `文件名${i.filename}, 文件大小${i.size}`
+    })
+    alert(`插件执行完毕，执行结果\n${msgs.join('\n')}`)
+    /*ElMessage({
+      message: `插件执行完毕，执行结果${JSON.stringify(res.result)}`,
+      type: 'info',
+    })*/
+  })
+}
 </script>
 <style lang="scss">
 .files {
@@ -300,6 +349,11 @@ onMounted(async () => {
 
   .demo-input-suffix {
     margin-top: 10px;
+
+    .offset-btn {
+      margin-left: 10px;
+    }
+
   }
 
   .el-card {

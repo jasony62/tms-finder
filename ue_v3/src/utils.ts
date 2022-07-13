@@ -1,7 +1,6 @@
 export default {
   // 返回文件的完整url
   getFileUrl(file) {
-    console.log(location.host)
     const fserver = import.meta.env.VITE_FS_SERVER || `${location.protocol}//${location.host}`
     const fileurl = `${fserver}${file.path}`
 

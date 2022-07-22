@@ -1,11 +1,7 @@
 import * as fs from 'fs'
-//@ts-ignore
-import { LocalFS } from 'tms-koa/lib/model/fs/local'
+import { LocalFS } from 'tms-koa/dist/model/fs/local'
 
 class LocalFD extends LocalFS {
-  constructor(...args) {
-    super(...args)
-  }
   /**
    * 新建指定的目录
    *

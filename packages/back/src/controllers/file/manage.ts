@@ -1,11 +1,8 @@
-import { ManageCtrl } from 'tms-koa/lib/controller/fs'
-import { Info } from 'tms-koa/lib/model/fs/info'
+import { ManageCtrl } from 'tms-koa/dist/controller/fs'
+import { Info } from 'tms-koa/dist/model/fs/info'
 import { ResultData, ResultFault } from 'tms-koa'
 
 class Manage extends ManageCtrl {
-  constructor(...args) {
-    super(...args)
-  }
   /**
    * 组装 查询条件
    */
@@ -38,11 +35,7 @@ class Manage extends ManageCtrl {
           } else if (typeof val.keyword === 'string') {
             find2 = { $regex: val.keyword }
           }
-        } else if (
-          typeof val === 'object' &&
-          !val.keyword &&
-          typeof val.keyword !== 'undefined'
-        ) {
+        } else if (typeof val === 'object' && !val.keyword && typeof val.keyword !== 'undefined') {
           find2 = val.keyword
         } else if (typeof val === 'string') {
           find2 = { $regex: val }
@@ -59,21 +52,21 @@ class Manage extends ManageCtrl {
     return find
   }
   /**
-   * 
+   *
    */
   async list() {
-    const fsInfo = await Info.ins(this["domain"])
+    const fsInfo = await Info.ins(this['domain'])
     if (!fsInfo) return new ResultFault('不支持设置文件信息')
-    const { filter } = this["request"].body
+    const { filter } = this['request'].body
 
     let query = {}
     if (filter) {
       query = this._assembleFind(filter)
     }
-    const bucket = this["bucket"]
-    if (bucket) query["bucket"] = bucket
+    const bucket = this['bucket']
+    if (bucket) query['bucket'] = bucket
 
-    let { batch } = this["request"].query
+    let { batch } = this['request'].query
     if (!batch) batch = '1,10'
     const [page, size] = batch.split(',', 2)
     const skip = (parseInt(page) - 1) * parseInt(size)
@@ -88,27 +81,23 @@ class Manage extends ManageCtrl {
    */
   async getGroupByColumnVal() {
     if (
-      !this["domain"].mongoClient ||
-      !this["domain"].database ||
-      !this["domain"].collection ||
-      !this["domain"].schemas
+      !this['domain'].mongoClient ||
+      !this['domain'].database ||
+      !this['domain'].collection ||
+      !this['domain'].schemas
     )
       return new ResultFault('不支持设置文件信息')
 
-    const mongoClient = this["domain"].mongoClient
-    const cl = mongoClient.db(this["domain"].database).collection(this["domain"].collection)
+    const mongoClient = this['domain'].mongoClient
+    const cl = mongoClient.db(this['domain'].database).collection(this['domain'].collection)
 
-    let { column, batch } = this["request"].query
-    let { filter } = this["request"].body
+    let { column, batch } = this['request'].query
+    let { filter } = this['request'].body
     let find = {}
     if (filter) {
       find = this._assembleFind(filter)
     }
-    let group = [
-      { $match: find },
-      { $group: { _id: '$' + column, num_tutorial: { $sum: 1 } } },
-      { $sort: { _id: 1 } },
-    ]
+    let group = [{ $match: find }, { $group: { _id: '$' + column, num_tutorial: { $sum: 1 } } }, { $sort: { _id: 1 } }]
     if (batch) {
       const [page, size] = batch.split(',', 2)
       const skip: any = { $skip: (parseInt(page) - 1) * parseInt(size) }
@@ -124,8 +113,8 @@ class Manage extends ManageCtrl {
         let data = []
         arr.forEach((a) => {
           let d = {}
-          d["title"] = a._id
-          d["sum"] = a.num_tutorial
+          d['title'] = a._id
+          d['sum'] = a.num_tutorial
           data.push(d)
         })
 

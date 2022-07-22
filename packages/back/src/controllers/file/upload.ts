@@ -1,15 +1,16 @@
 import { ResultData, ResultFault } from 'tms-koa'
-import { UploadCtrl } from 'tms-koa/lib/controller/fs'
+import { UploadCtrl } from 'tms-koa/dist/controller/fs'
 import LocalFD from 'tms-finder-model'
 
 /** 上传文件控制器类 */
 class Upload extends UploadCtrl {
-  constructor(...args) {
-    super(...args)
-  }
   async tmsBeforeEach() {
-    await super.tmsBeforeEach()
+    const result = await super.tmsBeforeEach()
+    if (result instanceof ResultFault) {
+      return result
+    }
     this['localFD'] = new LocalFD(this['domain'], this['bucket'])
+    return true
   }
   /**
    * @swagger

@@ -12,9 +12,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.0.3",
-    "rimraf": "^3.0.2"
-  },
-  "peerDependencies": {
-    "tms-koa": "^0.0.86"
+    "rimraf": "^3.0.2",
+    "tms-koa": "^0.0.88"
   }
 }

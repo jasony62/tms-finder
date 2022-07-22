@@ -12,12 +12,12 @@
   "author": "jasony62",
   "license": "MIT",
   "dependencies": {
-    "tms-finder-model": "workspace:*",
     "glob": "^8.0.3",
     "log4js": "^6.6.0",
     "mongodb": "^4.7.0",
     "redis": "^4.2.0",
-    "tms-koa": "^0.0.86",
+    "tms-finder-model": "workspace:*",
+    "tms-koa": "^0.0.88",
     "tms-koa-account": "^0.0.10"
   },
   "devDependencies": {

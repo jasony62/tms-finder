@@ -1,6 +1,6 @@
 import { ResultData, ResultFault } from 'tms-koa'
 import { UploadCtrl } from 'tms-koa/lib/controller/fs'
-import LocalFD from 'finder-model'
+import LocalFD from 'tms-finder-model'
 
 /** 上传文件控制器类 */
 class Upload extends UploadCtrl {
@@ -9,7 +9,7 @@ class Upload extends UploadCtrl {
   }
   async tmsBeforeEach() {
     await super.tmsBeforeEach()
-    this["localFD"] = new LocalFD(this["domain"], this["bucket"])
+    this['localFD'] = new LocalFD(this['domain'], this['bucket'])
   }
   /**
    * @swagger
@@ -29,8 +29,8 @@ class Upload extends UploadCtrl {
    *
    */
   mkdir() {
-    const { dir } = this["request"].query
-    const result = this["localFD"].mkdir(dir)
+    const { dir } = this['request'].query
+    const result = this['localFD'].mkdir(dir)
     if (false === result[0]) return new ResultFault(result[1])
 
     return new ResultData('ok')
@@ -53,8 +53,8 @@ class Upload extends UploadCtrl {
    *
    */
   rmdir() {
-    const { dir } = this["request"].query
-    const result = this["localFD"].rmdir(dir)
+    const { dir } = this['request'].query
+    const result = this['localFD'].rmdir(dir)
     if (false === result[0]) return new ResultFault(result[1])
 
     return new ResultData('ok')

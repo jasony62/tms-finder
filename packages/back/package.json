@@ -1,6 +1,7 @@
 {
   "name": "finder-back",
   "version": "0.0.1",
+  "private": true,
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,16 +12,17 @@
   "author": "jasony62",
   "license": "MIT",
   "dependencies": {
-    "finder-model": "^0.0.1",
+    "tms-finder-model": "workspace:*",
     "glob": "^8.0.3",
     "log4js": "^6.6.0",
     "mongodb": "^4.7.0",
     "redis": "^4.2.0",
-    "sharp": "^0.30.7",
     "tms-koa": "^0.0.86",
     "tms-koa-account": "^0.0.10"
   },
   "devDependencies": {
-    "@types/node": "^18.0.3"
+    "@types/node": "^18.0.3",
+    "rimraf": "^3.0.2",
+    "sharp": "^0.30.7"
   }
 }

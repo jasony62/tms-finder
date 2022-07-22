@@ -1,4 +1,5 @@
 import * as fs from 'fs'
+//@ts-ignore
 import { LocalFS } from 'tms-koa/lib/model/fs/local'
 
 class LocalFD extends LocalFS {
@@ -39,4 +40,4 @@ class LocalFD extends LocalFS {
   }
 }
 
-export default LocalFD 
+export default LocalFD

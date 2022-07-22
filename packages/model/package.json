@@ -1,5 +1,5 @@
 {
-  "name": "finder-model",
+  "name": "tms-finder-model",
   "version": "0.0.1",
   "description": "",
   "main": "./dist/local.js",
@@ -10,9 +10,9 @@
   "keywords": [],
   "author": "jasony62",
   "license": "MIT",
-  "dependencies": {},
   "devDependencies": {
-    "@types/node": "^18.0.3"
+    "@types/node": "^18.0.3",
+    "rimraf": "^3.0.2"
   },
   "peerDependencies": {
     "tms-koa": "^0.0.86"

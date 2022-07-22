@@ -185,7 +185,11 @@ const download = (index, file) => {
 }
 
 const pick = (index: number, file: any) => {
-  utils.postMessage(() => utils.getFileUrl(file))
+  let url = utils.getFileUrl(file)
+  let thumbUrl = utils.getThumbUrl(file)
+  let { name, size, info } = file
+  info ??= {}
+  utils.postMessage(() => { return { url, thumbUrl, name, size, info } })
 }
 
 const rowDbClick = (file) => {

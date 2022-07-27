@@ -4,19 +4,19 @@ import browseApi from '../apis/file/browse'
 export default defineStore('webfs', {
   state: () => {
     return {
-      schemas: null,
+      schemas: null as any,
       tree: { name: '全部', path: '' },
-      files: [],
-      searchFiles: [] as any,
-      currentDir: null,
+      files: [] as any[],
+      searchFiles: [] as any[],
+      currentDir: null as any,
       viewStyle: '1',
     }
   },
   actions: {
-    searchFiles(searchFiles) {
+    setSearchFiles(searchFiles: any[]) {
       this.searchFiles = searchFiles
     },
-    setCurrentDir(dir) {
+    setCurrentDir(dir: any) {
       this.currentDir = dir
     },
     setViewStyle(value: string) {
@@ -30,12 +30,12 @@ export default defineStore('webfs', {
         })
       })
     },
-    list(dir, domain?: string, bucket?: string) {
+    list(dir: any, domain?: string, bucket?: string) {
       return new Promise((resolve) => {
-        browseApi.list(dir.path, domain, bucket).then((listData) => {
+        browseApi.list(dir.path, domain, bucket).then((listData: any) => {
           let { dirs, files } = listData
           dir.dirs = dirs
-          dirs.forEach((d) => {
+          dirs.forEach((d: any) => {
             d.path = `${dir.path}/${d.name}`
             d.parent = dir
           })
@@ -46,10 +46,10 @@ export default defineStore('webfs', {
     },
     expand(dir: any, domain: string, bucket: string) {
       return new Promise((resolve) => {
-        browseApi.list(dir.path, domain, bucket).then((expandData) => {
+        browseApi.list(dir.path, domain, bucket).then((expandData: any) => {
           let { dirs } = expandData
           dir.dirs = dirs
-          dirs.forEach((d) => {
+          dirs.forEach((d: any) => {
             d.path = `${dir.path}/${d.name}`
             d.parent = dir
           })
@@ -57,13 +57,13 @@ export default defineStore('webfs', {
         })
       })
     },
-    overallSearch(dir, basename) {
+    overallSearch(dir: any, basename: string) {
       return new Promise((resolve) => {
         const params = {
           basename,
           dir: dir.path || '',
         }
-        browseApi.overallSearch(params).then((searchData) => {
+        browseApi.overallSearch(params).then((searchData: any) => {
           let { dirs, files } = searchData
           this.files = files
           resolve({ dirs, files })

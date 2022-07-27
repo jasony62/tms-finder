@@ -1,20 +1,20 @@
 export default {
   // 返回文件的完整url
-  getFileUrl(file) {
+  getFileUrl(file: any) {
     const fserver = import.meta.env.VITE_FS_SERVER || `${location.protocol}//${location.host}`
     const fileurl = `${fserver}${file.path}`
 
     return fileurl
   },
   // 返回文件的完整缩略图url
-  getThumbUrl(file) {
+  getThumbUrl(file: any) {
     if (!file.thumb) return ''
     const fserver = import.meta.env.VITE_FS_SERVER || `${location.protocol}//${location.host}`
     const thumbUrl = `${fserver}${file.thumb}`
 
     return thumbUrl
   },
-  postMessage(callback) {
+  postMessage(callback: any) {
     let target = window.parent ? window.parent : window.opener ? window.opener : false
     if (target) {
       const data = typeof callback === 'function' ? callback() : callback
@@ -22,9 +22,9 @@ export default {
     }
   },
   // 根据文件后缀判断文件类型
-  matchType(fileName) {
+  matchType(fileName: string) {
     let suffix = ''
-    let result = ''
+    let result: string | boolean = ''
     try {
       let flieArr = fileName.split('.')
       suffix = flieArr[flieArr.length - 1]

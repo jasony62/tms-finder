@@ -43,8 +43,8 @@
               <time class="time">{{ formatDate(item) }}</time>
               <span class="file-size">{{ formateFileSize(item) }}</span>
               <div class="operation">
-                <el-button type="default" class="button" @click="preview(index, item)">预览</el-button>
-                <el-button type="default" class="button" @click="setInfo(index, item)" v-if="SupportSetInfo">编辑
+                <el-button type="default" class="button" @click="preview(item)">预览</el-button>
+                <el-button type="default" class="button" @click="setInfo(item)" v-if="SupportSetInfo">编辑
                 </el-button>
                 <el-button type="default" class="button" @click="download(index, item)">下载</el-button>
                 <el-button type="default" class="button" @click="pick(index, item)" v-if="SupportPickFile">选取
@@ -76,7 +76,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, toRaw, watch } from 'vue'
+import { computed, inject, onMounted, ref, toRaw } from 'vue'
 import { dialogInjectionKey } from 'gitart-vue-dialog'
 import facStore from '@/store'
 import utils from '@/utils'
@@ -115,21 +115,21 @@ const schemas = computed(() => store.schemas)
 const files = computed(() => {
   return store.files
 })
-const pluginList = ref([]);
-
-
+const pluginList = ref<any[]>([]);
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()
 const viewStyle = computed(() => {
   return store.viewStyle
 })
 
-const imgload = (index) => {
+const imgload = (index: number) => {
   let card_body = document.getElementsByClassName('el-card__body')[index]
+  //@ts-ignore
   card_body.children[0].style.display = 'block'
+  //@ts-ignore
   card_body.children[1].style.display = 'none'
 }
-const imgError = (e) => {
+const imgError = (e: any) => {
   e.target.parentNode.style.display = 'none'
   e.target.parentNode.parentNode.children[1].style.display = 'block'
 }
@@ -174,7 +174,7 @@ const setInfo = (file: Tms_Finder_File) => {
   })
 }
 
-const download = (index, file) => {
+const download = (index: number, file: any) => {
   // const fileurl = this.$utils.getFileUrl(file)
   // MessageBox.confirm(fileurl, file.name, {
   //   confirmButtonText: '下载',
@@ -192,7 +192,7 @@ const pick = (index: number, file: any) => {
   utils.postMessage(() => { return { url, thumbUrl, name, size, info } })
 }
 
-const rowDbClick = (file) => {
+const rowDbClick = (file: any) => {
   // this.$utils.postMessage(() => this.$utils.getFileUrl(file))
 }
 
@@ -205,12 +205,12 @@ const overallSearch = () => {
   // })
 }
 // 格式化日期
-const formatDate = (data) => {
+const formatDate = (data: any) => {
   const date = new Date(data.birthtime)
   return date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日'
 }
 // 格式化文件大小
-const formateFileSize = (data) => {
+const formateFileSize = (data: any) => {
   return fileLengthFormat(data.size, 1)
 }
 /**
@@ -218,7 +218,7 @@ const formateFileSize = (data) => {
  * @params {number} total 文件大小，默认单位Byte
  * @params {number} n 1-b 2-kb 3-mb
  */
-const fileLengthFormat = (total, n): string => {
+const fileLengthFormat = (total: number, n: number): string => {
   const size = total / 1024
   if (size > 1024) {
     return fileLengthFormat(size, ++n)
@@ -242,7 +242,7 @@ const fileLengthFormat = (total, n): string => {
   }
 }
 // 文件类型对应图标
-const formateFileType = (data) => {
+const formateFileType = (data: any) => {
   const fileType = utils.matchType(data.name)
   let iconId = ''
   switch (fileType) {
@@ -278,7 +278,7 @@ const formateFileType = (data) => {
   }
   return iconId
 }
-const thumbUrl = (file) => {
+const thumbUrl = (file: any) => {
   return utils.getThumbUrl(file)
 }
 
@@ -296,7 +296,7 @@ onMounted(async () => {
   // 获取可使用插件
   new Promise(resolve => {
     resolve([{ title: '测试fs', name: 'files' }])
-  }).then(res => {
+  }).then((res: any) => {
     pluginList.value.push(...res)
   })
 })
@@ -311,7 +311,7 @@ onMounted(async () => {
   }
 })*/
 const drawer = ref(false);
-const handlePlugin = (plugin: any, filter: string) => {
+const handlePlugin = (plugin: any, filter?: string) => {
   // 调用接口执行插件内容
   const selectRows = multipleTableRef.value?.getSelectionRows();
   if (!filter && selectRows.length === 0) {
@@ -321,11 +321,11 @@ const handlePlugin = (plugin: any, filter: string) => {
     })
     return
   }
-  const names = selectRows.map(i => i.name);
+  const names = selectRows.map((i: any) => i.name)
   // 调用插件接口
   apiPlugin.execute({ names, pluginName: plugin.name, filter, dir: store.currentDir?.path }).then((res: any) => {
     const data = res.result;
-    const msgs = data.map(i => {
+    const msgs = data.map((i: any) => {
       return `文件名${i.filename}, 文件大小${i.size}`
     })
     alert(`插件执行完毕，执行结果\n${msgs.join('\n')}`)

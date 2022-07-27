@@ -12,36 +12,36 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, provide, inject } from 'vue'
-  import createUploadApi from '../apis/file/upload'
-  import { ElMessage } from 'element-plus'
-  import { dialogInjectionKey } from 'gitart-vue-dialog'
-  const $dialog = inject(dialogInjectionKey)
-  const props = defineProps({
-    dir: {
-      type: String,
-      default: ''
-    },
-    domain: String,
-    bucket: String
-  })
-  const { dir, domain, bucket } = props;
-  const info = ref({
-    dir: dir ? dir + '/目录名' : '目录名'
-  });
-  const dialogVisible = ref(true)
-  const submitMkdir = () => {
-    if (info.value.dir) {
-      createUploadApi.mkdir({ dir: info.value.dir, domain: domain, bucket: bucket })
-        .then((res:any)=>{
-          if (res=='ok') {
-            ElMessage({
-              message: '目录创建成功！',
-              type: 'success'
-            });
-          }
-          $dialog.removeDialog(0)
-        })
-    }
+import { ref, provide, inject } from 'vue'
+import createUploadApi from '../apis/file/upload'
+import { ElMessage } from 'element-plus'
+import { dialogInjectionKey } from 'gitart-vue-dialog'
+const $dialog = inject(dialogInjectionKey)
+const props = defineProps({
+  dir: {
+    type: String,
+    default: ''
+  },
+  domain: String,
+  bucket: String
+})
+const { dir, domain, bucket } = props;
+const info = ref({
+  dir: dir ? dir + '/目录名' : '目录名'
+});
+const dialogVisible = ref(true)
+const submitMkdir = () => {
+  if (info.value.dir) {
+    createUploadApi.mkdir({ dir: info.value.dir, domain: domain, bucket: bucket })
+      .then((res: any) => {
+        if (res == 'ok') {
+          ElMessage({
+            message: '目录创建成功！',
+            type: 'success'
+          });
+        }
+        $dialog?.removeDialog(0)
+      })
   }
+}
 </script>

@@ -1,0 +1,26 @@
+# tfd-kit
+
+# tfd-back
+
+/packages/tfd-back/storage
+/packages/tfd-back/_lowdb.json
+
+# ue
+
+/packages/ue/public/settings.json
+
+# common
+
+**/node_modules
+**/dist
+**/test
+**/README.md
+**/Dockerfile
+**/.git
+**/.gitignore
+**/.pnpm-debug.log
+**/pnpm-lock.yaml
+**/.vscode
+**/.env
+**/.env.*
+

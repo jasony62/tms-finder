@@ -1,5 +1,5 @@
 import { TmsAxios } from 'tms-vue3'
-
+//@ts-ignore
 import { encodeAccountV1 } from 'tms-koa-account/models/crypto'
 const baseAuth = (import.meta.env.VITE_BACK_AUTH_BASE || '') + '/auth'
 
@@ -35,10 +35,10 @@ export default {
       })
   },
   /**
- * 注册
- *
- * @returns
- */
+   * 注册
+   *
+   * @returns
+   */
   fnRegister(userArg: any) {
     let params = { ...userArg }
     let url = `${baseAuth}/register`

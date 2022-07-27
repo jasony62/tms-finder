@@ -21,9 +21,9 @@ const treeProps = {
   isLeaf: 'leaf',
 }
 
-const eltree = ref(null)
+const eltree = ref<any>(null)
 
-const loadNode = (node, resolve) => {
+const loadNode = (node: any, resolve: any) => {
   if (node.level === 0) {
     let { tree } = store
     return resolve([
@@ -36,8 +36,8 @@ const loadNode = (node, resolve) => {
     ])
   }
 
-  store.expand(node.data.rawData, domain, bucket).then(subDirs => {
-    const children = subDirs.map(sd => {
+  store.expand(node.data.rawData, domain ?? '', bucket ?? '').then((subDirs: any) => {
+    const children = subDirs.map((sd: any) => {
       return {
         label: sd.name,
         children: [],
@@ -49,17 +49,17 @@ const loadNode = (node, resolve) => {
   })
 }
 
-const currentChange = (data) => {
+const currentChange = (data: any) => {
   store.setCurrentDir(data.rawData)
 }
 
-const clickNode = (data, node) => {
+const clickNode = (data: any, node: any) => {
   store.list(data.rawData, domain, bucket)
-    .then(data => {
+    .then((data: any) => {
       if (false === node.loaded) {
         let { dirs } = data
         if (dirs && dirs.length) {
-          dirs.forEach(dir => {
+          dirs.forEach((dir: any) => {
             let leaf = dir.sub.dirs === 0
             eltree.value?.append(
               {

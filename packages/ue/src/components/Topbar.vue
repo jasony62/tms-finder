@@ -59,7 +59,7 @@ const props = defineProps({
   domain: { type: String },
   bucket: { type: String }
 })
-const {activeIndex, domain, bucket} = props
+const { activeIndex, domain, bucket } = props
 const $dialog = inject(dialogInjectionKey)
 
 const store = facStore()
@@ -72,7 +72,7 @@ const selectViewStyle = (value: string) => {
   store.setViewStyle(value)
 }
 
-const onMenuSelect = (name) => {
+const onMenuSelect = (name: string) => {
   // this.$router.push({ name, query: this.$route.query })
 }
 
@@ -81,8 +81,9 @@ const currentDir = computed(() => {
 })
 
 const upload = () => {
-  $dialog?.addDialog({ component: Upload, props: {
-      dir: currentDir ? currentDir.path : null,
+  $dialog?.addDialog({
+    component: Upload, props: {
+      dir: currentDir ? currentDir.value.path : null,
       domain: domain,
       bucket: bucket
     }
@@ -90,15 +91,17 @@ const upload = () => {
 }
 
 const mkdir = () => {
-  $dialog?.addDialog({ component: Mkdir, props: {
-      dir: currentDir ? currentDir.path : null,
+  $dialog?.addDialog({
+    component: Mkdir, props: {
+      dir: currentDir ? currentDir.value.path : null,
       bucket: bucket
     }
   })
 }
 const rmdir = () => {
-  $dialog?.addDialog({ component: Rmdir, props: {
-      dir: currentDir ? currentDir.path : null,
+  $dialog?.addDialog({
+    component: Rmdir, props: {
+      dir: currentDir ? currentDir.value.path : null,
       domain: domain,
       bucket: bucket
     }

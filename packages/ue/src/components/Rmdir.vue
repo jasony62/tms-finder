@@ -12,33 +12,33 @@
 </template>
 
 <script setup lang="ts">
-  import {inject, ref} from 'vue'
-  import createUploadApi from '../apis/file/upload'
-  import { ElMessage } from 'element-plus'
-  import { dialogInjectionKey } from 'gitart-vue-dialog'
-  const $dialog = inject(dialogInjectionKey)
-  const props = defineProps({
-    dir: {
-      type: String,
-      default: '21212'
-    },
-    domain: String,
-    bucket: String
-  })
-  const {dir, domain, bucket} = props
-  const dialogVisible  = ref(true)
-  const submitMkdir = () => {
-    if (dir) {
-      createUploadApi.rmdir({ dir: dir, domain: domain, bucket: bucket })
-        .then((res:any)=>{
-          if (res=='ok') {
-            ElMessage({
-              message: '目录删除成功！',
-              type: 'success'
-            });
-          }
-          $dialog.removeDialog(0)
-        })
-    }
+import { inject, ref } from 'vue'
+import createUploadApi from '../apis/file/upload'
+import { ElMessage } from 'element-plus'
+import { dialogInjectionKey } from 'gitart-vue-dialog'
+const $dialog = inject(dialogInjectionKey)
+const props = defineProps({
+  dir: {
+    type: String,
+    default: ''
+  },
+  domain: String,
+  bucket: String
+})
+const { dir, domain, bucket } = props
+const dialogVisible = ref(true)
+const submitMkdir = () => {
+  if (dir) {
+    createUploadApi.rmdir({ dir: dir, domain: domain, bucket: bucket })
+      .then((res: any) => {
+        if (res == 'ok') {
+          ElMessage({
+            message: '目录删除成功！',
+            type: 'success'
+          });
+        }
+        $dialog?.removeDialog(0)
+      })
   }
+}
 </script>

@@ -3,9 +3,9 @@ import { TmsAxios } from 'tms-vue3'
 const base = (import.meta.env.VITE_API_SERVER || '') + '/file/upload'
 
 export default {
-  plain(query, fileData, config) {
+  plain(query: any, fileData: any, config: any) {
     let url = `${base}/plain`
-    const params = { thumb: 'Y' }
+    const params: any = { thumb: 'Y' }
     if (query) {
       if (query.domain !== undefined) params.domain = query.domain
       if (query.bucket !== undefined) params.bucket = query.bucket
@@ -16,10 +16,10 @@ export default {
 
     return TmsAxios.ins('file-api')
       .post(url, fileData, config)
-      .then((rst) => rst.data.result)
+      .then((rst: any) => rst.data.result)
   },
-  mkdir(query) {
-    const params = {}
+  mkdir(query: any) {
+    const params: any = {}
     if (query) {
       if (query.domain !== undefined) params.domain = query.domain
       if (query.bucket !== undefined) params.bucket = query.bucket
@@ -29,10 +29,10 @@ export default {
 
     return TmsAxios.ins('file-api')
       .get(url, { params })
-      .then((rst) => rst.data.result)
+      .then((rst: any) => rst.data.result)
   },
-  rmdir(query) {
-    const params = {}
+  rmdir(query: any) {
+    const params: any = {}
     if (query) {
       if (query.domain !== undefined) params.domain = query.domain
       if (query.bucket !== undefined) params.bucket = query.bucket
@@ -42,6 +42,6 @@ export default {
 
     return TmsAxios.ins('file-api')
       .get(url, { params })
-      .then((rst) => rst.data.result)
+      .then((rst: any) => rst.data.result)
   },
 }

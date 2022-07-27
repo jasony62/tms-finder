@@ -20,7 +20,7 @@ export default {
     return TmsAxios.ins('file-api')
       .get(`${base}/list`, { params })
       .then((rst: any) => {
-        rst.data.result.files.forEach((f) => {
+        rst.data.result.files.forEach((f: any) => {
           if (typeof f.info !== 'object') f.info = {}
         })
         return rst.data.result
@@ -32,7 +32,7 @@ export default {
       .post(`${base}/setInfo`, info, { params })
       .then((rst: any) => rst.data.result)
   },
-  overallSearch(params) {
+  overallSearch(params: any) {
     return TmsAxios.ins('file-api')
       .post(`${base}/listAll`, params)
       .then((rst: any) => rst.data.result)

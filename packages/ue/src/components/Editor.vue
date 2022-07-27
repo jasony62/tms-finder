@@ -28,6 +28,7 @@ const onClose = () => {
 
 const onSubmit = (newInfo: any) => {
   createBrowseApi.setInfo(path, info, domain, bucket).then(() => {
+    //@ts-ignore
     Object.assign(info, newInfo)
     onClose()
   })

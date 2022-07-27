@@ -9,16 +9,17 @@
   },
   "dependencies": {
     "element-plus": "^2.2.0",
-    "gitart-vue-dialog": "^2.0.5",
+    "gitart-vue-dialog": "^2.4.0",
     "pinia": "^2.0.14",
+    "tms-janus-play": "^0.0.3",
+    "tms-koa-account": "^0.0.10",
     "tms-vue3": "^0.0.4",
-    "tms-vue3-ui": "^0.0.36",
+    "tms-vue3-ui": "^0.0.45",
     "vue": "^3.2.25",
-    "vue-router": "4",
-    "tms-koa-account": "^0.0.7"
+    "vue-router": "4"
   },
   "devDependencies": {
-    "@types/node": "^17.0.31",
+    "@types/node": "^17.0.45",
     "@vitejs/plugin-vue": "^2.3.1",
     "autoprefixer": "^10.4.7",
     "postcss": "^8.4.13",

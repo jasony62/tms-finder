@@ -13,13 +13,8 @@
       </el-table>
       <div class="icon-view" v-if="viewStyle == '2'">
         <div class="icon-lists" v-if="files.length">
-          <el-card
-            :class="cardClass"
-            v-for="(item, index) in files"
-            :key="index + '-only'"
-            :body-style="{ padding: '0px' }"
-            shadow="never"
-          >
+          <el-card :class="cardClass" v-for="(item, index) in files" :key="index + '-only'"
+            :body-style="{ padding: '0px' }" shadow="never">
             <svg class="icon" aria-hidden="true">
               <use :xlink:href="formateFileType(item)" />
             </svg>
@@ -31,24 +26,14 @@
               </div>
             </div>
           </el-card>
-          <div
-            :class="emptyClass"
-            v-for="index in columns - (files.length % columns)"
-            :key="index"
-            v-show="files.length % columns > 0"
-          ></div>
+          <div :class="emptyClass" v-for="index in columns - (files.length % columns)" :key="index"
+            v-show="files.length % columns > 0"></div>
         </div>
         <div class="empty" v-else>暂无数据</div>
       </div>
     </div>
-    <el-pagination
-      background
-      v-model:currentPage="batch.page"
-      :page-sizes="[10, 20, 30]"
-      v-model:pageSize="batch.size"
-      layout="total, sizes, prev, pager, next"
-      :total="batch.total"
-    ></el-pagination>
+    <el-pagination background v-model:currentPage="batch.page" :page-sizes="[10, 20, 30]" v-model:pageSize="batch.size"
+      layout="total, sizes, prev, pager, next" :total="batch.total"></el-pagination>
   </div>
 </template>
 
@@ -78,7 +63,7 @@ const store = facStore()
 const $dialog = inject(dialogInjectionKey)
 
 const { domain, bucket } = props
-const files = ref([])
+const files = ref<any[]>([])
 
 const batch = reactive(new Batch(manageApi.list, domain, bucket))
 batch.size = 12
@@ -129,7 +114,7 @@ const rowDbClick = (file: any) => {
   utils.postMessage(() => utils.getFileUrl(file))
 }
 
-const formateFileType = (data) => {
+const formateFileType = (data: any) => {
   const fileType = utils.matchType(data.name)
   let iconId = ''
   switch (fileType) {

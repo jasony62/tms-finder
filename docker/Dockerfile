@@ -10,26 +10,35 @@ RUN npm install -g pnpm typescript
 # 安装Python3，为安装sharp做准备
 RUN apk add --update --no-cache py3-pip python3
 # 解决sharp依赖的libvips包下载慢的问题
-COPY ../docker/npmlibs/_libvips/libvips-8.12.2-linuxmusl-x64.tar.br /root/.npm/_libvips/libvips-8.12.2-linuxmusl-x64.tar.br
+COPY ../docker/back/npmlibs/_libvips/libvips-8.12.2-linuxmusl-x64.tar.br /root/.npm/_libvips/libvips-8.12.2-linuxmusl-x64.tar.br
+
+# 复制package.json安装依赖包
+# 先安装依赖包，再复制和编译代码，是为了制作镜像时避免反复下载依赖包
+## kit 需要先变异，有内部来依赖关系
+COPY ../packages/tfd-kit /usr/src/tfd/kit
+RUN cd /usr/src/tfd/kit && pnpm i --strict-peer-dependencies=false && pnpm build 
+## back
+COPY ../packages/tfd-back/package.json /usr/src/tfd/back/package.json
+RUN sed -i 's/"tfd-kit": "workspace:\*"/"tfd-kit": "file:\.\.\/kit"/g' /usr/src/tfd/back/package.json
+RUN cd /usr/src/tfd/back && pnpm i --strict-peer-dependencies=false
+## ue
+COPY ../packages/ue/package.json /usr/src/tfd/ue/package.json
+RUN cd /usr/src/tfd/ue && pnpm i --strict-peer-dependencies=false
 
 # 复制源代码
-COPY ../packages/tfd-kit /usr/src/tfd/kit
 COPY ../packages/tfd-back /usr/src/tfd/back
 RUN sed -i 's/"tfd-kit": "workspace:\*"/"tfd-kit": "file:\.\.\/kit"/g' /usr/src/tfd/back/package.json
 COPY ../packages/ue /usr/src/tfd/ue
 
 # 编译源代码
-
-## kit
-RUN cd /usr/src/tfd/kit && pnpm i --strict-peer-dependencies=false && pnpm build 
 ## back
-RUN cd /usr/src/tfd/back && pnpm i --strict-peer-dependencies=false && pnpm build 
+RUN cd /usr/src/tfd/back && pnpm build 
 ## ue_admin
 ARG vite_base_url
 RUN echo VITE_BASE_URL=$vite_base_url >> /usr/src/tfd/ue/.env
-RUN cd /usr/src/tfd/ue && pnpm i --strict-peer-dependencies=false && pnpm build
+RUN cd /usr/src/tfd/ue && pnpm build
 
-WORKDIR /usr/src/packages
+# WORKDIR /usr/src/packages
 
 # 生成运行镜像
 
@@ -41,25 +50,25 @@ RUN apk add nginx gettext
 
 # ue
 COPY --from=builder /usr/src/tfd/ue/dist /usr/share/nginx/html
-COPY --from=builder /usr/src/tfd/ue/nginx.conf.template /etc/nginx/nginx.conf.template
-COPY --from=builder /usr/src/tfd/ue/start_nginx.sh /usr/local/bin/start_nginx.sh
+COPY ../docker/ue/nginx.conf.template /etc/nginx/nginx.conf.template
+COPY ../docker/ue/start_nginx.sh /usr/local/bin/start_nginx.sh
 RUN chmod +x /usr/local/bin/start_nginx.sh
 
 # back
-COPY --from=builder /usr/src/tfd/back/node_modules /usr/app/node_modules
-COPY --from=builder /usr/src/tfd/back/dist /usr/app/dist
-COPY --from=builder /usr/src/tfd/back/package.json /usr/app/package.json
-RUN sed -i 's/"tfd-kit": "file:\.\.\/kit"/"tfd-kit": "\*"/g' /usr/app/package.json
-COPY ../docker/start_back.sh /usr/app/start_back.sh
-RUN chmod +x /usr/app/start_back.sh
+COPY --from=builder /usr/src/tfd/back/node_modules /usr/app/tfd/node_modules
+COPY --from=builder /usr/src/tfd/back/dist /usr/app/tfd/dist
+COPY --from=builder /usr/src/tfd/back/package.json /usr/app/tfd/package.json
+RUN sed -i 's/"tfd-kit": "file:\.\.\/kit"/"tfd-kit": "\*"/g' /usr/app/tfd/package.json
+COPY ../docker/back/start_back.sh /usr/app/tfd/start_back.sh
+RUN chmod +x /usr/app/tfd/start_back.sh
 
-WORKDIR /usr/app
+WORKDIR /usr/app/tfd
 
 # 启动服务
 COPY ../docker/start_all.sh /usr/local/bin/start_all.sh 
 RUN chmod +x /usr/local/bin/start_all.sh 
 
 # 配置文件
-COPY ../docker/config /usr/app/config
+COPY ../docker/back/config /usr/app/tfd/config
 
 CMD ["start_all.sh"]

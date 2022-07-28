@@ -48,12 +48,14 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, ref, inject } from 'vue';
+import { computed, inject, onMounted, ref } from 'vue';
 import { dialogInjectionKey } from 'gitart-vue-dialog'
 import facStore from '@/store'
 import Rmdir from './Rmdir.vue'
 import Upload from './Upload.vue'
 import Mkdir from './Mkdir.vue'
+import { useRouter, useRoute } from 'vue-router';
+import { SUPPORT_MULTI_VIEW } from '@/global';
 const props = defineProps({
   activeIndex: { type: String },
   domain: { type: String },
@@ -64,16 +66,17 @@ const $dialog = inject(dialogInjectionKey)
 
 const store = facStore()
 
-const SupportMultiView = !/no|false/i.test(
-  import.meta.env.VITE_SUPPORT_MULTI_VIEW
-)
+const SupportMultiView = ref(false)
+
+const router = useRouter()
+const route = useRoute()
 
 const selectViewStyle = (value: string) => {
   store.setViewStyle(value)
 }
 
 const onMenuSelect = (name: string) => {
-  // this.$router.push({ name, query: this.$route.query })
+  router.push({ name, query: route.query })
 }
 
 const currentDir = computed(() => {
@@ -107,6 +110,9 @@ const rmdir = () => {
     }
   })
 }
+onMounted(() => {
+  SupportMultiView.value = SUPPORT_MULTI_VIEW()
+})
 </script>
 <style scoped>
 .el-menu__placeholder .el-menu-item.is-active {

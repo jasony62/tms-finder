@@ -1,6 +1,7 @@
 import { TmsAxios } from 'tms-vue3'
+import { BACK_API_URL } from '@/global'
 
-const base = (import.meta.env.VITE_API_SERVER || '') + '/plugins/main'
+const base = () => BACK_API_URL() + '/plugins/main'
 
 export default {
   /**
@@ -10,7 +11,7 @@ export default {
    */
   list(suffix: string) {
     return TmsAxios.ins('file-api')
-      .post(`${base}/list?suffix=${suffix}`)
+      .post(`${base()}/list?suffix=${suffix}`)
       .then((rst: any) => {
         return Promise.resolve(rst.data)
       })
@@ -21,9 +22,9 @@ export default {
    * @returns
    */
   execute(params: any) {
-    const {dir, pluginName, ...data} = params
+    const { dir, pluginName, ...data } = params
     return TmsAxios.ins('file-api')
-      .post(`${base}/execute?plugin=${pluginName}&dir=${dir}`, {...data})
+      .post(`${base()}/execute?plugin=${pluginName}&dir=${dir}`, { ...data })
       .then((rst: any) => {
         return Promise.resolve(rst.data)
       })

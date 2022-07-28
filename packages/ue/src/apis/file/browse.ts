@@ -1,13 +1,14 @@
 import { TmsAxios } from 'tms-vue3'
+import { BACK_API_URL, SUPPORT_SET_INFO } from '@/global'
 
-const base = (import.meta.env.VITE_API_SERVER || '') + '/file/browse'
+const base = () => BACK_API_URL() + '/file/browse'
 
 export default {
   schemas(domain?: string, bucket?: string) {
-    if (!/no|false/i.test(import.meta.env.VITE_SUPPORT_SET_INFO)) {
+    if (SUPPORT_SET_INFO()) {
       const params = { domain, bucket }
       return TmsAxios.ins('file-api')
-        .get(`${base}/schemas`, { params })
+        .get(`${base()}/schemas`, { params })
         .then((rst: any) => rst.data.result)
     } else {
       return Promise.resolve({})
@@ -18,7 +19,7 @@ export default {
     if (domain !== undefined) params.domain = domain
     if (bucket !== undefined) params.bucket = bucket
     return TmsAxios.ins('file-api')
-      .get(`${base}/list`, { params })
+      .get(`${base()}/list`, { params })
       .then((rst: any) => {
         rst.data.result.files.forEach((f: any) => {
           if (typeof f.info !== 'object') f.info = {}
@@ -29,12 +30,12 @@ export default {
   setInfo(path: string, info: any, domain?: string, bucket?: string) {
     const params = { path, domain, bucket }
     return TmsAxios.ins('file-api')
-      .post(`${base}/setInfo`, info, { params })
+      .post(`${base()}/setInfo`, info, { params })
       .then((rst: any) => rst.data.result)
   },
   overallSearch(params: any) {
     return TmsAxios.ins('file-api')
-      .post(`${base}/listAll`, params)
+      .post(`${base()}/listAll`, params)
       .then((rst: any) => rst.data.result)
   },
 }

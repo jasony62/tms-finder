@@ -59,4 +59,7 @@ WORKDIR /usr/app
 COPY ../docker/start_all.sh /usr/local/bin/start_all.sh 
 RUN chmod +x /usr/local/bin/start_all.sh 
 
+# 配置文件
+COPY ../docker/config /usr/app/config
+
 CMD ["start_all.sh"]

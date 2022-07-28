@@ -84,6 +84,7 @@ import Preview from './Preview.vue'
 import Editor from './Editor.vue'
 import { ElTable, ElMessage } from 'element-plus'
 import apiPlugin from "@/apis/plugin";
+import { SUPPORT_PICK_FILE, SUPPORT_SET_INFO } from '@/global'
 
 type Tms_Finder_File = {
   name: string
@@ -93,8 +94,8 @@ type Tms_Finder_File = {
   info: any
 }
 
-const SupportSetInfo = !/no|false/i.test(import.meta.env.VITE_SUPPORT_SET_INFO)
-const SupportPickFile = /yes|true/i.test(import.meta.env.VITE_SUPPORT_PICK_FILE)
+const SupportSetInfo = ref(false)
+const SupportPickFile = ref(false)
 
 const props = defineProps({
   domain: { type: String },
@@ -283,6 +284,9 @@ const thumbUrl = (file: any) => {
 }
 
 onMounted(async () => {
+  SupportPickFile.value = SUPPORT_PICK_FILE()
+  SupportSetInfo.value = SUPPORT_SET_INFO()
+
   if (window.screen.width >= 1920) {
     columns.value = 7
     cardClass.value = 'el-card-2'

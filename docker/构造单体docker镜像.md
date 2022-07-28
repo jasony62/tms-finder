@@ -24,6 +24,19 @@ RUN sed -i 's/"tfd-kit": "file:\.\.\/kit"/"tfd-kit": "\*"/g' /usr/app/package.js
 
 参考：[package.json](https://docs.npmjs.com/cli/v6/configuring-npm/package-json#local-paths)
 
+## 前端代码（admin）
+
+前端项目支持设置入口地址（base_url）。该设置在编译阶段通过环境变量`VITE_BASE_URL`设置，在`ue/vite.config.js`中使用（在`nginx.config`也要进行相应的设置，后面进行说明）。`VITE_BASE_URL`在代码中设置了默认值`/tmsfinder`，若需要修改，可以在构造镜像时通过`--build-arg vite_base_url=xxx`进行指定。`VITE_BASE_URL`同时也指定了编译生成的代码在`dist`中目录，默认生成的代码在`dist/tmsfinder`目录中。
+
+前端代码部署在`nginx`中，位置为`/usr/share/nginx/html`。为了支持在一个`nginx`实例下部署多个前端项目，每个前端项目用`VITE_BASE_URL`指定的值作为起始目录。需要在`nginx.conf`中进行路由匹配，内容如下：
+
+```nginx
+location /admin {
+    index index.html;
+    try_files $uri $uri/ /admin/index.html;
+}
+```
+
 在项目根目录下执行
 
 ```bash

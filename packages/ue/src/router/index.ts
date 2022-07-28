@@ -1,49 +1,50 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/Login.vue'
 import Storage from '../views/Storage.vue'
 import Manage from '../views/Manage.vue'
-import NotFound from '../views/NotFound.vue'
 import Register from '../views/Register.vue'
 import Smscode from '../views/Smscode.vue'
-const VITE_BASE_URL = typeof import.meta.env.VITE_BASE_URL === 'string' ? import.meta.env.VITE_BASE_URL : ''
+import { SUPPORT_SET_INFO } from '@/global'
+
+const BASE_URL = import.meta.env.VITE_BASE_URL ? import.meta.env.VITE_BASE_URL : '/tmsfinder'
 
 const routes = [
   {
-    path: `${VITE_BASE_URL}/login`,
+    path: `/login`,
     name: 'login',
     component: Login,
   },
   {
-    path: `${VITE_BASE_URL}/web/manage`,
-    name: 'manage',
-    props: (route: any) => ({ domain: route.query.domain, bucket: route.query.bucket }),
-    component: Manage,
-  },
-  {
-    path: `${VITE_BASE_URL}/register`,
+    path: `/register`,
     name: 'register',
     component: Register,
     props: true,
   },
   {
-    path: `${VITE_BASE_URL}/smscode`,
+    path: `/smscode`,
     name: 'smscode',
     component: Smscode,
     props: true,
   },
   {
-    path: `${VITE_BASE_URL}/web/storage`,
+    path: `/web/manage`,
+    name: 'manage',
+    props: (route: any) => ({ domain: route.query.domain, bucket: route.query.bucket }),
+    component: Manage,
+  },
+  {
+    path: `/web/storage`,
     name: 'storage',
     props: (route: any) => ({ domain: route.query.domain, bucket: route.query.bucket }),
     component: Storage,
   },
   {
-    path: `${VITE_BASE_URL}/web`,
+    path: `/web`,
     name: 'root',
     props: (route: any) => ({ domain: route.query.domain, bucket: route.query.bucket }),
     component: (() => {
       /*如果设置了文件schema就默认进入管理视图，否则进入存储视图*/
-      return !/no|false/i.test(import.meta.env.VITE_SUPPORT_SET_INFO) ? Manage : Storage
+      return SUPPORT_SET_INFO() ? Manage : Storage
     })(),
   },
   {
@@ -53,13 +54,13 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(VITE_BASE_URL),
+  history: createWebHistory(BASE_URL),
   routes,
 })
 
 // router.beforeEach((to, from, next) => {
 //   // 进入页面前检查是否已经通过用户认证
-//   if (import.meta.env.VITE_AUTH_DISABLED !== 'Yes' && import.meta.env.VITE_AUTH_SERVER) {
+//   if (!AUTH_DISABLED()) {
 //     if (to.name !== 'login') {
 //       let token = sessionStorage.getItem('access_token')
 //       if (!token) {

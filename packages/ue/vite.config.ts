@@ -1,20 +1,29 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, 'src'),
+export default ({ mode }) => {
+  const env = loadEnv(mode, process.cwd())
+
+  const BASE_URL = env.VITE_BASE_URL ? env.VITE_BASE_URL : '/tmsfinder'
+
+  return defineConfig({
+    base: BASE_URL,
+    build: {
+      outDir: `dist${BASE_URL}`,
     },
-  },
-  plugins: [vue()],
-  server: {
-    port: 9010,
-    proxy: {
-      '/auth': 'http://localhost:3000',
-      '/api/admin': 'http://localhost:3000',
-    }
-  },
-})
+    resolve: {
+      alias: {
+        '@': resolve(__dirname, 'src'),
+      },
+    },
+    plugins: [vue()],
+    server: {
+      port: parseInt(process.env.SERVER_PORT) || 9010,
+      fs: {
+        strict: false,
+        allow: [],
+      },
+    },
+  })
+}

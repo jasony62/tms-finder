@@ -7,16 +7,11 @@ import router from './router'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import { plugin as dialogPlugin } from 'gitart-vue-dialog'
-import { getLocalToken, setLocalToken } from './global'
+import { init as initGlobalSettings, AUTH_DISABLED, getLocalToken, setLocalToken } from './global'
 import './index.css'
 import 'element-plus/dist/index.css'
 import 'tms-vue3-ui/dist/es/frame/style/index.css'
 import 'tms-vue3-ui/dist/es/flex/style/index.css'
-
-let RequireLogin: boolean = false
-if (import.meta.env.VITE_AUTH_DISABLED !== 'Yes' && import.meta.env.VITE_AUTH_SERVER) {
-  RequireLogin = true
-}
 
 function getQueryVariable(variable: string) {
   var query = window.location.search.substring(1)
@@ -32,7 +27,7 @@ function getQueryVariable(variable: string) {
 
 function initFunc() {
   let authToken: string = ''
-  if (RequireLogin) {
+  if (!AUTH_DISABLED()) {
     let token = getLocalToken()
     if (!token) router.push('/login')
     authToken = `Bearer ${token}`
@@ -70,13 +65,29 @@ function initFunc() {
 
 TmsAxios.ins({ name: 'auth-api' })
 
-createApp(App)
-  .use(router)
-  .use(createPinia())
-  .use(dialogPlugin)
-  .use(TmsAxiosPlugin)
-  .use(Frame)
-  .use(Flex)
-  .use(initFunc)
-  .use(ElementPlus)
-  .mount('#app')
+TmsAxios.ins({ name: 'master-api' })
+
+function afterLoadSettings() {
+  createApp(App)
+    .use(router)
+    .use(createPinia())
+    .use(dialogPlugin)
+    .use(TmsAxiosPlugin)
+    .use(Frame)
+    .use(Flex)
+    .use(initFunc)
+    .use(ElementPlus)
+    .mount('#app')
+}
+
+const { VITE_BASE_URL } = import.meta.env
+const UrlSettings = (VITE_BASE_URL && VITE_BASE_URL !== '/' ? VITE_BASE_URL : '/tmsfinder') + '/settings.json'
+
+TmsAxios.ins('master-api')
+  .get(UrlSettings)
+  .then((rsp: any) => {
+    let settings = rsp.data
+    initGlobalSettings(settings)
+    afterLoadSettings()
+  })
+  .catch(afterLoadSettings)

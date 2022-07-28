@@ -1,9 +1,9 @@
 import { TmsAxios } from 'tms-vue3'
 //@ts-ignore
 import { encodeAccountV1 } from 'tms-koa-account/models/crypto'
-const baseAuth = (import.meta.env.VITE_BACK_AUTH_BASE || '') + '/auth'
+import { AUTH_API_URL } from '@/global'
 
-const APPID = import.meta.env.VITE_LOGIN_CODE_APPID || 'tms-mongodb-web'
+const APPID = import.meta.env.VITE_LOGIN_CODE_APPID || 'tms-finder'
 
 const ISCRYPTO = import.meta.env.VITE_ENCRYPT_SECRET || 'no'
 
@@ -22,8 +22,9 @@ export default {
    * @returns
    */
   fnCaptcha() {
+    const baseAuth = AUTH_API_URL()
     captchaId = genCaptchaId()
-    const url = `${baseAuth}/captcha?appid=${APPID}&captchaid=${captchaId}&background=fff`
+    const url = `${baseAuth}/captcha?appid=${APPID}&captchaid=${captchaId}`
     return TmsAxios.ins('auth-api')
       .get(url)
       .then((rst: any) => {
@@ -40,6 +41,7 @@ export default {
    * @returns
    */
   fnRegister(userArg: any) {
+    const baseAuth = AUTH_API_URL()
     let params = { ...userArg }
     let url = `${baseAuth}/register`
     if (ISCRYPTO === 'yes') {
@@ -69,6 +71,7 @@ export default {
    * @returns
    */
   fnLogin(userArg: any) {
+    const baseAuth = AUTH_API_URL()
     let params = { ...userArg }
     let url = `${baseAuth}/authenticate`
     if (ISCRYPTO === 'yes') {

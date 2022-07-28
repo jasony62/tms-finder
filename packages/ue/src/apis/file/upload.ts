@@ -1,10 +1,11 @@
 import { TmsAxios } from 'tms-vue3'
+import { BACK_API_URL } from '@/global'
 
-const base = (import.meta.env.VITE_API_SERVER || '') + '/file/upload'
+const base = () => BACK_API_URL() + '/file/upload'
 
 export default {
   plain(query: any, fileData: any, config: any) {
-    let url = `${base}/plain`
+    let url = `${base()}/plain`
     const params: any = { thumb: 'Y' }
     if (query) {
       if (query.domain !== undefined) params.domain = query.domain
@@ -25,7 +26,7 @@ export default {
       if (query.bucket !== undefined) params.bucket = query.bucket
       if (query.dir) params.dir = query.dir
     }
-    let url = `${base}/mkdir`
+    let url = `${base()}/mkdir`
 
     return TmsAxios.ins('file-api')
       .get(url, { params })
@@ -38,7 +39,7 @@ export default {
       if (query.bucket !== undefined) params.bucket = query.bucket
       if (query.dir) params.dir = query.dir
     }
-    let url = `${base}/rmdir`
+    let url = `${base()}/rmdir`
 
     return TmsAxios.ins('file-api')
       .get(url, { params })

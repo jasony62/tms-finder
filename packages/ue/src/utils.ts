@@ -1,18 +1,13 @@
+import { BACK_FS_URL } from '@/global'
+
 export default {
   // 返回文件的完整url
   getFileUrl(file: any) {
-    const fserver = import.meta.env.VITE_FS_SERVER || `${location.protocol}//${location.host}`
-    const fileurl = `${fserver}${file.path}`
-
-    return fileurl
+    return `${BACK_FS_URL()}${file.path}`
   },
   // 返回文件的完整缩略图url
   getThumbUrl(file: any) {
-    if (!file.thumb) return ''
-    const fserver = import.meta.env.VITE_FS_SERVER || `${location.protocol}//${location.host}`
-    const thumbUrl = `${fserver}${file.thumb}`
-
-    return thumbUrl
+    return file.thumb ? `${BACK_FS_URL()}${file.thumb}` : ''
   },
   postMessage(callback: any) {
     let target = window.parent ? window.parent : window.opener ? window.opener : false

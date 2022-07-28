@@ -29,10 +29,6 @@ http {
 #nonssl_server    server {
 #nonssl_server        listen       80;
 #nonssl_server        server_name  localhost;
-#nonssl_server        location $NGINX_WEB_BASE_URL/lib/ {
-#nonssl_server            add_header Access-Control-Allow-Origin $NGINX_ACCESS_CONTROL_ALLOW_ORIGIN;
-#nonssl_server            root   /usr/share/nginx/html/;
-#nonssl_server        }
 #nonssl_server        location $NGINX_WEB_BASE_URL/web {
 #nonssl_server            root   /usr/share/nginx/html;
 #nonssl_server            try_files $uri $uri/index.html $NGINX_WEB_BASE_URL/web/index.html;
@@ -48,10 +44,6 @@ http {
 #ssl_server        location $NGINX_WEB_BASE_URL/web {
 #ssl_server            root   /usr/share/nginx/html;
 #ssl_server            try_files $uri $uri/index.html $NGINX_WEB_BASE_URL/web/index.html;
-#ssl_server        }
-#ssl_server        location $NGINX_WEB_BASE_URL/lib/ {
-#ssl_server            add_header Access-Control-Allow-Origin $NGINX_ACCESS_CONTROL_ALLOW_ORIGIN;
-#ssl_server            root   /usr/share/nginx/html/;
 #ssl_server        }
 #ssl_server    }
 }

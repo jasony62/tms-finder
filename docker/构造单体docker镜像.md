@@ -1,5 +1,7 @@
 在一个容器中运行整个应用（`back`+`ue`，不包含`mongodb`，`redis`等中间件）。
 
+应用在容器中的目录`/usr/app/tfd`。可在此目录下指定配置文件，例如：`config`，`auth_client_account`，`ctrl_plugin_config`。
+
 # 构造说明
 
 进行两阶段构建，第一个阶段编译各个模块（ts->js），生成运行代码；第二个阶段将生成的代码部署到运行环境。

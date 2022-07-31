@@ -6,6 +6,7 @@ type Globalsettings = {
   backApiPort: number
   backFsBase: string
   backFsPort: number
+  loginCaptchaDisabled: boolean
   supportPickFile: boolean
   supportSetInfo: boolean
   supportMultiView: boolean
@@ -19,6 +20,7 @@ let _globalsettings: Globalsettings = {
   backApiPort: parseInt(import.meta.env.VITE_BACK_API_PORT ?? location.port),
   backFsBase: import.meta.env.VITE_BACK_FS_BASE || 'fs',
   backFsPort: parseInt(import.meta.env.VITE_BACK_FS_PORT ?? location.port),
+  loginCaptchaDisabled: /yes|true/i.test(import.meta.env.VITE_LOGIN_CAPTCHA_DISABLED),
   supportPickFile: /yes|true/i.test(import.meta.env.VITE_SUPPORT_PICK_FILE),
   supportSetInfo: /yes|true/i.test(import.meta.env.VITE_SUPPORT_SET_INFO),
   supportMultiView: /yes|true/i.test(import.meta.env.VITE_SUPPORT_MULTI_VIEW),
@@ -35,6 +37,7 @@ export function init(settings: Globalsettings) {
   if (settings.backApiPort) _globalsettings.backApiPort = settings.backApiPort
   if (settings.backFsBase) _globalsettings.backFsBase = settings.backFsBase
   if (settings.backFsPort) _globalsettings.backFsPort = settings.backFsPort
+  if (settings.loginCaptchaDisabled) _globalsettings.loginCaptchaDisabled = settings.loginCaptchaDisabled
   if (settings.supportPickFile) _globalsettings.supportPickFile = settings.supportPickFile
   if (settings.supportSetInfo) _globalsettings.supportSetInfo = settings.supportSetInfo
   if (settings.supportMultiView) _globalsettings.supportMultiView = settings.supportMultiView
@@ -55,6 +58,10 @@ export const SUPPORT_SET_INFO = () => _globalsettings.supportSetInfo
  * 是否支持多视图
  */
 export const SUPPORT_MULTI_VIEW = () => _globalsettings.supportMultiView
+/**
+ * 关闭验证码
+ */
+export const LOGIN_CAPTCHA_DISABLED = () => _globalsettings.loginCaptchaDisabled
 /**
  * 根据环境变量设置认证服务起始地址
  */

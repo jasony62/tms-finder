@@ -7,9 +7,9 @@ class LocalFD extends LocalFS {
    *
    * @param {*} path
    */
-  mkdir(path) {
+  mkdir(path: string) {
     let fullpath = super.fullpath(path)
-    if (fs.existsSync(fullpath)) return [false, '目录已经存在']
+    if (fs.existsSync(fullpath)) return [false, '目录已经存在，无法创建目录']
 
     fs.mkdirSync(fullpath)
 
@@ -20,15 +20,15 @@ class LocalFD extends LocalFS {
    *
    * @param {*} path
    */
-  rmdir(path) {
+  rmdir(path: string) {
     let fullpath = super.fullpath(path)
-    if (!fs.existsSync(fullpath)) return [false, '目录不存在']
+    if (!fs.existsSync(fullpath)) return [false, '目录不存在，无法删除目录']
 
     const stat = fs.statSync(fullpath)
-    if (!stat.isDirectory()) return [false, '指定路径不是目录，无法删除']
+    if (!stat.isDirectory()) return [false, '指定路径不是目录，无法删除目录']
 
     const names = fs.readdirSync(fullpath)
-    if (names.length) return [false, '目录不为空，无法删除']
+    if (names.length) return [false, '目录不为空，无法删除目录']
 
     fs.rmdirSync(fullpath)
 

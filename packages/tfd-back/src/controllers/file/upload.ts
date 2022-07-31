@@ -4,12 +4,11 @@ import LocalFD from 'tfd-kit/dist/model/local'
 
 /** 上传文件控制器类 */
 class Upload extends UploadCtrl {
+  localFD: LocalFD
   async tmsBeforeEach() {
     const result = await super.tmsBeforeEach()
-    if (result instanceof ResultFault) {
-      return result
-    }
-    this['localFD'] = new LocalFD(this['domain'], this['bucket'])
+    if (result instanceof ResultFault) return result
+    this.localFD = new LocalFD(this.domain, this.bucket)
     return true
   }
   /**
@@ -30,8 +29,8 @@ class Upload extends UploadCtrl {
    *
    */
   mkdir() {
-    const { dir } = this['request'].query
-    const result = this['localFD'].mkdir(dir)
+    const { dir } = this.request.query
+    const result = this.localFD.mkdir(dir)
     if (false === result[0]) return new ResultFault(result[1])
 
     return new ResultData('ok')
@@ -54,8 +53,8 @@ class Upload extends UploadCtrl {
    *
    */
   rmdir() {
-    const { dir } = this['request'].query
-    const result = this['localFD'].rmdir(dir)
+    const { dir } = this.request.query
+    const result = this.localFD.rmdir(dir)
     if (false === result[0]) return new ResultFault(result[1])
 
     return new ResultData('ok')

@@ -1,6 +1,7 @@
+const { env } = process
 const appConfig = {
-  name: process.env.TFD_APP_NAME || 'tms-finder',
-  port: process.env.TFD_APP_PORT || 3000,
+  name: env.TFD_APP_NAME || 'tms-finder',
+  port: env.TFD_APP_PORT || 3000,
   router: {
     auth: {
       prefix: 'auth', // 鉴权接口调用url的前缀
@@ -22,13 +23,13 @@ const appConfig = {
     },
     // 保存鉴权信息
     jwt: {
-      privateKey: 'tms-finder-secret',
+      privateKey: env.TFD_APP_AUTH_JWT_KEY || `TFD${Date.now()}${parseInt(Math.random() * 100)}`,
       expiresIn: 3600,
     },
     // 验证码
     captcha: {
       npm: {
-        disabled: false,
+        disabled: /true|yes/i.test(env.TFD_APP_AUTH_CAPTCHA_DISABLED),
         id: 'tms-koa-account',
         module: 'models/captcha',
         checker: 'checkCaptcha',

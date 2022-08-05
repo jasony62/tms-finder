@@ -2,7 +2,7 @@
   "name": "tfd-back",
   "version": "0.0.1",
   "private": true,
-  "description": "",
+  "description": "通用的文件管理客户端",
   "main": "index.js",
   "scripts": {
     "build": "rimraf ./dist && tsc",
@@ -16,13 +16,13 @@
     "log4js": "^6.6.0",
     "mongodb": "^4.8.1",
     "redis": "^4.2.0",
+    "sharp": "^0.30.7",
     "tfd-kit": "workspace:*",
-    "tms-koa": "^0.0.95",
+    "tms-koa": "file:/Users/yangyue/project/tms-koa/packages/lib",
     "tms-koa-account": "^0.0.10"
   },
   "devDependencies": {
     "@types/node": "^18.0.3",
-    "rimraf": "^3.0.2",
-    "sharp": "^0.30.7"
+    "rimraf": "^3.0.2"
   }
 }

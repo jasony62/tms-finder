@@ -8,7 +8,7 @@ class Upload extends UploadCtrl {
   async tmsBeforeEach() {
     const result = await super.tmsBeforeEach()
     if (result instanceof ResultFault) return result
-    this.localFD = new LocalFD(this.domain, this.bucket)
+    this.localFD = new LocalFD(this.tmsContext.FsContext, this.domain, this.bucket)
     return true
   }
   /**

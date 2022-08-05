@@ -18,7 +18,7 @@ let _globalsettings: Globalsettings = {
   authApiPort: parseInt(import.meta.env.VITE_AUTH_API_PORT ?? location.port),
   backApiBase: import.meta.env.VITE_BACK_API_BASE || 'api',
   backApiPort: parseInt(import.meta.env.VITE_BACK_API_PORT ?? location.port),
-  backFsBase: import.meta.env.VITE_BACK_FS_BASE || 'fs',
+  backFsBase: import.meta.env.VITE_BACK_FS_BASE || '',
   backFsPort: parseInt(import.meta.env.VITE_BACK_FS_PORT ?? location.port),
   loginCaptchaDisabled: /yes|true/i.test(import.meta.env.VITE_LOGIN_CAPTCHA_DISABLED),
   supportPickFile: /yes|true/i.test(import.meta.env.VITE_SUPPORT_PICK_FILE),

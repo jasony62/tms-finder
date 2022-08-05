@@ -1,15 +1,9 @@
 <template>
-  <div class="files">
-    <div class="demo-input-suffix row">
-      <el-col :span="6" :offset="16">
-        <el-input placeholder="全站搜索-请输入文件名名称" suffix-icon="el-icon-search" v-model="searchContent"></el-input>
-      </el-col>
-      <el-col :span="1" class="offset-btn">
-        <el-button type="primary" size="small" @click="overallSearch">搜索</el-button>
-      </el-col>
-      <el-col :span="1" class="offset-btn">
-        <el-button type="primary" size="small" @click="drawer = true">执行插件</el-button>
-      </el-col>
+  <div class="files flex flex-col gap-2">
+    <div class="flex flex-row gap-2 w-1/2">
+      <el-input placeholder="全站搜索-请输入文件名名称" v-model="searchContent"></el-input>
+      <el-button type="primary" @click="overallSearch">搜索</el-button>
+      <el-button type="primary" @click="drawer = true">执行插件</el-button>
     </div>
     <el-table ref="multipleTableRef" :data="files" stripe style="width: 100%" @row-dblclick="rowDbClick"
       v-if="viewStyle === '1'">
@@ -344,25 +338,6 @@ const handlePlugin = (plugin: any, filter?: string) => {
 .files {
   display: flex;
   flex-direction: column;
-
-  .el-input__inner {
-    height: 30px;
-    line-height: 30px;
-  }
-
-  .el-input__inner {
-    height: 30px;
-    line-height: 30px;
-  }
-
-  .demo-input-suffix {
-    margin-top: 10px;
-
-    .offset-btn {
-      margin-left: 10px;
-    }
-
-  }
 
   .el-card {
     margin-bottom: 10px;

@@ -1,14 +1,14 @@
 # 目录说明
 
-## finder-back
+## tfd-back
 
 后端服务
 
-## finder-model
+## tfd-kit
 
-数据模型
+开发工具包
 
-## finder-ue
+## ue
 
 客户端
 
@@ -18,8 +18,16 @@
 
 # 运行服务
 
-## 启动后端服务
+## 后端服务
+
+在 packages/tfd-back 目录中执行
 
 ```
-TMS_KOA_CONFIG_DIR=../../back/config TMS_KOA_CONTROLLERS_DIR=./dist/controllers TMS_FINDER_MONGODB_HOST=localhost TMS_FINDER_MONGODB_PORT=27017 TMS_FINDER_FS_ROOTDIR=xxx node dist/server
+TMS_KOA_CONFIG_DIR=../../docker/back/config TMS_KOA_CONTROLLERS_DIR=./dist/controllers TFD_APP_PORT=3030 TFD_MONGODB_HOST=localhost TFD_MONGODB_PORT=27017 TFD_FS_ROOTDIR=../../volumes/files node dist/server
+```
+
+## 客户端
+
+```
+pnpm dev
 ```

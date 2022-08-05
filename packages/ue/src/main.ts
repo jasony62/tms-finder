@@ -2,7 +2,6 @@ import { createApp } from 'vue'
 import ElementPlus from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { TmsAxios, TmsAxiosPlugin } from 'tms-vue3'
-import { Frame, Flex } from 'tms-vue3-ui'
 import router from './router'
 import { createPinia } from 'pinia'
 import App from './App.vue'
@@ -73,8 +72,6 @@ function afterLoadSettings() {
     .use(createPinia())
     .use(dialogPlugin)
     .use(TmsAxiosPlugin)
-    .use(Frame)
-    .use(Flex)
     .use(initFunc)
     .use(ElementPlus)
     .mount('#app')

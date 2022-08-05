@@ -27,30 +27,30 @@ importers:
       rimraf: ^3.0.2
       sharp: ^0.30.7
       tfd-kit: workspace:*
-      tms-koa: ^0.0.95
+      tms-koa: file:/Users/yangyue/project/tms-koa/packages/lib
       tms-koa-account: ^0.0.10
     dependencies:
       glob: 8.0.3
       log4js: 6.6.0
       mongodb: 4.8.1
       redis: 4.2.0
+      sharp: 0.30.7
       tfd-kit: link:../tfd-kit
-      tms-koa: 0.0.95_redis@4.2.0
+      tms-koa: file:../tms-koa/packages/lib_redis@4.2.0
       tms-koa-account: 0.0.10_redis@4.2.0+tms-koa@0.0.95
     devDependencies:
       '@types/node': 18.0.6
       rimraf: 3.0.2
-      sharp: 0.30.7
 
   packages/tfd-kit:
     specifiers:
       '@types/node': ^18.0.3
       rimraf: ^3.0.2
-      tms-koa: ^0.0.95
+      tms-koa: file:/Users/yangyue/project/tms-koa/packages/lib
     devDependencies:
       '@types/node': 18.0.6
       rimraf: 3.0.2
-      tms-koa: 0.0.95
+      tms-koa: file:../tms-koa/packages/lib
 
   packages/ue:
     specifiers:
@@ -381,7 +381,7 @@ packages:
       vite: ^2.5.10
       vue: ^3.2.25
     dependencies:
-      vite: 2.9.14_sass@1.54.0
+      vite: 2.9.14
       vue: 3.2.37
     dev: true
 
@@ -646,7 +646,7 @@ packages:
   /axios/0.26.1:
     resolution: {integrity: sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.4
     transitivePeerDependencies:
       - debug
     dev: false
@@ -662,7 +662,7 @@ packages:
   /axios/0.27.2_debug@4.3.4:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.4
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -983,7 +983,7 @@ packages:
       supports-color:
         optional: true
     dependencies:
-      ms: 2.1.3
+      ms: 2.1.2
 
   /debug/4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
@@ -1482,15 +1482,6 @@ packages:
   /flatted/3.2.6:
     resolution: {integrity: sha512-0sQoMh9s0BYsm+12Huy/rkKxVu4R1+r96YX5cG44rHV0pQ6iC3Q+mkoMFaGWObMFYQxCVT+ssG1ksneA2MI9KQ==}
 
-  /follow-redirects/1.15.1:
-    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-
   /follow-redirects/1.15.1_debug@4.3.4:
     resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
     engines: {node: '>=4.0'}
@@ -1501,7 +1492,6 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.4
-    dev: false
 
   /form-data/4.0.0:
     resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
@@ -1929,7 +1919,7 @@ packages:
       lodash.isplainobject: 4.0.6
       lodash.isstring: 4.0.1
       lodash.once: 4.1.1
-      ms: 2.1.3
+      ms: 2.1.2
       semver: 5.7.1
 
   /jwa/1.4.1:
@@ -2265,9 +2255,6 @@ packages:
 
   /ms/2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
-
-  /ms/2.1.3:
-    resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
   /nanoid/3.3.4:
     resolution: {integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==}
@@ -3100,8 +3087,8 @@ packages:
     resolution: {integrity: sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==}
     dev: true
 
-  /swagger-jsdoc/6.2.1:
-    resolution: {integrity: sha512-l2BwFf7wzNPb11+NRRy65X+kuHUGLb3ZuGFn6A8xDXXTu73YzJmCiy+LED/6QsOgPBPgO3u3sDEz6KuOHAlCtA==}
+  /swagger-jsdoc/6.2.4:
+    resolution: {integrity: sha512-G1QjapZpAh76SywiHBIDHmeqZzcjKN8lNskS4T+rHH81UFDYxbG5L7fW5FdI1SmJqAx3rr9oyFlGFDbNKsV3iA==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     dependencies:
@@ -3241,7 +3228,7 @@ packages:
       path: 0.12.7
       redis: 4.2.0
       svg-captcha: 1.4.0
-      tms-koa: 0.0.95_redis@4.2.0
+      tms-koa: file:../tms-koa/packages/lib_redis@4.2.0
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -3267,85 +3254,10 @@ packages:
       password-validator: 5.3.0
       path: 0.12.7
       svg-captcha: 1.4.0
-      tms-koa: 0.0.95
+      tms-koa: file:../tms-koa/packages/lib
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /tms-koa/0.0.95:
-    resolution: {integrity: sha512-0DpqGAqii2mRoCBnl58WzxUScZvRrNF2HGds01INxlcqlp0M6X6M0ZZFeSycQ9Xe4/QP+bdhHRO2nvMdScwgKA==}
-    engines: {node: '>=16.15.0'}
-    peerDependencies:
-      neo4j-driver: ^4.4.2
-      prom-client: ^13.1.0
-      redis: 4.1.0
-      tms-db: ^0.0.12
-    dependencies:
-      '@koa/cors': 3.3.0
-      '@koa/router': 12.0.0
-      '@log4js-node/log4js-api': 1.0.2
-      axios: 0.27.2_debug@4.3.4
-      debug: 4.3.4
-      dotenv-flow: 3.2.0
-      fs-extra: 10.1.0
-      jsonwebtoken: 8.5.1
-      koa: 2.13.4
-      koa-body: 5.0.0
-      koa-send: 5.0.1
-      koa-static: 5.0.0
-      lodash: 4.17.21
-      moment: 2.29.4
-      mongodb: 4.8.1
-      sharp: 0.30.7
-      socket.io: 4.5.1
-      swagger-jsdoc: 6.2.1
-      tms-koa-account: 0.0.10_tms-koa@0.0.95
-      uuid: 8.3.2
-      xlsx: 0.18.5
-    transitivePeerDependencies:
-      - bufferutil
-      - openapi-types
-      - supports-color
-      - utf-8-validate
-    dev: true
-
-  /tms-koa/0.0.95_redis@4.2.0:
-    resolution: {integrity: sha512-0DpqGAqii2mRoCBnl58WzxUScZvRrNF2HGds01INxlcqlp0M6X6M0ZZFeSycQ9Xe4/QP+bdhHRO2nvMdScwgKA==}
-    engines: {node: '>=16.15.0'}
-    peerDependencies:
-      neo4j-driver: ^4.4.2
-      prom-client: ^13.1.0
-      redis: 4.1.0
-      tms-db: ^0.0.12
-    dependencies:
-      '@koa/cors': 3.3.0
-      '@koa/router': 12.0.0
-      '@log4js-node/log4js-api': 1.0.2
-      axios: 0.27.2_debug@4.3.4
-      debug: 4.3.4
-      dotenv-flow: 3.2.0
-      fs-extra: 10.1.0
-      jsonwebtoken: 8.5.1
-      koa: 2.13.4
-      koa-body: 5.0.0
-      koa-send: 5.0.1
-      koa-static: 5.0.0
-      lodash: 4.17.21
-      moment: 2.29.4
-      mongodb: 4.8.1
-      redis: 4.2.0
-      sharp: 0.30.7
-      socket.io: 4.5.1
-      swagger-jsdoc: 6.2.1
-      tms-koa-account: 0.0.10_redis@4.2.0+tms-koa@0.0.95
-      uuid: 8.3.2
-      xlsx: 0.18.5
-    transitivePeerDependencies:
-      - bufferutil
-      - openapi-types
-      - supports-color
-      - utf-8-validate
-    dev: false
 
   /tms-vue3-ui/0.0.45_vue@3.2.37:
     resolution: {integrity: sha512-i/T+I3AN/EF1DSkb+kwXDpFWV09Zbj+NilolPmCrAegsZSOj0ETdvwqD2pncVMWkq9oeU0i0Cs10ky/GPK/wHA==}
@@ -3690,3 +3602,83 @@ packages:
       validator: 13.7.0
     optionalDependencies:
       commander: 2.20.3
+
+  file:../tms-koa/packages/lib:
+    resolution: {directory: ../tms-koa/packages/lib, type: directory}
+    name: tms-koa
+    version: 0.0.95
+    engines: {node: '>=16.15.0'}
+    peerDependencies:
+      neo4j-driver: ^4.4.2
+      prom-client: ^13.1.0
+      redis: 4.1.0
+      tms-db: ^0.0.12
+    dependencies:
+      '@koa/cors': 3.3.0
+      '@koa/router': 12.0.0
+      '@log4js-node/log4js-api': 1.0.2
+      axios: 0.27.2_debug@4.3.4
+      debug: 4.3.4
+      dotenv-flow: 3.2.0
+      fs-extra: 10.1.0
+      jsonwebtoken: 8.5.1
+      koa: 2.13.4
+      koa-body: 5.0.0
+      koa-send: 5.0.1
+      koa-static: 5.0.0
+      lodash: 4.17.21
+      moment: 2.29.4
+      mongodb: 4.8.1
+      sharp: 0.30.7
+      socket.io: 4.5.1
+      swagger-jsdoc: 6.2.4
+      tms-koa-account: 0.0.10_tms-koa@0.0.95
+      uuid: 8.3.2
+      xlsx: 0.18.5
+    transitivePeerDependencies:
+      - bufferutil
+      - openapi-types
+      - supports-color
+      - utf-8-validate
+    dev: true
+
+  file:../tms-koa/packages/lib_redis@4.2.0:
+    resolution: {directory: ../tms-koa/packages/lib, type: directory}
+    id: file:../tms-koa/packages/lib
+    name: tms-koa
+    version: 0.0.95
+    engines: {node: '>=16.15.0'}
+    peerDependencies:
+      neo4j-driver: ^4.4.2
+      prom-client: ^13.1.0
+      redis: 4.1.0
+      tms-db: ^0.0.12
+    dependencies:
+      '@koa/cors': 3.3.0
+      '@koa/router': 12.0.0
+      '@log4js-node/log4js-api': 1.0.2
+      axios: 0.27.2_debug@4.3.4
+      debug: 4.3.4
+      dotenv-flow: 3.2.0
+      fs-extra: 10.1.0
+      jsonwebtoken: 8.5.1
+      koa: 2.13.4
+      koa-body: 5.0.0
+      koa-send: 5.0.1
+      koa-static: 5.0.0
+      lodash: 4.17.21
+      moment: 2.29.4
+      mongodb: 4.8.1
+      redis: 4.2.0
+      sharp: 0.30.7
+      socket.io: 4.5.1
+      swagger-jsdoc: 6.2.4
+      tms-koa-account: 0.0.10_redis@4.2.0+tms-koa@0.0.95
+      uuid: 8.3.2
+      xlsx: 0.18.5
+    transitivePeerDependencies:
+      - bufferutil
+      - openapi-types
+      - supports-color
+      - utf-8-validate
+    dev: false

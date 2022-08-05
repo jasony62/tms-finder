@@ -1,12 +1,14 @@
 <template>
-  <tms-frame class="tms-finder" :display="{ header: true, footer: true }" :leftWidth="'20%'">
-    <template v-slot:header>
+  <div class="flex flex-col gap-2">
+    <!--header-->
+    <div class="h-20 py-4 px-2">
       <topbar activeIndex="manage" :domain="domain" :bucket="bucket"></topbar>
-    </template>
-    <template v-slot:center>
-      <info :domain="domain" :bucket="bucket"></info>
-    </template>
-  </tms-frame>
+    </div>
+  </div>
+  <!--content-->
+  <div class="flex flex-row gap-2">
+    <info :domain="domain" :bucket="bucket"></info>
+  </div>
 </template>
 
 <script setup lang="ts">

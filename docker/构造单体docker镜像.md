@@ -72,6 +72,12 @@ location / {
 docker build -f ./docker/Dockerfile -t tms/tfd-aio .
 ```
 
+用于开发插件的基础镜像，包含`npm`和`typescript`包。
+
+```bash
+docker build -f ./docker/Dockerfile.dev -t tms/tfd-aio_dev .
+```
+
 运行并进入容器
 
 ```bash

@@ -1,50 +1,29 @@
 <template>
-  <div class="topbar">
-    <el-row type="flex">
-      <el-col :span="4" v-if="SupportMultiView">
-        <el-menu :default-active="activeIndex" mode="horizontal" @select="onMenuSelect">
-          <el-menu-item index="manage">管理视图</el-menu-item>
-          <el-menu-item index="storage">存储视图</el-menu-item>
-        </el-menu>
-      </el-col>
-      <el-col :span="4">
-        <el-menu class="el-menu__placeholder" mode="horizontal">
-          <el-menu-item index="shiftView">
-            <el-radio-group size="small" v-model="store.viewStyle" @change="selectViewStyle">
-              <el-radio-button label="1">列表视图</el-radio-button>
-              <el-radio-button label="2">图标视图</el-radio-button>
-            </el-radio-group>
-          </el-menu-item>
-        </el-menu>
-      </el-col>
-      <el-col :span="13">
-        <el-menu class="el-menu__placeholder" mode="horizontal">
-          <el-menu-item index="currentDir" class="currentDir">
-            <div>
-              当前目录：
-              <span v-if="store.currentDir">{{ store.currentDir.path }}</span>
-            </div>
-          </el-menu-item>
-          <el-menu-item index="mkdir">
-            <el-button @click.prevent="mkdir">新建目录</el-button>
-          </el-menu-item>
-          <el-menu-item index="rmdir">
-            <el-button @click.prevent="rmdir">删除目录</el-button>
-          </el-menu-item>
-          <el-menu-item index="upload">
-            <el-button @click.prevent="upload">上传文件</el-button>
-          </el-menu-item>
-        </el-menu>
-      </el-col>
-      <el-col :span="3">
-        <el-menu :default-active="'user'" mode="horizontal" @select="onMenuSelect">
-          <el-sub-menu index="user">
-            <template #title>用户</template>
-            <el-menu-item index="login">退出</el-menu-item>
-          </el-sub-menu>
-        </el-menu>
-      </el-col>
-    </el-row>
+  <div class="topbar flex flex-row gap-2">
+    <div v-if="SupportMultiView" class="w-1/5">
+      <el-menu :default-active="activeIndex" mode="horizontal" @select="leave">
+        <el-menu-item index="manage">管理视图</el-menu-item>
+        <el-menu-item index="storage">存储视图</el-menu-item>
+      </el-menu>
+    </div>
+    <div class="w-1/5 flex flex-row items-center">
+      <el-radio-group v-model="store.viewStyle" @change="selectViewStyle">
+        <el-radio-button label="1">列表视图</el-radio-button>
+        <el-radio-button label="2">图标视图</el-radio-button>
+      </el-radio-group>
+    </div>
+    <div class="flex-grow flex flex-row gap-2 items-center">
+      <div style="min-width: 20rem;">
+        当前目录：
+        <span v-if="store.currentDir">{{ store.currentDir.path }}</span>
+      </div>
+      <el-button @click.prevent="mkdir">新建目录</el-button>
+      <el-button @click.prevent="rmdir">删除目录</el-button>
+      <el-button @click.prevent="upload">上传文件</el-button>
+    </div>
+    <div class="w-1/6 flex items-center flex-row-reverse">
+      <el-button @click.prevent="leave('login')">退出</el-button>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -75,7 +54,7 @@ const selectViewStyle = (value: string) => {
   store.setViewStyle(value)
 }
 
-const onMenuSelect = (name: string) => {
+const leave = (name: string) => {
   router.push({ name, query: route.query })
 }
 
@@ -115,12 +94,4 @@ onMounted(() => {
 })
 </script>
 <style scoped>
-.el-menu__placeholder .el-menu-item.is-active {
-  border-bottom: 0;
-}
-
-.currentDir {
-  width: 50%;
-  overflow: hidden;
-}
 </style>

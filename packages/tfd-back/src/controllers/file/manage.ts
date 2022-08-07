@@ -55,18 +55,18 @@ class Manage extends ManageCtrl {
    *
    */
   async list() {
-    const fsInfo = await Info.ins(this['domain'])
+    const fsInfo = await Info.ins(this.domain)
     if (!fsInfo) return new ResultFault('不支持设置文件信息')
-    const { filter } = this['request'].body
+    const { filter } = this.request.body
 
     let query = {}
     if (filter) {
       query = this._assembleFind(filter)
     }
-    const bucket = this['bucket']
+    const { bucket } = this
     if (bucket) query['bucket'] = bucket
 
-    let { batch } = this['request'].query
+    let { batch } = this.request.query
     if (!batch) batch = '1,10'
     const [page, size] = batch.split(',', 2)
     const skip = (parseInt(page) - 1) * parseInt(size)

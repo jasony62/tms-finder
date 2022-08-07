@@ -11,12 +11,12 @@
       <el-table-column prop="createTime" label="日期" width="180" :formatter="formatDate"></el-table-column>
       <el-table-column prop="size" label="大小" width="180" :formatter="formateFileSize"></el-table-column>
       <el-table-column prop="name" label="文件名"></el-table-column>
-      <el-table-column fixed="right" label="操作" width="240">
+      <el-table-column fixed="right" label="操作" width="260">
         <template #default="scope">
-          <el-button type="default" size="small" @click="preview(scope.row)">预览</el-button>
-          <el-button type="default" size="small" @click="setInfo(scope.row)" v-if="SupportSetInfo">编辑</el-button>
-          <el-button type="default" size="small" @click="download(scope.$index, scope.row)">下载</el-button>
-          <el-button type="default" size="small" @click="pick(scope.$index, scope.row)" v-if="SupportPickFile">选取
+          <el-button size="small" @click="preview(scope.row)">预览</el-button>
+          <el-button size="small" @click="setInfo(scope.row)" v-if="SupportSetInfo">编辑</el-button>
+          <el-button size="small" @click="download(scope.$index, scope.row)">下载</el-button>
+          <el-button size="small" @click="pick(scope.row)" v-if="SupportPickFile">选取
           </el-button>
         </template>
       </el-table-column>
@@ -41,7 +41,7 @@
                 <el-button type="default" class="button" @click="setInfo(item)" v-if="SupportSetInfo">编辑
                 </el-button>
                 <el-button type="default" class="button" @click="download(index, item)">下载</el-button>
-                <el-button type="default" class="button" @click="pick(index, item)" v-if="SupportPickFile">选取
+                <el-button type="default" class="button" @click="pick(item)" v-if="SupportPickFile">选取
                 </el-button>
               </div>
             </div>
@@ -74,19 +74,12 @@ import { computed, inject, onMounted, ref, toRaw } from 'vue'
 import { dialogInjectionKey } from 'gitart-vue-dialog'
 import facStore from '@/store'
 import utils from '@/utils'
+import emitter from '@/EventBus'
 import Preview from './Preview.vue'
 import Editor from './Editor.vue'
 import { ElTable, ElMessage } from 'element-plus'
 import apiPlugin from "@/apis/plugin";
-import { SUPPORT_PICK_FILE, SUPPORT_SET_INFO } from '@/global'
-
-type Tms_Finder_File = {
-  name: string
-  path: string
-  size: number
-  birthtime: number
-  info: any
-}
+import { SCHEMAS_ROOT_NAME, SUPPORT_PICK_FILE, SUPPORT_SET_INFO } from '@/global'
 
 const SupportSetInfo = ref(false)
 const SupportPickFile = ref(false)
@@ -95,11 +88,11 @@ const props = defineProps({
   domain: { type: String },
   bucket: { type: String },
 })
+const { domain, bucket } = props
 
 const store = facStore()
 const $dialog = inject(dialogInjectionKey)
 
-const { domain, bucket } = props
 const searchContent = ref('')
 const columns = ref(5)
 const cardClass = ref('el-card')
@@ -128,9 +121,8 @@ const imgError = (e: any) => {
   e.target.parentNode.style.display = 'none'
   e.target.parentNode.parentNode.children[1].style.display = 'block'
 }
-const preview = (file: Tms_Finder_File) => {
-  const fileurl = utils.getFileUrl(file)
-  const fileType = utils.matchType(file.name)
+const preview = (file: any) => {
+  // const fileType = utils.matchType(file.name)
   // // 是否配置了Janus媒体服务器
   // const isSupportJanus = /yes|true/i.test(
   //   process.env.VUE_APP_TMS_JANUS_SUPPORT
@@ -157,15 +149,22 @@ const preview = (file: Tms_Finder_File) => {
   //   })
   // } else {
   // import('./Preview.vue').then((Module) => {
-  $dialog?.addDialog({ component: Preview, props: { fileurl } })
+  $dialog?.addDialog({ component: Preview, props: { file } })
   // })
   // }
 }
-const setInfo = (file: Tms_Finder_File) => {
-  if (!file.info) file.info = {}
+const setInfo = (file: any) => {
+  const props: any = { domain, bucket, schemas: toRaw(schemas), path: file.path }
+  const SchemasRootName = SCHEMAS_ROOT_NAME()
+  props.info = SchemasRootName ? (file[SchemasRootName] ?? {}) : file
   $dialog?.addDialog({
     component: Editor,
-    props: { domain, bucket, schemas: toRaw(schemas), path: file.path, info: file.info },
+    props
+  })
+  emitter.on('onInfoSubmit', (newInfo: any) => {
+    if (SchemasRootName) file[SchemasRootName] = newInfo
+    else Object.assign(file, newInfo)
+    emitter.off('onInfoSubmit')
   })
 }
 
@@ -179,7 +178,7 @@ const download = (index: number, file: any) => {
   // })
 }
 
-const pick = (index: number, file: any) => {
+const pick = (file: any) => {
   let url = utils.getFileUrl(file)
   let thumbUrl = utils.getThumbUrl(file)
   let { name, size, info } = file
@@ -290,13 +289,13 @@ onMounted(async () => {
     cardClass.value = 'el-card'
     emptyClass.value = 'empty-card'
   }
-  // await store.getSchemas(bucket, domain)
+  await store.getSchemas(bucket, domain)
   // 获取可使用插件
-  new Promise(resolve => {
-    resolve([{ title: '测试fs', name: 'files' }])
-  }).then((res: any) => {
-    pluginList.value.push(...res)
-  })
+  // new Promise(resolve => {
+  //   resolve([{ title: '测试fs', name: 'files' }])
+  // }).then((res: any) => {
+  //   pluginList.value.push(...res)
+  // })
 })
 /*watch(files, async (newvalue, oldvalue) => {
   const suffix = newvalue.map(i => i.name.split('.')[1])

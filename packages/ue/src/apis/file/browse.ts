@@ -1,5 +1,5 @@
 import { TmsAxios } from 'tms-vue3'
-import { BACK_API_URL, SUPPORT_SET_INFO } from '@/global'
+import { BACK_API_URL, SCHEMAS_ROOT_NAME, SUPPORT_SET_INFO } from '@/global'
 
 const base = () => BACK_API_URL() + '/file/browse'
 
@@ -29,8 +29,10 @@ export default {
   },
   setInfo(path: string, info: any, domain?: string, bucket?: string) {
     const params = { path, domain, bucket }
+    const rootName = SCHEMAS_ROOT_NAME()
+    const data = rootName ? { [rootName]: info } : info
     return TmsAxios.ins('file-api')
-      .post(`${base()}/setInfo`, info, { params })
+      .post(`${base()}/setInfo`, data, { params })
       .then((rst: any) => rst.data.result)
   },
   overallSearch(params: any) {

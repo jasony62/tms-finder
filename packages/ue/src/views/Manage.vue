@@ -1,13 +1,13 @@
 <template>
   <div class="flex flex-col gap-2">
     <!--header-->
-    <div class="h-20 py-4 px-2">
+    <div class="h-16 py-4 px-2">
       <topbar activeIndex="manage" :domain="domain" :bucket="bucket"></topbar>
     </div>
-  </div>
-  <!--content-->
-  <div class="flex flex-row gap-2">
-    <info :domain="domain" :bucket="bucket"></info>
+    <!--content-->
+    <div class="flex flex-row gap-2">
+      <info :domain="domain" :bucket="bucket" class="w-full"></info>
+    </div>
   </div>
 </template>
 

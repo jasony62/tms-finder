@@ -1,13 +1,17 @@
 <template>
   <div class="info">
     <div v-if="schemas">
-      <el-table :data="files" stripe style="width: 100%" @row-dblclick="rowDbClick" v-if="viewStyle == '1'">
-        <el-table-column type="index" width="50"></el-table-column>
-        <el-table-column v-for="(s, k) in schemas.properties" :key="k" :prop="k" :label="s.title"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="120">
+      <el-table :data="files" stripe style="width: 100%" v-if="viewStyle == '1'">
+        <el-table-column type="index" label="序号" width="64"></el-table-column>
+        <el-table-column label="名称" key="name" prop="name"></el-table-column>
+        <el-table-column v-for="(s, k) in schemas.properties" :key="k" :prop="columnPropName(k)" :label="s.title">
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" width="260">
           <template #default="scope">
-            <el-button @click="setInfo(scope.row)">编辑</el-button>
-            <el-button @click="download(scope.row)">下载</el-button>
+            <el-button size="small" @click="preview(scope.row)">预览</el-button>
+            <el-button size="small" @click="setInfo(scope.row)">编辑</el-button>
+            <el-button size="small" @click="download(scope.row)">下载</el-button>
+            <el-button size="small" @click="pick(scope.row)" v-if="SupportPickFile">选取</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -44,15 +48,10 @@ import { Batch } from 'tms-vue3'
 import facStore from '@/store'
 import manageApi from '@/apis/file/manage'
 import utils from '@/utils'
+import emitter from '@/EventBus'
+import Preview from './Preview.vue'
 import Editor from './Editor.vue'
-
-type Tms_Finder_File = {
-  name: string
-  path: string
-  size: number
-  birthtime: number
-  info: any
-}
+import { SCHEMAS_ROOT_NAME, SUPPORT_PICK_FILE } from '@/global'
 
 const props = defineProps({
   domain: { type: String },
@@ -66,11 +65,18 @@ const { domain, bucket } = props
 const files = ref<any[]>([])
 
 const batch = reactive(new Batch(manageApi.list, domain, bucket))
-batch.size = 12
+batch.page = 1
+batch.size = 10
 
 const columns = ref(9)
 const cardClass = ref('el-card')
 const emptyClass = ref('empty-card')
+
+const SupportPickFile = ref(false)
+
+const SchemasRootName = SCHEMAS_ROOT_NAME()
+// 表格类对应的数据属性名称
+const columnPropName = (key: any) => SchemasRootName ? (SchemasRootName + '.' + key) : key
 
 const schemas = computed(() => {
   return store.schemas
@@ -80,24 +86,28 @@ const viewStyle = computed(() => {
   return store.viewStyle
 })
 
-watch(
-  () => batch.page,
-  (page) => {
-    batchList(page)
-  }
-)
-
 const batchList = (page: number) => {
   batch.goto(page).then((batchResult: any) => {
     files.value = batchResult.result.files
   })
 }
-
+/**编辑自定义扩展信息*/
 const setInfo = (file: any) => {
+  const props: any = { domain, bucket, schemas: toRaw(schemas), path: file.path }
+  props.info = SchemasRootName ? (file[SchemasRootName] ?? {}) : file
   $dialog?.addDialog({
     component: Editor,
-    props: { domain, bucket, schemas: toRaw(schemas), path: file.path, info: file.info },
+    props,
   })
+  emitter.on('onInfoSubmit', (newInfo: any) => {
+    if (SchemasRootName) file[SchemasRootName] = newInfo
+    else Object.assign(file, newInfo)
+    emitter.off('onInfoSubmit')
+  })
+}
+
+const preview = (file: any) => {
+  $dialog?.addDialog({ component: Preview, props: { file } })
 }
 
 const download = (file: any) => {
@@ -110,8 +120,12 @@ const download = (file: any) => {
   // })
 }
 
-const rowDbClick = (file: any) => {
-  utils.postMessage(() => utils.getFileUrl(file))
+const pick = (file: any) => {
+  let url = utils.getFileUrl(file)
+  let thumbUrl = utils.getThumbUrl(file)
+  let { name, size, info } = file
+  info ??= {}
+  utils.postMessage(() => { return { url, thumbUrl, name, size, info } })
 }
 
 const formateFileType = (data: any) => {
@@ -153,6 +167,7 @@ const formateFileType = (data: any) => {
 }
 
 onMounted(async () => {
+  SupportPickFile.value = SUPPORT_PICK_FILE()
   if (window.screen.width >= 1920) {
     columns.value = 10
     cardClass.value = 'el-card-2'
@@ -163,7 +178,14 @@ onMounted(async () => {
     emptyClass.value = 'empty-card'
   }
   await store.getSchemas(bucket, domain)
-  batchList(1)
+  /**监听翻页*/
+  watch(
+    () => batch.page,
+    (page) => {
+      batchList(page)
+    },
+    { immediate: true }
+  )
 })
 </script>
 <style lang="scss">

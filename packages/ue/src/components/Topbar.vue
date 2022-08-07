@@ -1,10 +1,10 @@
 <template>
   <div class="topbar flex flex-row gap-2">
     <div v-if="SupportMultiView" class="w-1/5">
-      <el-menu :default-active="activeIndex" mode="horizontal" @select="leave">
-        <el-menu-item index="manage">管理视图</el-menu-item>
-        <el-menu-item index="storage">存储视图</el-menu-item>
-      </el-menu>
+      <el-radio-group v-model="manageOrStorage" @change="toggleRoute(manageOrStorage)">
+        <el-radio-button label="manage">管理视图</el-radio-button>
+        <el-radio-button label="storage">存储视图</el-radio-button>
+      </el-radio-group>
     </div>
     <div class="w-1/5 flex flex-row items-center">
       <el-radio-group v-model="store.viewStyle" @change="selectViewStyle">
@@ -13,16 +13,16 @@
       </el-radio-group>
     </div>
     <div class="flex-grow flex flex-row gap-2 items-center">
-      <div style="min-width: 20rem;">
+      <div style="min-width: 20rem;" v-if="manageOrStorage === 'storage'">
         当前目录：
         <span v-if="store.currentDir">{{ store.currentDir.path }}</span>
       </div>
-      <el-button @click.prevent="mkdir">新建目录</el-button>
-      <el-button @click.prevent="rmdir">删除目录</el-button>
+      <el-button @click.prevent="mkdir" v-if="manageOrStorage === 'storage'">新建目录</el-button>
+      <el-button @click.prevent="rmdir" v-if="manageOrStorage === 'storage'">删除目录</el-button>
       <el-button @click.prevent="upload">上传文件</el-button>
     </div>
     <div class="w-1/6 flex items-center flex-row-reverse">
-      <el-button @click.prevent="leave('login')">退出</el-button>
+      <el-button @click.prevent="toggleRoute('login')">退出</el-button>
     </div>
   </div>
 </template>
@@ -50,11 +50,13 @@ const SupportMultiView = ref(false)
 const router = useRouter()
 const route = useRoute()
 
+const manageOrStorage = ref(activeIndex || 'storage')
+
 const selectViewStyle = (value: string) => {
   store.setViewStyle(value)
 }
 
-const leave = (name: string) => {
+const toggleRoute = (name: string) => {
   router.push({ name, query: route.query })
 }
 
@@ -65,7 +67,7 @@ const currentDir = computed(() => {
 const upload = () => {
   $dialog?.addDialog({
     component: Upload, props: {
-      dir: currentDir ? currentDir.value.path : null,
+      dir: currentDir.value ? currentDir.value.path : null,
       domain: domain,
       bucket: bucket
     }

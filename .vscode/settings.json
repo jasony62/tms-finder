@@ -1,11 +1,11 @@
 {
+  "editor.tabSize": 2,
   "editor.formatOnSave": true,
+  "prettier.tabWidth": 2,
+  "prettier.useTabs": false,
   "prettier.semi": false,
   "prettier.singleQuote": true,
-  "prettier.printWidth": 120,
-  "prettier.tabWidth": 2,
-  "[json]": {
-    "editor.defaultFormatter": "HookyQR.beautify"
-  },
-  "editor.tabSize": 2
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false
 }

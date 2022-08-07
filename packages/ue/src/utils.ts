@@ -7,10 +7,14 @@ export default {
   },
   // 返回文件的完整缩略图url
   getThumbUrl(file: any) {
-    return file.thumb ? `${BACK_FS_URL()}${file.thumb}` : ''
+    return file.thumbPath ? `${BACK_FS_URL()}${file.thumbPath}` : ''
   },
   postMessage(callback: any) {
-    let target = window.parent ? window.parent : window.opener ? window.opener : false
+    let target = window.parent
+      ? window.parent
+      : window.opener
+      ? window.opener
+      : false
     if (target) {
       const data = typeof callback === 'function' ? callback() : callback
       if (data) target.postMessage(data, '*')

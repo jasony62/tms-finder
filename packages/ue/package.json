@@ -10,6 +10,7 @@
   "dependencies": {
     "element-plus": "^2.2.0",
     "gitart-vue-dialog": "^2.4.0",
+    "mitt": "^3.0.0",
     "pinia": "^2.0.14",
     "tms-janus-play": "^0.0.3",
     "tms-koa-account": "^0.0.10",

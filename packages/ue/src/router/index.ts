@@ -4,9 +4,10 @@ import Storage from '../views/Storage.vue'
 import Manage from '../views/Manage.vue'
 import Register from '../views/Register.vue'
 import Smscode from '../views/Smscode.vue'
-import { SUPPORT_SET_INFO } from '@/global'
 
-const BASE_URL = import.meta.env.VITE_BASE_URL ? import.meta.env.VITE_BASE_URL : '/tmsfinder'
+const BASE_URL = import.meta.env.VITE_BASE_URL
+  ? import.meta.env.VITE_BASE_URL
+  : '/tmsfinder'
 
 const routes = [
   {
@@ -29,22 +30,31 @@ const routes = [
   {
     path: `/web/manage`,
     name: 'manage',
-    props: (route: any) => ({ domain: route.query.domain, bucket: route.query.bucket }),
+    props: (route: any) => ({
+      domain: route.query.domain,
+      bucket: route.query.bucket,
+    }),
     component: Manage,
   },
   {
     path: `/web/storage`,
     name: 'storage',
-    props: (route: any) => ({ domain: route.query.domain, bucket: route.query.bucket }),
+    props: (route: any) => ({
+      domain: route.query.domain,
+      bucket: route.query.bucket,
+    }),
     component: Storage,
   },
   {
     path: `/web`,
     name: 'root',
-    props: (route: any) => ({ domain: route.query.domain, bucket: route.query.bucket }),
+    props: (route: any) => ({
+      domain: route.query.domain,
+      bucket: route.query.bucket,
+    }),
     component: (() => {
       /*如果设置了文件schema就默认进入管理视图，否则进入存储视图*/
-      return SUPPORT_SET_INFO() ? Manage : Storage
+      return Storage
     })(),
   },
   {

@@ -1,40 +1,39 @@
 <template>
   <div class="info">
-    <div v-if="schemas">
-      <el-table :data="files" stripe style="width: 100%" v-if="viewStyle == '1'">
-        <el-table-column type="index" label="序号" width="64"></el-table-column>
-        <el-table-column label="名称" key="name" prop="name"></el-table-column>
-        <el-table-column v-for="(s, k) in schemas.properties" :key="k" :prop="columnPropName(k)" :label="s.title">
-        </el-table-column>
-        <el-table-column fixed="right" label="操作" width="260">
-          <template #default="scope">
-            <el-button size="small" @click="preview(scope.row)">预览</el-button>
-            <el-button size="small" @click="setInfo(scope.row)">编辑</el-button>
-            <el-button size="small" @click="download(scope.row)">下载</el-button>
-            <el-button size="small" @click="pick(scope.row)" v-if="SupportPickFile">选取</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="icon-view" v-if="viewStyle == '2'">
-        <div class="icon-lists" v-if="files.length">
-          <el-card :class="cardClass" v-for="(item, index) in files" :key="index + '-only'"
-            :body-style="{ padding: '0px' }" shadow="never">
-            <svg class="icon" aria-hidden="true">
-              <use :xlink:href="formateFileType(item)" />
-            </svg>
-            <div style="padding: 0 14px 14px">
-              <span class="file-comment">{{ item.comment }}</span>
-              <div class="bottom clearfix">
-                <el-button @click="setInfo(item)">编辑</el-button>
-                <el-button @click="download(item)">下载</el-button>
-              </div>
+    <el-table :data="files" stripe style="width: 100%" v-if="viewStyle == '1'">
+      <el-table-column type="index" label="序号" width="64"></el-table-column>
+      <el-table-column label="名称" key="name" prop="name"></el-table-column>
+      <el-table-column v-if="schemas" v-for="(s, k) in schemas.properties" :key="k" :prop="columnPropName(k)"
+        :label="s.title">
+      </el-table-column>
+      <el-table-column fixed="right" label="操作" width="260">
+        <template #default="scope">
+          <el-button size="small" @click="preview(scope.row)">预览</el-button>
+          <el-button size="small" @click="setInfo(scope.row)" v-if="schemas">编辑</el-button>
+          <el-button size="small" @click="download(scope.row)">下载</el-button>
+          <el-button size="small" @click="pick(scope.row)" v-if="SupportPickFile">选取</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <div class="icon-view" v-if="viewStyle == '2'">
+      <div class="icon-lists" v-if="files.length">
+        <el-card :class="cardClass" v-for="(item, index) in files" :key="index + '-only'"
+          :body-style="{ padding: '0px' }" shadow="never">
+          <svg class="icon" aria-hidden="true">
+            <use :xlink:href="formateFileType(item)" />
+          </svg>
+          <div style="padding: 0 14px 14px">
+            <span class="file-comment">{{ item.comment }}</span>
+            <div class="bottom clearfix">
+              <el-button @click="setInfo(item)" v-if="schemas">编辑</el-button>
+              <el-button @click="download(item)">下载</el-button>
             </div>
-          </el-card>
-          <div :class="emptyClass" v-for="index in columns - (files.length % columns)" :key="index"
-            v-show="files.length % columns > 0"></div>
-        </div>
-        <div class="empty" v-else>暂无数据</div>
+          </div>
+        </el-card>
+        <div :class="emptyClass" v-for="index in columns - (files.length % columns)" :key="index"
+          v-show="files.length % columns > 0"></div>
       </div>
+      <div class="empty" v-else>暂无数据</div>
     </div>
     <el-pagination background v-model:currentPage="batch.page" :page-sizes="[10, 20, 30]" v-model:pageSize="batch.size"
       layout="total, sizes, prev, pager, next" :total="batch.total"></el-pagination>
@@ -78,9 +77,7 @@ const SchemasRootName = SCHEMAS_ROOT_NAME()
 // 表格类对应的数据属性名称
 const columnPropName = (key: any) => SchemasRootName ? (SchemasRootName + '.' + key) : key
 
-const schemas = computed(() => {
-  return store.schemas
-})
+const schemas = computed(() => store.schemas)
 
 const viewStyle = computed(() => {
   return store.viewStyle
@@ -123,9 +120,10 @@ const download = (file: any) => {
 const pick = (file: any) => {
   let url = utils.getFileUrl(file)
   let thumbUrl = utils.getThumbUrl(file)
-  let { name, size, info } = file
-  info ??= {}
-  utils.postMessage(() => { return { url, thumbUrl, name, size, info } })
+  let { name, type, size, thumbSize } = file
+  let posted: any = { url, thumbUrl, name, type, size, thumbSize }
+  if (SchemasRootName) posted[SchemasRootName] = file[SchemasRootName]
+  utils.postMessage(() => posted)
 }
 
 const formateFileType = (data: any) => {
@@ -177,7 +175,7 @@ onMounted(async () => {
     cardClass.value = 'el-card'
     emptyClass.value = 'empty-card'
   }
-  await store.getSchemas(bucket, domain)
+  // await store.getSchemas(bucket, domain)
   /**监听翻页*/
   watch(
     () => batch.page,

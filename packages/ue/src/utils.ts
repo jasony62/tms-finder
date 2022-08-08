@@ -17,7 +17,10 @@ export default {
       : false
     if (target) {
       const data = typeof callback === 'function' ? callback() : callback
-      if (data) target.postMessage(data, '*')
+      if (data) {
+        let posted = JSON.parse(JSON.stringify(data))
+        target.postMessage(posted, '*')
+      }
     }
   },
   // 根据文件后缀判断文件类型

@@ -48,11 +48,6 @@ const upload = ref<any>(null)
 const handleUpload = (req: any) => {
   showLoading.value = true
   const fileData = new FormData()
-  /**默认携带的文件基本信息*/
-  const defaultKeys = ['name', 'lastModified', 'size', 'type']
-  defaultKeys.forEach(key => {
-    fileData.append(key, req.file[key])
-  })
   /**自定义文件扩展信息*/
   if (req.data && Object.keys(req.data).length) {
     if (SCHEMAS_ROOT_NAME()) {

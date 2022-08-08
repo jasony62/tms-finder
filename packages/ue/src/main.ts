@@ -6,7 +6,12 @@ import router from './router'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import { plugin as dialogPlugin } from 'gitart-vue-dialog'
-import { init as initGlobalSettings, AUTH_DISABLED, getLocalToken, setLocalToken } from './global'
+import {
+  init as initGlobalSettings,
+  AUTH_DISABLED,
+  getLocalToken,
+  setLocalToken,
+} from './global'
 import './index.css'
 import 'element-plus/dist/index.css'
 import 'tms-vue3-ui/dist/es/frame/style/index.css'
@@ -24,7 +29,7 @@ function getQueryVariable(variable: string) {
   return ''
 }
 
-function initFunc() {
+function configAxios() {
   let authToken: string = ''
   if (!AUTH_DISABLED()) {
     let token = getLocalToken()
@@ -41,22 +46,22 @@ function initFunc() {
         reject(res.data)
       })
     },
-    onRetryAttempt: (res: any) => {
-      return new Promise((resolve, reject) => {
-        if (res.data.code === 20001) {
-          ElMessage({
-            showClose: true,
-            message: res.data.msg || '登录失效请重新登录',
-            type: 'error',
-            onClose: function () {
-              setLocalToken('')
-              router.push('/login')
-            },
-          })
-        }
-        reject(res.data)
-      })
-    },
+    // onRetryAttempt: (res: any) => {
+    //   return new Promise((resolve, reject) => {
+    //     if (res.data.code === 20001) {
+    //       ElMessage({
+    //         showClose: true,
+    //         message: res.data.msg || '登录失效请重新登录',
+    //         type: 'error',
+    //         onClose: function () {
+    //           setLocalToken('')
+    //           router.push('/login')
+    //         },
+    //       })
+    //     }
+    //     reject(res.data)
+    //   })
+    // },
   }
   let rule = TmsAxios.newInterceptorRule(rulesObj)
   TmsAxios.ins({ name: 'file-api', rules: [rule] })
@@ -72,13 +77,15 @@ function afterLoadSettings() {
     .use(createPinia())
     .use(dialogPlugin)
     .use(TmsAxiosPlugin)
-    .use(initFunc)
+    .use(configAxios)
     .use(ElementPlus)
     .mount('#app')
 }
 
 const { VITE_BASE_URL } = import.meta.env
-const UrlSettings = (VITE_BASE_URL && VITE_BASE_URL !== '/' ? VITE_BASE_URL : '/tmsfinder') + '/settings.json'
+const UrlSettings =
+  (VITE_BASE_URL && VITE_BASE_URL !== '/' ? VITE_BASE_URL : '/tmsfinder') +
+  '/settings.json'
 
 TmsAxios.ins('master-api')
   .get(UrlSettings)

@@ -21,8 +21,8 @@ module.exports = {
   local: {
     domains: {
       upload: {
-        schemas,
-        schemasRootName: 'info',
+        // schemas,
+        // schemasRootName: 'info',
       },
     },
   },

@@ -8,7 +8,6 @@ type Globalsettings = {
   backFsPort: number
   loginCaptchaDisabled: boolean
   supportPickFile: boolean
-  supportSetInfo: boolean
   supportMultiView: boolean
   schemasRootName: string
 }
@@ -21,9 +20,10 @@ let _globalsettings: Globalsettings = {
   backApiPort: parseInt(import.meta.env.VITE_BACK_API_PORT ?? location.port),
   backFsBase: import.meta.env.VITE_BACK_FS_BASE || '',
   backFsPort: parseInt(import.meta.env.VITE_BACK_FS_PORT ?? location.port),
-  loginCaptchaDisabled: /yes|true/i.test(import.meta.env.VITE_LOGIN_CAPTCHA_DISABLED),
+  loginCaptchaDisabled: /yes|true/i.test(
+    import.meta.env.VITE_LOGIN_CAPTCHA_DISABLED
+  ),
   supportPickFile: /yes|true/i.test(import.meta.env.VITE_SUPPORT_PICK_FILE),
-  supportSetInfo: /yes|true/i.test(import.meta.env.VITE_SUPPORT_SET_INFO),
   supportMultiView: /yes|true/i.test(import.meta.env.VITE_SUPPORT_MULTI_VIEW),
   schemasRootName: import.meta.env.VITE_SCHEMAS_ROOT_NAME,
 }
@@ -32,18 +32,22 @@ let _globalsettings: Globalsettings = {
  * @param settings
  */
 export function init(settings: Globalsettings) {
-  if (settings.authDisabled) _globalsettings.authDisabled = settings.authDisabled
+  if (settings.authDisabled)
+    _globalsettings.authDisabled = settings.authDisabled
   if (settings.authApiBase) _globalsettings.authApiBase = settings.authApiBase
   if (settings.authApiPort) _globalsettings.authApiPort = settings.authApiPort
   if (settings.backApiBase) _globalsettings.backApiBase = settings.backApiBase
   if (settings.backApiPort) _globalsettings.backApiPort = settings.backApiPort
   if (settings.backFsBase) _globalsettings.backFsBase = settings.backFsBase
   if (settings.backFsPort) _globalsettings.backFsPort = settings.backFsPort
-  if (settings.loginCaptchaDisabled) _globalsettings.loginCaptchaDisabled = settings.loginCaptchaDisabled
-  if (settings.supportPickFile) _globalsettings.supportPickFile = settings.supportPickFile
-  if (settings.supportSetInfo) _globalsettings.supportSetInfo = settings.supportSetInfo
-  if (settings.supportMultiView) _globalsettings.supportMultiView = settings.supportMultiView
-  if (settings.schemasRootName) _globalsettings.schemasRootName = settings.schemasRootName
+  if (settings.loginCaptchaDisabled)
+    _globalsettings.loginCaptchaDisabled = settings.loginCaptchaDisabled
+  if (settings.supportPickFile)
+    _globalsettings.supportPickFile = settings.supportPickFile
+  if (settings.supportMultiView)
+    _globalsettings.supportMultiView = settings.supportMultiView
+  if (settings.schemasRootName)
+    _globalsettings.schemasRootName = settings.schemasRootName
 }
 /**
  * 根据环境变量设置是否关闭认证
@@ -53,10 +57,6 @@ export const AUTH_DISABLED = () => _globalsettings.authDisabled
  * 文件列表页面是否显示【选取】操作
  */
 export const SUPPORT_PICK_FILE = () => _globalsettings.supportPickFile
-/**
- * 文件列表页面是否显示【编辑】操作
- */
-export const SUPPORT_SET_INFO = () => _globalsettings.supportSetInfo
 /**
  * 上传文件时，自定义扩展信息的存储名称
  */

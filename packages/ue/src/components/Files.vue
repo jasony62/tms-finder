@@ -5,8 +5,7 @@
       <el-button type="primary" @click="overallSearch">搜索</el-button>
       <el-button type="primary" @click="drawer = true">执行插件</el-button>
     </div>
-    <el-table ref="multipleTableRef" :data="files" stripe style="width: 100%" @row-dblclick="rowDbClick"
-      v-if="viewStyle === '1'">
+    <el-table ref="multipleTableRef" :data="files" stripe style="width: 100%" v-if="viewStyle === '1'">
       <el-table-column type="selection" width="55" />
       <el-table-column prop="createTime" label="日期" width="180" :formatter="formatDate"></el-table-column>
       <el-table-column prop="size" label="大小" width="180" :formatter="formateFileSize"></el-table-column>
@@ -14,7 +13,7 @@
       <el-table-column fixed="right" label="操作" width="260">
         <template #default="scope">
           <el-button size="small" @click="preview(scope.row)">预览</el-button>
-          <el-button size="small" @click="setInfo(scope.row)" v-if="SupportSetInfo">编辑</el-button>
+          <el-button size="small" @click="setInfo(scope.row)" v-if="schemas">编辑</el-button>
           <el-button size="small" @click="download(scope.$index, scope.row)">下载</el-button>
           <el-button size="small" @click="pick(scope.row)" v-if="SupportPickFile">选取
           </el-button>
@@ -38,7 +37,7 @@
               <span class="file-size">{{ formateFileSize(item) }}</span>
               <div class="operation">
                 <el-button type="default" class="button" @click="preview(item)">预览</el-button>
-                <el-button type="default" class="button" @click="setInfo(item)" v-if="SupportSetInfo">编辑
+                <el-button type="default" class="button" @click="setInfo(item)" v-if="schemas">编辑
                 </el-button>
                 <el-button type="default" class="button" @click="download(index, item)">下载</el-button>
                 <el-button type="default" class="button" @click="pick(item)" v-if="SupportPickFile">选取
@@ -79,9 +78,8 @@ import Preview from './Preview.vue'
 import Editor from './Editor.vue'
 import { ElTable, ElMessage } from 'element-plus'
 import apiPlugin from "@/apis/plugin";
-import { SCHEMAS_ROOT_NAME, SUPPORT_PICK_FILE, SUPPORT_SET_INFO } from '@/global'
+import { SCHEMAS_ROOT_NAME, SUPPORT_PICK_FILE } from '@/global'
 
-const SupportSetInfo = ref(false)
 const SupportPickFile = ref(false)
 
 const props = defineProps({
@@ -153,9 +151,10 @@ const preview = (file: any) => {
   // })
   // }
 }
+
+const SchemasRootName = SCHEMAS_ROOT_NAME()
 const setInfo = (file: any) => {
   const props: any = { domain, bucket, schemas: toRaw(schemas), path: file.path }
-  const SchemasRootName = SCHEMAS_ROOT_NAME()
   props.info = SchemasRootName ? (file[SchemasRootName] ?? {}) : file
   $dialog?.addDialog({
     component: Editor,
@@ -177,17 +176,17 @@ const download = (index: number, file: any) => {
   //   window.open(fileurl)
   // })
 }
-
+/**
+ * 返回选取的文件
+ * @param file 选取的文件 
+ */
 const pick = (file: any) => {
   let url = utils.getFileUrl(file)
   let thumbUrl = utils.getThumbUrl(file)
-  let { name, size, info } = file
-  info ??= {}
-  utils.postMessage(() => { return { url, thumbUrl, name, size, info } })
-}
-
-const rowDbClick = (file: any) => {
-  // this.$utils.postMessage(() => this.$utils.getFileUrl(file))
+  let { name, type, size, thumbSize } = file
+  let posted: any = { url, thumbUrl, name, type, size, thumbSize }
+  if (SchemasRootName) posted[SchemasRootName] = file[SchemasRootName]
+  utils.postMessage(() => posted)
 }
 
 // 全局搜索
@@ -278,7 +277,6 @@ const thumbUrl = (file: any) => {
 
 onMounted(async () => {
   SupportPickFile.value = SUPPORT_PICK_FILE()
-  SupportSetInfo.value = SUPPORT_SET_INFO()
 
   if (window.screen.width >= 1920) {
     columns.value = 7

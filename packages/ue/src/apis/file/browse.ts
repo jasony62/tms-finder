@@ -1,18 +1,14 @@
 import { TmsAxios } from 'tms-vue3'
-import { BACK_API_URL, SCHEMAS_ROOT_NAME, SUPPORT_SET_INFO } from '@/global'
+import { BACK_API_URL, SCHEMAS_ROOT_NAME } from '@/global'
 
 const base = () => BACK_API_URL() + '/file/browse'
 
 export default {
   schemas(domain?: string, bucket?: string) {
-    if (SUPPORT_SET_INFO()) {
-      const params = { domain, bucket }
-      return TmsAxios.ins('file-api')
-        .get(`${base()}/schemas`, { params })
-        .then((rst: any) => rst.data.result)
-    } else {
-      return Promise.resolve({})
-    }
+    const params = { domain, bucket }
+    return TmsAxios.ins('file-api')
+      .get(`${base()}/schemas`, { params })
+      .then((rst: any) => rst.data.result)
   },
   list(dirName = '', domain?: string, bucket?: string) {
     const params: { [k: string]: string } = { dir: dirName }

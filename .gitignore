@@ -70,3 +70,5 @@ dump.rdb
 *.override.yml
 
 volumes/
+
+pnpm-lock.yaml

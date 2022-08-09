@@ -181,12 +181,7 @@ const download = (index: number, file: any) => {
  * @param file 选取的文件 
  */
 const pick = (file: any) => {
-  let url = utils.getFileUrl(file)
-  let thumbUrl = utils.getThumbUrl(file)
-  let { name, type, size, thumbSize } = file
-  let posted: any = { url, thumbUrl, name, type, size, thumbSize }
-  if (SchemasRootName) posted[SchemasRootName] = file[SchemasRootName]
-  utils.postMessage(() => posted)
+  utils.postFile(file, domain ?? '')
 }
 
 // 全局搜索

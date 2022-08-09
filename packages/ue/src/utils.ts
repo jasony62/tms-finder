@@ -1,4 +1,11 @@
-import { BACK_FS_URL } from '@/global'
+import {
+  BACK_FS_URL,
+  PICK_FILE_FILED_NAME_MAPPING,
+  SCHEMAS_ROOT_NAME,
+} from '@/global'
+import _ from 'lodash'
+
+const SchemasRootName = SCHEMAS_ROOT_NAME()
 
 export default {
   // 返回文件的完整url
@@ -8,6 +15,30 @@ export default {
   // 返回文件的完整缩略图url
   getThumbUrl(file: any) {
     return file.thumbPath ? `${BACK_FS_URL()}${file.thumbPath}` : ''
+  },
+  /**
+   * 发送文件信息给调用方
+   * @param file 文件信息
+   * @param domain 文件所属存储域名称
+   */
+  postFile(file: any, domain: string) {
+    const mapping = PICK_FILE_FILED_NAME_MAPPING(domain)
+    let url = this.getFileUrl(file)
+    let thumbUrl = this.getThumbUrl(file)
+    let posted: any
+    if (mapping && typeof mapping === 'object') {
+      posted = {}
+      let file2 = Object.assign({}, file, { url, thumbUrl })
+      Object.entries(mapping).forEach(([oldName, newName]) => {
+        _.set(posted, newName, _.get(file2, oldName))
+      })
+    } else {
+      /**按照原始名称返回*/
+      let { name, type, size, thumbType, thumbSize } = file
+      posted = { name, url, type, size, thumbUrl, thumbType, thumbSize }
+      if (SchemasRootName) posted[SchemasRootName] = file[SchemasRootName]
+    }
+    this.postMessage(() => posted)
   },
   postMessage(callback: any) {
     let target = window.parent

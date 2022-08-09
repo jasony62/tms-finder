@@ -23,7 +23,14 @@
 在 packages/tfd-back 目录中执行
 
 ```
-TMS_KOA_CONFIG_DIR=../../docker/back/config TMS_KOA_CONTROLLERS_DIR=./dist/controllers TFD_APP_PORT=3030 TFD_MONGODB_HOST=localhost TFD_MONGODB_PORT=27017 TFD_FS_ROOTDIR=../../volumes/files node dist/server
+TMS_KOA_CONFIG_DIR=../../docker/back/config 
+TMS_KOA_CONTROLLERS_DIR=./dist/controllers 
+TFD_APP_PORT=3030 
+TFD_MONGODB_HOST=localhost 
+TFD_MONGODB_PORT=27017 
+TFD_FS_ROOTDIR=../../volumes/files 
+
+node dist/server
 ```
 
 ## 客户端

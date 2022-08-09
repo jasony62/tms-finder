@@ -27,7 +27,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, inject, onMounted, ref } from 'vue';
+import { computed, inject, onMounted, ref, toRaw } from 'vue';
 import { dialogInjectionKey } from 'gitart-vue-dialog'
 import facStore from '@/store'
 import Rmdir from './Rmdir.vue'
@@ -52,6 +52,8 @@ const route = useRoute()
 
 const manageOrStorage = ref(activeIndex || 'storage')
 
+const schemas = computed(() => store.schemas)
+
 const selectViewStyle = (value: string) => {
   store.setViewStyle(value)
 }
@@ -65,12 +67,15 @@ const currentDir = computed(() => {
 })
 
 const upload = () => {
+  let props: any = {
+    dir: currentDir.value ? currentDir.value.path : null,
+    domain: domain,
+    bucket: bucket,
+  }
+  if (schemas) props.schemas = toRaw(schemas)
   $dialog?.addDialog({
-    component: Upload, props: {
-      dir: currentDir.value ? currentDir.value.path : null,
-      domain: domain,
-      bucket: bucket
-    }
+    component: Upload,
+    props
   })
 }
 

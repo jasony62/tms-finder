@@ -10,6 +10,7 @@ type Globalsettings = {
   supportPickFile: boolean
   supportMultiView: boolean
   schemasRootName: string
+  pickFileFiledNameMapping: { [domain: string]: object }
 }
 
 let _globalsettings: Globalsettings = {
@@ -26,6 +27,7 @@ let _globalsettings: Globalsettings = {
   supportPickFile: /yes|true/i.test(import.meta.env.VITE_SUPPORT_PICK_FILE),
   supportMultiView: /yes|true/i.test(import.meta.env.VITE_SUPPORT_MULTI_VIEW),
   schemasRootName: import.meta.env.VITE_SCHEMAS_ROOT_NAME,
+  pickFileFiledNameMapping: {},
 }
 /**
  * 根据在线获取的全局设置
@@ -48,6 +50,11 @@ export function init(settings: Globalsettings) {
     _globalsettings.supportMultiView = settings.supportMultiView
   if (settings.schemasRootName)
     _globalsettings.schemasRootName = settings.schemasRootName
+  if (
+    settings.pickFileFiledNameMapping &&
+    typeof settings.pickFileFiledNameMapping === 'object'
+  )
+    _globalsettings.pickFileFiledNameMapping = settings.pickFileFiledNameMapping
 }
 /**
  * 根据环境变量设置是否关闭认证
@@ -69,6 +76,13 @@ export const SUPPORT_MULTI_VIEW = () => _globalsettings.supportMultiView
  * 关闭验证码
  */
 export const LOGIN_CAPTCHA_DISABLED = () => _globalsettings.loginCaptchaDisabled
+/**
+ * 返回存储域返回的文件字段名映射关系
+ * @param domain 指定的存储域名称。存储域名称为空时，返回以'$'命名的默认映射。
+ * @returns 字段映射关系
+ */
+export const PICK_FILE_FILED_NAME_MAPPING = (domain: string) =>
+  _globalsettings.pickFileFiledNameMapping[domain ? domain : '$'] ?? {}
 /**
  * 根据环境变量设置认证服务起始地址
  */

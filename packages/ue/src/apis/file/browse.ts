@@ -6,9 +6,9 @@ const base = () => BACK_API_URL() + '/file/browse'
 export default {
   schemas(domain?: string, bucket?: string) {
     const params = { domain, bucket }
-    return TmsAxios.ins('file-api')
+    return TmsAxios.ins('master-api')
       .get(`${base()}/schemas`, { params })
-      .then((rst: any) => rst.data.result)
+      .then((rst: any) => (rst.data.code === 0 ? rst.data.result : null))
   },
   list(dirName = '', domain?: string, bucket?: string) {
     const params: { [k: string]: string } = { dir: dirName }

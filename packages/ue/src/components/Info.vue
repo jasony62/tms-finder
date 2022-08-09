@@ -117,13 +117,12 @@ const download = (file: any) => {
   // })
 }
 
+/**
+ * 返回选取的文件
+ * @param file 选取的文件 
+ */
 const pick = (file: any) => {
-  let url = utils.getFileUrl(file)
-  let thumbUrl = utils.getThumbUrl(file)
-  let { name, type, size, thumbSize } = file
-  let posted: any = { url, thumbUrl, name, type, size, thumbSize }
-  if (SchemasRootName) posted[SchemasRootName] = file[SchemasRootName]
-  utils.postMessage(() => posted)
+  utils.postFile(file, domain ?? '')
 }
 
 const formateFileType = (data: any) => {
@@ -175,7 +174,7 @@ onMounted(async () => {
     cardClass.value = 'el-card'
     emptyClass.value = 'empty-card'
   }
-  // await store.getSchemas(bucket, domain)
+  await store.getSchemas(bucket, domain)
   /**监听翻页*/
   watch(
     () => batch.page,

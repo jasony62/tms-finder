@@ -70,7 +70,7 @@ const router = createRouter({
 
 // router.beforeEach((to, from, next) => {
 //   // 进入页面前检查是否已经通过用户认证
-//   if (!AUTH_DISABLED()) {
+//   if (!LOGIN_IGNORED()) {
 //     if (to.name !== 'login') {
 //       let token = sessionStorage.getItem('access_token')
 //       if (!token) {

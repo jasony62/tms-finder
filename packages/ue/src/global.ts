@@ -1,5 +1,5 @@
 type Globalsettings = {
-  authDisabled: boolean
+  loginIgnored: boolean
   authApiBase: string
   authApiPort: number
   backApiBase: string
@@ -14,7 +14,7 @@ type Globalsettings = {
 }
 
 let _globalsettings: Globalsettings = {
-  authDisabled: /yes|true/i.test(import.meta.env.VITE_AUTH_DISABLED),
+  loginIgnored: /yes|true/i.test(import.meta.env.VITE_LOGIN_IGNORED),
   authApiBase: import.meta.env.VITE_AUTH_API_BASE || 'auth',
   authApiPort: parseInt(import.meta.env.VITE_AUTH_API_PORT ?? location.port),
   backApiBase: import.meta.env.VITE_BACK_API_BASE || 'api',
@@ -34,8 +34,8 @@ let _globalsettings: Globalsettings = {
  * @param settings
  */
 export function init(settings: Globalsettings) {
-  if (settings.authDisabled)
-    _globalsettings.authDisabled = settings.authDisabled
+  if (settings.loginIgnored)
+    _globalsettings.loginIgnored = settings.loginIgnored
   if (settings.authApiBase) _globalsettings.authApiBase = settings.authApiBase
   if (settings.authApiPort) _globalsettings.authApiPort = settings.authApiPort
   if (settings.backApiBase) _globalsettings.backApiBase = settings.backApiBase
@@ -59,7 +59,7 @@ export function init(settings: Globalsettings) {
 /**
  * 根据环境变量设置是否关闭认证
  */
-export const AUTH_DISABLED = () => _globalsettings.authDisabled
+export const LOGIN_IGNORED = () => _globalsettings.loginIgnored
 /**
  * 文件列表页面是否显示【选取】操作
  */

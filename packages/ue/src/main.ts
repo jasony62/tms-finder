@@ -8,7 +8,7 @@ import App from './App.vue'
 import { plugin as dialogPlugin } from 'gitart-vue-dialog'
 import {
   init as initGlobalSettings,
-  AUTH_DISABLED,
+  LOGIN_IGNORED,
   getLocalToken,
   setLocalToken,
 } from './global'
@@ -23,23 +23,23 @@ function getQueryVariable(variable: string) {
   for (var i = 0; i < vars.length; i++) {
     var pair = vars[i].split('=')
     if (pair[0] == variable) {
-      return `Bearer ${pair[1]}`
+      return pair[1]
     }
   }
   return ''
 }
 
 function configAxios() {
-  let authToken: string = ''
-  if (!AUTH_DISABLED()) {
+  let accessToken: string = ''
+  if (!LOGIN_IGNORED()) {
     let token = getLocalToken()
     if (!token) router.push('/login')
-    authToken = `Bearer ${token}`
+    accessToken = `Bearer ${token}`
   } else {
-    authToken = getQueryVariable('access_token')
+    accessToken = 'Bearer ' + getQueryVariable('access_token')
   }
   let rulesObj: any = {
-    requestHeaders: new Map([['Authorization', authToken]]),
+    requestHeaders: new Map([['Authorization', accessToken]]),
     onResultFault: (res: any) => {
       return new Promise((resolve, reject) => {
         ElMessage.error(res.data.msg || '发生业务逻辑错误')

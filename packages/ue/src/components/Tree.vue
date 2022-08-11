@@ -3,8 +3,9 @@
     @current-change="currentChange" node-key="path"></el-tree>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { ref, toRaw } from 'vue';
 import facStore from '@/store'
+import emitter from '@/EventBus.js'
 
 const props = defineProps({
   domain: { type: String },
@@ -23,6 +24,11 @@ const treeProps = {
 
 const eltree = ref<any>(null)
 
+const currentNode = ref<any>(null)
+
+/**
+ * 加载指定节点的子节点
+ */
 const loadNode = (node: any, resolve: any) => {
   if (node.level === 0) {
     let { tree } = store
@@ -49,13 +55,38 @@ const loadNode = (node: any, resolve: any) => {
   })
 }
 
-const currentChange = (data: any) => {
+const currentChange = (data: any, node: any) => {
   store.setCurrentDir(data.rawData)
+  currentNode.value = node
 }
-
+/**
+ * 新建子目录
+ */
+emitter.on('mkdir', ({ name, path }) => {
+  eltree.value.append({
+    label: name,
+    children: [],
+    leaf: true,
+    rawData: { path, parent: store.currentDir, sub: { files: 0, dirs: 0 } }
+  }, currentNode.value)
+})
+/**
+ * 删除子目录
+ */
+emitter.on('mkdir', ({ path }) => {
+  if (path === store.currentDir.path) {
+    eltree.value.remove(currentNode.value)
+    store.setCurrentDir(null)
+    currentNode.value = null
+  }
+})
+/**
+ * 获得指定目录下的文件
+ */
 const clickNode = (data: any, node: any) => {
   store.list(data.rawData, domain, bucket)
     .then((data: any) => {
+      /**如果节点没有加载过，添加子节点*/
       if (false === node.loaded) {
         let { dirs } = data
         if (dirs && dirs.length) {
@@ -76,11 +107,4 @@ const clickNode = (data: any, node: any) => {
       }
     })
 }
-
-onMounted(() => {
-  // this.$tmsOn('reFresh', ()=>{
-  // node.childNodes = []
-  // loadNode(node, resolve)
-  //     }) 
-})
 </script>

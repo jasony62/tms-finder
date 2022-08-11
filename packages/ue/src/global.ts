@@ -1,5 +1,5 @@
 type Globalsettings = {
-  authDisabled: boolean
+  loginIgnored: boolean
   authApiBase: string
   authApiPort: number
   backApiBase: string
@@ -14,7 +14,7 @@ type Globalsettings = {
 }
 
 let _globalsettings: Globalsettings = {
-  authDisabled: /yes|true/i.test(import.meta.env.VITE_AUTH_DISABLED),
+  loginIgnored: /yes|true/i.test(import.meta.env.VITE_LOGIN_IGNORED),
   authApiBase: import.meta.env.VITE_AUTH_API_BASE || 'auth',
   authApiPort: parseInt(import.meta.env.VITE_AUTH_API_PORT ?? location.port),
   backApiBase: import.meta.env.VITE_BACK_API_BASE || 'api',
@@ -24,7 +24,7 @@ let _globalsettings: Globalsettings = {
   loginCaptchaDisabled: /yes|true/i.test(
     import.meta.env.VITE_LOGIN_CAPTCHA_DISABLED
   ),
-  supportPickFile: /yes|true/i.test(import.meta.env.VITE_SUPPORT_PICK_FILE),
+  supportPickFile: false,
   supportMultiView: /yes|true/i.test(import.meta.env.VITE_SUPPORT_MULTI_VIEW),
   schemasRootName: import.meta.env.VITE_SCHEMAS_ROOT_NAME,
   pickFileFiledNameMapping: {},
@@ -34,8 +34,8 @@ let _globalsettings: Globalsettings = {
  * @param settings
  */
 export function init(settings: Globalsettings) {
-  if (settings.authDisabled)
-    _globalsettings.authDisabled = settings.authDisabled
+  if (settings.loginIgnored)
+    _globalsettings.loginIgnored = settings.loginIgnored
   if (settings.authApiBase) _globalsettings.authApiBase = settings.authApiBase
   if (settings.authApiPort) _globalsettings.authApiPort = settings.authApiPort
   if (settings.backApiBase) _globalsettings.backApiBase = settings.backApiBase
@@ -44,8 +44,7 @@ export function init(settings: Globalsettings) {
   if (settings.backFsPort) _globalsettings.backFsPort = settings.backFsPort
   if (settings.loginCaptchaDisabled)
     _globalsettings.loginCaptchaDisabled = settings.loginCaptchaDisabled
-  if (settings.supportPickFile)
-    _globalsettings.supportPickFile = settings.supportPickFile
+
   if (settings.supportMultiView)
     _globalsettings.supportMultiView = settings.supportMultiView
   if (settings.schemasRootName)
@@ -55,11 +54,15 @@ export function init(settings: Globalsettings) {
     typeof settings.pickFileFiledNameMapping === 'object'
   )
     _globalsettings.pickFileFiledNameMapping = settings.pickFileFiledNameMapping
+
+  _globalsettings.supportPickFile = /yes|true/i.test(
+    getQueryVariable('pickFile')
+  )
 }
 /**
  * 根据环境变量设置是否关闭认证
  */
-export const AUTH_DISABLED = () => _globalsettings.authDisabled
+export const LOGIN_IGNORED = () => _globalsettings.loginIgnored
 /**
  * 文件列表页面是否显示【选取】操作
  */
@@ -159,6 +162,22 @@ export const BACK_FS_URL = () => {
   }
 
   return _BACK_FS_URL
+}
+/**
+ * 获得指定查询参数的值
+ * @param variable
+ * @returns
+ */
+export function getQueryVariable(variable: string) {
+  var query = window.location.search.substring(1)
+  var vars = query.split('&')
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split('=')
+    if (pair[0] == variable) {
+      return pair[1]
+    }
+  }
+  return ''
 }
 
 const way = import.meta.env.VITE_APP_STORETOKEN_WAY

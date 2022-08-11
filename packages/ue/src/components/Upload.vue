@@ -10,7 +10,9 @@
           <el-button slot="trigger" type="primary">选取文件</el-button>
         </el-upload>
       </el-form-item>
-      <json-doc ref="$jde" class="w-full el-form-item" :schema="schemas" :value="info"></json-doc>
+      <div v-if="schemas">
+        <json-doc ref="$jde" class="w-full el-form-item" :schema="schemas" :value="info"></json-doc>
+      </div>
       <el-form-item>
         <el-button style="margin-left: 10px;" type="success" :loading="showLoading" @click="submitUpload">
           提交</el-button>

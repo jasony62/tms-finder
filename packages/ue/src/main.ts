@@ -15,9 +15,10 @@ import App from './App.vue'
 import { plugin as dialogPlugin } from 'gitart-vue-dialog'
 import {
   init as initGlobalSettings,
-  AUTH_DISABLED,
+  LOGIN_IGNORED,
   getLocalToken,
   setLocalToken,
+  getQueryVariable,
 } from './global'
 import './index.css'
 import 'element-plus/dist/index.css'
@@ -26,18 +27,6 @@ import 'tms-vue3-ui/dist/es/flex/style/index.css'
 import { Login, SubmitDataItem, LoginResponse } from 'tms-vue3-ui'
 import apiAuth from '@/apis/auth'
 const { fnCaptcha, fnLogin } = apiAuth
-
-function getQueryVariable(variable: string) {
-  var query = window.location.search.substring(1)
-  var vars = query.split('&')
-  for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split('=')
-    if (pair[0] == variable) {
-      return `Bearer ${pair[1]}`
-    }
-  }
-  return ''
-}
 
 const LoginSchema: SubmitDataItem[] = [
   {
@@ -62,6 +51,13 @@ const LoginPromise = (function () {
     const token = response.result.access_token
     setLocalToken(token)
 
+    ElMessage({
+      showClose: true,
+      message: '登录成功',
+      duration: 3000,
+      type: 'success',
+      zIndex: 100001,
+    })
     return `Bearer ${token}`
   }
   let ins = new TmsLockPromise(function () {
@@ -112,7 +108,7 @@ function onResponseRejected(err: any) {
 }
 
 let rules = []
-if (!AUTH_DISABLED()) {
+if (!LOGIN_IGNORED()) {
   let accessTokenRule = TmsAxios.newInterceptorRule({
     requestHeaders: new Map([['Authorization', getAccessToken]]),
     onRetryAttempt,

@@ -2,46 +2,67 @@
   <el-dialog title="新建目录" :closeOnClickModal="false" v-model="dialogVisible">
     <el-form :label-position="'left'" label-width="80px">
       <el-form-item label="目录名">
-        <el-input type="text" placeholder="请输入目录名" v-model="info.dir"></el-input>
+        <el-input ref="elDirName" type="text" placeholder="请输入目录名" v-model="dirName" @input="validateDirName">
+        </el-input>
+        <div>父目录：{{ dir.path }}</div>
       </el-form-item>
       <el-form-item>
-        <el-button style="margin-left: 10px;" size="small" type="success" @click="submitMkdir">提交</el-button>
+        <el-button type="success" @click="submitMkdir" :disabled="!dirName">提交</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { ref, provide, inject } from 'vue'
-import createUploadApi from '../apis/file/upload'
+import { ref, inject, computed, onMounted, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
 import { dialogInjectionKey } from 'gitart-vue-dialog'
-const $dialog = inject(dialogInjectionKey)
+import facStore from '@/store'
+import emitter from '@/EventBus.js'
+
 const props = defineProps({
-  dir: {
-    type: String,
-    default: ''
-  },
-  domain: String,
-  bucket: String
+  domain: { type: String, default: '' },
+  bucket: { type: String, default: '' }
 })
-const { dir, domain, bucket } = props;
-const info = ref({
-  dir: dir ? dir + '/目录名' : '目录名'
-});
+const { domain, bucket } = props
+
+const store = facStore()
+
+const elDirName = ref<any>(null)
+const dirName = ref('')
+
+const dir = computed(() => store.currentDir)
+
+const $dialog = inject(dialogInjectionKey)
+
 const dialogVisible = ref(true)
+
+const validateDirName = (v: string) => dirName.value = v.replace(/\//g, '')
+
 const submitMkdir = () => {
-  if (info.value.dir) {
-    createUploadApi.mkdir({ dir: info.value.dir, domain: domain, bucket: bucket })
-      .then((res: any) => {
-        if (res == 'ok') {
-          ElMessage({
-            message: '目录创建成功！',
-            type: 'success'
-          });
-        }
+  if (dirName.value) {
+    let fullname = dir.value ? dir.value.path + '/' : ''
+    fullname += dirName.value
+    store.mkdir(fullname, domain, bucket).then((rst: string) => {
+      if (rst == 'ok') {
+        ElMessage({
+          message: '目录创建成功！',
+          type: 'success'
+        })
+        emitter.emit('mkdir', { path: fullname, name: dirName.value })
         $dialog?.removeDialog(0)
-      })
+      } else {
+        ElMessage({
+          message: rst,
+          type: 'warning'
+        })
+      }
+    })
   }
 }
+onMounted(() => {
+  nextTick(() => {
+    elDirName.value?.focus()
+  })
+})
 </script>

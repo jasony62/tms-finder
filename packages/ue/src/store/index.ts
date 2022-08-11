@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import browseApi from '../apis/file/browse'
+import createUploadApi from '../apis/file/upload'
 
 export default defineStore('webfs', {
   state: () => {
@@ -56,6 +57,12 @@ export default defineStore('webfs', {
           resolve(dirs)
         })
       })
+    },
+    mkdir(dir: string, domain: string, bucket: string) {
+      return Promise.resolve(createUploadApi.mkdir({ dir, domain, bucket }))
+    },
+    rmdir(dir: string, domain: string, bucket: string) {
+      return Promise.resolve(createUploadApi.rmdir({ dir, domain, bucket }))
     },
     overallSearch(dir: any, basename: string) {
       return new Promise((resolve) => {

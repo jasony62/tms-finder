@@ -17,12 +17,12 @@
         当前目录：
         <span v-if="store.currentDir">{{ store.currentDir.path }}</span>
       </div>
-      <el-button @click.prevent="mkdir" v-if="manageOrStorage === 'storage'">新建目录</el-button>
-      <el-button @click.prevent="rmdir" v-if="manageOrStorage === 'storage'">删除目录</el-button>
+      <el-button @click.prevent="mkdir" v-if="manageOrStorage === 'storage'" :disabled="!currentDir">新建目录</el-button>
+      <el-button @click.prevent="rmdir" v-if="manageOrStorage === 'storage'"
+        :disabled="!currentDir || !currentDir.path">
+        删除目录
+      </el-button>
       <el-button @click.prevent="upload">上传文件</el-button>
-    </div>
-    <div class="w-1/6 flex items-center flex-row-reverse">
-      <el-button @click.prevent="toggleRoute('login')">退出</el-button>
     </div>
   </div>
 </template>
@@ -81,9 +81,10 @@ const upload = () => {
 
 const mkdir = () => {
   $dialog?.addDialog({
-    component: Mkdir, props: {
-      dir: currentDir ? currentDir.value.path : null,
-      bucket: bucket
+    component: Mkdir,
+    props: {
+      domain,
+      bucket
     }
   })
 }

@@ -45,16 +45,31 @@ location /tmsfinder {
 
 ```json
 {
+  "loginIgnored": false,
   "authApiBase": "auth",
-  "authApiPort": 3030,
+  "authApiPort": 3020,
   "backApiBase": "api",
   "backApiPort": 3030,
-  "backFsBase": "fs",
-  "backFsPort": 3030
+  "backFsBase": "",
+  "backFsPort": 3030,
+  "supportMultiView": true,
+  "loginCaptchaDisabled": true,
+  "schemasRootName": "info",
+  "supportPickFile": true,
+  "pickFileFiledNameMapping": {
+    "$": {
+      "url": "mediaUrl",
+      "type": "mediaContentType",
+      "size": "mediaFileSize",
+      "thumbUrl": "thumbnailUrl",
+      "thumbType": "thumbnailContentType",
+      "thumbSize": "thumbnailFileSize"
+    }
+  }
 }
 ```
 
-该文件中的配置信息必须与`tfd-back`中的配置信息一致。在构建节点为配置环境变量，运行阶段也未配置`settings.json`，那么前端页面就会采用通过 nginx 代理的方式访问 API。
+该文件中的后台服务地址相关的配置信息必须与`tfd-back`中的配置信息一致。如果在构建节点未配置环境变量，运行阶段也未配置`settings.json`，那么前端页面就会采用通过 nginx 代理的方式访问 API。
 
 ```nginx
 location / {

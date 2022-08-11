@@ -24,6 +24,10 @@ export default ({ mode }) => {
         strict: false,
         allow: [],
       },
+      proxy: {
+        '/auth': 'http://localhost:3030',
+        '/api': 'http://localhost:3030',
+      },
     },
   })
 }

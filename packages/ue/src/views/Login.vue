@@ -13,29 +13,27 @@
 </template>
 
 <script setup lang="ts">
+import { getCurrentInstance } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 import { Login, LoginResponse } from 'tms-vue3-ui'
 import 'tms-vue3-ui/dist/es/login/style/tailwind.scss'
 import { schema } from '@/data/login'
 import apiAuth from '@/apis/auth'
 import { setLocalToken } from '@/global'
-import router from '@/router/index'
-import { ElMessage } from 'element-plus'
-import { TmsAxios } from 'tms-vue3'
+
 const { fnCaptcha, fnLogin } = apiAuth
+const { proxy }: any = getCurrentInstance()
+const router = useRouter()
 
 const fnSuccessLogin = (response: LoginResponse) => {
   if (response.result && response.result.access_token) {
     setLocalToken(response.result.access_token)
-    const rulesObj: any = {
-      requestHeaders: new Map([
-        ['Authorization', `Bearer ${response.result.access_token}`],
-      ]),
+    if (proxy.$tmsRouterHistory.canBack()) {
+      router.back()
+    } else {
+      router.push({ name: 'root' })
     }
-
-    let rule = TmsAxios.newInterceptorRule(rulesObj)
-    TmsAxios.ins({ name: 'file-api', rules: [rule] })
-    TmsAxios.ins({ name: 'auth-api' })
-    router.push('/web')
   }
 }
 

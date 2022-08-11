@@ -5,7 +5,7 @@ import Storage from '../views/Storage.vue'
 import Manage from '../views/Manage.vue'
 import Register from '../views/Register.vue'
 import Smscode from '../views/Smscode.vue'
-import { TmsRouterHistoryPlugin, TmsRouterHistory } from 'tms-vue3'
+import { TmsRouterHistory } from 'tms-vue3'
 import { AUTH_DISABLED, getLocalToken } from '../global'
 
 const BASE_URL = import.meta.env.VITE_BASE_URL
@@ -70,8 +70,6 @@ const router = createRouter({
   history: createWebHistory(BASE_URL),
   routes,
 })
-
-createApp({}).use(TmsRouterHistoryPlugin, { router })
 
 router.beforeEach((to, from, next) => {
   // 进入页面前检查是否已经通过用户认证

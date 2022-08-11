@@ -1,8 +1,6 @@
 const schemas = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',
-  title: 'Json-Doc-File',
-  description: 'tms-vue-finder file',
   properties: {
     comment: {
       type: 'string',
@@ -21,7 +19,7 @@ module.exports = {
   local: {
     domains: {
       upload: {
-        // schemas,
+        schemas,
         // schemasRootName: 'info',
       },
     },

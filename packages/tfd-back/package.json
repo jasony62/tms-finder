@@ -5,8 +5,7 @@
   "description": "通用的文件管理客户端",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf ./dist && tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rimraf ./dist && tsc"
   },
   "keywords": [],
   "author": "jasony62",
@@ -18,11 +17,12 @@
     "redis": "^4.2.0",
     "sharp": "^0.30.7",
     "tfd-kit": "workspace:*",
-    "tms-koa": "^0.0.97",
-    "tms-koa-account": "^0.0.10"
+    "tms-koa": "^0.1.1",
+    "tms-koa-account": "^0.1.1",
+    "tms-koa-captcha": "^0.1.1"
   },
   "devDependencies": {
-    "@types/node": "^18.0.3",
+    "@types/node": "^18.7.23 ",
     "rimraf": "^3.0.2"
   }
 }

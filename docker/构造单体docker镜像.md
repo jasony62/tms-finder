@@ -55,7 +55,6 @@ location /tmsfinder {
   "supportMultiView": true,
   "loginCaptchaDisabled": true,
   "schemasRootName": "info",
-  "supportPickFile": true,
   "pickFileFiledNameMapping": {
     "$": {
       "url": "mediaUrl",

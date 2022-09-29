@@ -19,19 +19,26 @@ const appConfig = {
   auth: {
     // 内置账号
     client: {
-      accounts: [{ id: 1, username: 'admin', password: 'admin' }],
+      npm: {
+        disabled: /true|yes/i.test(env.TFD_APP_AUTH_CLIENT_DISABLED),
+        id: 'tms-koa-account/dist/models',
+        authentication: 'authenticate',
+        register: 'register',
+      },
     },
     // 保存鉴权信息
     jwt: {
-      privateKey: env.TFD_APP_AUTH_JWT_KEY || `TFD${Date.now()}${parseInt(Math.random() * 100)}`,
+      privateKey:
+        env.TFD_APP_AUTH_JWT_KEY ||
+        `TFD${Date.now()}${parseInt(Math.random() * 100)}`,
       expiresIn: 3600,
     },
     // 验证码
     captcha: {
       npm: {
         disabled: /true|yes/i.test(env.TFD_APP_AUTH_CAPTCHA_DISABLED),
-        id: 'tms-koa-account',
-        module: 'models/captcha',
+        id: 'tms-koa-captcha',
+        module: 'dist',
         checker: 'checkCaptcha',
         generator: 'createCaptcha',
       },

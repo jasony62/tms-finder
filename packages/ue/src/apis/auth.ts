@@ -1,6 +1,5 @@
 import { TmsAxios } from 'tms-vue3'
-//@ts-ignore
-import { encodeAccountV1 } from 'tms-koa-account/models/crypto'
+import { encodeAccountV1 } from 'tms-koa-crypto'
 import { AUTH_API_URL } from '@/global'
 
 const APPID = import.meta.env.VITE_LOGIN_CODE_APPID || 'tms-finder'
@@ -49,7 +48,9 @@ export default {
         username: params['uname'],
         password: params['password'],
       })
+      //@ts-ignore
       params['uname'] = encode[1]['username']
+      //@ts-ignore
       params['password'] = encode[1]['password']
     }
     const data = {
@@ -79,7 +80,9 @@ export default {
         username: params['uname'],
         password: params['password'],
       })
+      //@ts-ignore
       params['uname'] = encode[1]['username']
+      //@ts-ignore
       params['password'] = encode[1]['password']
     }
     const data = {

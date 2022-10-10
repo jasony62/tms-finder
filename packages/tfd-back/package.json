@@ -17,7 +17,7 @@
     "redis": "^4.2.0",
     "tfd-kit": "workspace:*",
     "tms-koa": "^0.1.2",
-    "tms-koa-account": "^0.1.1",
+    "tms-koa-account": "^0.1.2",
     "tms-koa-captcha": "^0.1.2"
   },
   "devDependencies": {

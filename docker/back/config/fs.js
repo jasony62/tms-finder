@@ -9,7 +9,7 @@ module.exports = {
   local: {
     rootDir: process.env.TFD_FS_ROOTDIR || 'storage',
     thumbnail: {
-      disabled: !/true|yes/i.test(env.TFD_FS_THUMBNAIL_ENABLED),
+      disabled: !/true|yes/i.test(process.env.TFD_FS_THUMBNAIL_ENABLED),
       dir: '_thumbs',
       width: 100,
       height: 100,

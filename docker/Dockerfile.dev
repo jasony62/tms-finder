@@ -5,6 +5,6 @@ FROM jasony62/tfd-aio:latest
 ## 基础工具
 RUN npm install --location=global pnpm typescript
 ## 安装sharp包需要的工具
-RUN apk add python3 make
+# RUN apk add python3 make
 ## 解决sharp依赖的libvips包下载慢的问题
-COPY ../docker/back/npmlibs/_libvips/libvips-8.12.2-linuxmusl-x64.tar.br /root/.npm/_libvips/libvips-8.12.2-linuxmusl-x64.tar.br
+# COPY ../docker/back/npmlibs/_libvips/libvips-8.13.3-linuxmusl-x64.tar.br /root/.npm/_libvips/libvips-8.13.3-linuxmusl-x64.tar.br

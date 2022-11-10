@@ -1,11 +1,11 @@
 <template>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-2 h-full">
     <!--header-->
     <div class="h-16 py-4 px-2">
       <topbar activeIndex="storage" :domain="domain" :bucket="bucket"></topbar>
     </div>
     <!--content-->
-    <div class="flex flex-row gap-2">
+    <div class="flex-grow flex flex-row gap-2 overflow-auto">
       <div class="w-1/5">
         <tree :domain="domain" :bucket="bucket"></tree>
       </div>

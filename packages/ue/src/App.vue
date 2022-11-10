@@ -7,6 +7,12 @@
 import { GDialogRoot } from 'gitart-vue-dialog'
 </script>
 <style>
+html,
+body,
+#app {
+  @apply h-full;
+}
+
 body {
   background-color: #efefef;
 }

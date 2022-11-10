@@ -7,7 +7,9 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositorie
 RUN npm install -g pnpm typescript
 
 # 解决sharp依赖的libvips包下载慢的问题
-COPY ../docker/back/npmlibs/_libvips/libvips-8.12.2-linuxmusl-x64.tar.br /root/.npm/_libvips/libvips-8.12.2-linuxmusl-x64.tar.br
+# COPY ../docker/back/npmlibs/_libvips/libvips-8.12.2-linuxmusl-x64.tar.br /root/.npm/_libvips/libvips-8.12.2-linuxmusl-x64.tar.br
+RUN npm config set sharp_binary_host "https://npmmirror.com/mirrors/sharp"
+RUN npm config set sharp_libvips_binary_host "https://npmmirror.com/mirrors/sharp-libvips"
 
 # 复制package.json安装依赖包
 # 先安装依赖包，再复制和编译代码，是为了制作镜像时避免反复下载依赖包

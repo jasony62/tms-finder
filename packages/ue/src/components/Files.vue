@@ -1,6 +1,6 @@
 <template>
-  <div class="files flex flex-col gap-2">
-    <div class="flex flex-row gap-2 w-1/2">
+  <div class="files flex flex-col gap-2 h-full overflow-auto">
+    <div class="flex flex-row gap-2 w-1/2" style="display:none;">
       <el-input placeholder="全站搜索-请输入文件名名称" v-model="searchContent"></el-input>
       <el-button type="primary" @click="overallSearch">搜索</el-button>
       <el-button type="primary" @click="drawer = true">执行插件</el-button>
@@ -14,7 +14,6 @@
         <template #default="scope">
           <el-button size="small" @click="preview(scope.row)">预览</el-button>
           <el-button size="small" @click="setInfo(scope.row)" v-if="schemas">编辑</el-button>
-          <el-button size="small" @click="download(scope.$index, scope.row)">下载</el-button>
           <el-button size="small" @click="pick(scope.row)" v-if="SupportPickFile">选取
           </el-button>
         </template>
@@ -30,19 +29,18 @@
           <svg class="image icon" aria-hidden="true">
             <use :xlink:href="formateFileType(item)" />
           </svg>
-          <div style="padding: 0 14px 14px">
-            <span class="file-name">{{ item.name }}</span>
-            <div class="bottom clearfix">
-              <time class="time">{{ formatDate(item) }}</time>
-              <span class="file-size">{{ formateFileSize(item) }}</span>
-              <div class="operation">
-                <el-button type="default" class="button" @click="preview(item)">预览</el-button>
-                <el-button type="default" class="button" @click="setInfo(item)" v-if="schemas">编辑
-                </el-button>
-                <el-button type="default" class="button" @click="download(index, item)">下载</el-button>
-                <el-button type="default" class="button" @click="pick(item)" v-if="SupportPickFile">选取
-                </el-button>
-              </div>
+          <div class="file-info">
+            <div class="file-name">{{ item.name }}</div>
+            <div class="file-time-and-size">
+              <div class="time">{{ formatDate(item) }}</div>
+              <div class="file-size">{{ formateFileSize(item) }}</div>
+            </div>
+            <div class="operation">
+              <el-button type="default" size="small" @click="preview(item)">预览</el-button>
+              <el-button type="default" size="small" @click="setInfo(item)" v-if="schemas">编辑
+              </el-button>
+              <el-button type="default" size="small" @click="pick(item)" v-if="SupportPickFile">选取
+              </el-button>
             </div>
           </div>
         </el-card>
@@ -111,13 +109,13 @@ const viewStyle = computed(() => {
 const imgload = (index: number) => {
   let card_body = document.getElementsByClassName('el-card__body')[index]
   //@ts-ignore
-  card_body.children[0].style.display = 'block'
+  // card_body.children[0].style.display = 'block'
   //@ts-ignore
   card_body.children[1].style.display = 'none'
 }
 const imgError = (e: any) => {
   e.target.parentNode.style.display = 'none'
-  e.target.parentNode.parentNode.children[1].style.display = 'block'
+  // e.target.parentNode.parentNode.children[1].style.display = 'block'
 }
 const preview = (file: any) => {
   // const fileType = utils.matchType(file.name)
@@ -193,13 +191,14 @@ const overallSearch = () => {
   // })
 }
 // 格式化日期
-const formatDate = (data: any) => {
-  const date = new Date(data.birthtime)
+const formatDate = (file: any) => {
+  // birthtime有可能是0
+  const date = new Date(file.birthtime || file.mtime)
   return date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日'
 }
 // 格式化文件大小
-const formateFileSize = (data: any) => {
-  return fileLengthFormat(data.size, 1)
+const formateFileSize = (file: any) => {
+  return fileLengthFormat(file.size, 1)
 }
 /**
  * @description 格式化文件大小
@@ -343,13 +342,11 @@ const handlePlugin = (plugin: any, filter?: string) => {
     }
 
     .thumb {
-      text-align: center;
-      flex: 1;
       padding: 8px;
+      @apply flex-grow flex flex-row justify-center;
 
       img {
-        width: 100%;
-        height: 100%;
+        @apply object-contain h-full;
       }
     }
   }
@@ -369,18 +366,30 @@ const handlePlugin = (plugin: any, filter?: string) => {
     width: 13%;
   }
 
-  .file-name {
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 100%;
-  }
+  .file-info {
+    @apply p-2 flex flex-col gap-2;
 
-  .file-size {
-    float: right;
-    font-size: 13px;
-    color: #999;
+    .file-name {
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 100%;
+    }
+
+    .file-time-and-size {
+      @apply flex flex-row justify-between;
+
+      .file-size,
+      .time {
+        font-size: 13px;
+        color: #999;
+      }
+    }
+
+    .operation {
+      @apply flex flex-row;
+    }
   }
 
   .empty {
@@ -394,41 +403,14 @@ const handlePlugin = (plugin: any, filter?: string) => {
     font-size: 14px;
   }
 
-  .time {
-    font-size: 13px;
-    color: #999;
-  }
 
-  .bottom {
-    margin-top: 6px;
-
-    .operation {
-      margin-top: 6px;
-    }
-  }
-
-  .button {
-    padding: 0;
-    margin-right: 10px;
-  }
 }
 
 .icon-view .icon-lists {
   width: 100%;
-  padding: 10px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   box-sizing: border-box;
-}
-
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: '';
-}
-
-.clearfix:after {
-  clear: both;
 }
 </style>

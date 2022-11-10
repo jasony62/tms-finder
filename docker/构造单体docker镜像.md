@@ -78,6 +78,14 @@ location / {
 
 后端服务的地址在`nginx.conf.template`文件中通过环境变量`$NGINX_TFD_BACK_BASE_URL`指定，在容器运行时，通过`envsubst`命令替换，生成在`nginx.conf`文件。
 
+# 安装 sharp 包
+
+直接安装`sharp`包通常会失败，需要将安装位置指到国内镜像。
+
+参考：
+
+https://sharp.pixelplumbing.com/install#custom-prebuilt-binaries
+
 # 使用镜像
 
 在项目根目录下执行

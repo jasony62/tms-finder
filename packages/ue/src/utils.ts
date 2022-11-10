@@ -26,7 +26,7 @@ export default {
     let url = this.getFileUrl(file)
     let thumbUrl = this.getThumbUrl(file)
     let posted: any
-    if (mapping && typeof mapping === 'object') {
+    if (mapping && typeof mapping === 'object' && Object.keys(mapping).length) {
       posted = {}
       let file2 = Object.assign({}, file, { url, thumbUrl })
       Object.entries(mapping).forEach(([oldName, newName]) => {

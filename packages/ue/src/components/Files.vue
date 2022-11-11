@@ -7,9 +7,9 @@
     </div>
     <el-table ref="multipleTableRef" :data="files" stripe v-if="viewStyle === '1'">
       <el-table-column type="selection" width="55" />
+      <el-table-column prop="name" label="文件名"></el-table-column>
       <el-table-column prop="createTime" label="日期" width="180" :formatter="formatDate"></el-table-column>
       <el-table-column prop="size" label="大小" width="180" :formatter="formateFileSize"></el-table-column>
-      <el-table-column prop="name" label="文件名"></el-table-column>
       <el-table-column fixed="right" label="操作" width="260">
         <template #default="scope">
           <el-button size="small" @click="preview(scope.row)">预览</el-button>

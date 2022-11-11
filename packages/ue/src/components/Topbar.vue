@@ -22,7 +22,7 @@
         :disabled="!currentDir || !currentDir.path">
         删除目录
       </el-button>
-      <el-button @click.prevent="upload">上传文件</el-button>
+      <el-button @click.prevent="upload" :disabled="!currentDir?.path">上传文件</el-button>
     </div>
   </div>
 </template>
@@ -102,4 +102,5 @@ onMounted(() => {
 })
 </script>
 <style scoped>
+
 </style>

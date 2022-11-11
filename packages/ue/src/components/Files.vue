@@ -5,7 +5,7 @@
       <el-button type="primary" @click="overallSearch">搜索</el-button>
       <el-button type="primary" @click="drawer = true">执行插件</el-button>
     </div>
-    <el-table ref="multipleTableRef" :data="files" stripe style="width: 100%" v-if="viewStyle === '1'">
+    <el-table ref="multipleTableRef" :data="files" stripe v-if="viewStyle === '1'">
       <el-table-column type="selection" width="55" />
       <el-table-column prop="createTime" label="日期" width="180" :formatter="formatDate"></el-table-column>
       <el-table-column prop="size" label="大小" width="180" :formatter="formateFileSize"></el-table-column>

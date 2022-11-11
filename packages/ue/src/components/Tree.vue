@@ -1,9 +1,9 @@
 <template>
-  <el-tree ref="eltree" :props="treeProps" lazy :expand-on-click-node="false" :load="loadNode" @node-click="clickNode"
-    @current-change="currentChange" node-key="path"></el-tree>
+  <el-tree ref="eltree" class="h-full overflow-auto" :props="treeProps" lazy :expand-on-click-node="false"
+    :load="loadNode" @node-click="clickNode" @current-change="currentChange" node-key="path"></el-tree>
 </template>
 <script setup lang="ts">
-import { ref, toRaw } from 'vue';
+import { ref } from 'vue';
 import facStore from '@/store'
 import emitter from '@/EventBus.js'
 

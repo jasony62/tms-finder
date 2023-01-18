@@ -16,7 +16,7 @@
     "tms-janus-play": "^0.0.3",
     "tms-koa-crypto": "^0.1.0",
     "tms-vue3": "^0.0.5",
-    "tms-vue3-ui": "^0.0.66",
+    "tms-vue3-ui": "^0.0.80",
     "vue": "^3.2.25",
     "vue-router": "4"
   },

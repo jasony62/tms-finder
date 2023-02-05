@@ -73,7 +73,7 @@ importers:
       tms-janus-play: ^0.0.3
       tms-koa-crypto: ^0.1.0
       tms-vue3: ^0.0.5
-      tms-vue3-ui: ^0.0.82
+      tms-vue3-ui: ^0.0.83
       typescript: ^4.5.4
       vite: ^3.0.4
       vue: ^3.2.25
@@ -88,7 +88,7 @@ importers:
       tms-janus-play: 0.0.3_vue@3.2.37
       tms-koa-crypto: 0.1.0
       tms-vue3: 0.0.5
-      tms-vue3-ui: 0.0.82
+      tms-vue3-ui: 0.0.83
       vue: 3.2.37
       vue-router: 4.1.3_vue@3.2.37
     devDependencies:
@@ -3478,8 +3478,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /tms-vue3-ui/0.0.82:
-    resolution: {integrity: sha512-9ecdxVOdNPa1wY9l0ggdrmL3s6GwUxTOl7VtX+6h+4CycGU42PAWbH3vC/bs67rLkpAXOWZ9zhjO8/DvlNQMCA==}
+  /tms-vue3-ui/0.0.83:
+    resolution: {integrity: sha512-NVcg2I9SbzQ951zbdMqQD8nZvvbYDwo/30UK+eF4JS7AGaKX2NACftG6iSHP/Z3N9Fp3Uwlle+9Zz43e4ioYpA==}
     dependencies:
       debug: 4.3.4
       lodash: 4.17.21

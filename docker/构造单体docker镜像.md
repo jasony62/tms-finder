@@ -91,13 +91,13 @@ https://sharp.pixelplumbing.com/install#custom-prebuilt-binaries
 在项目根目录下执行
 
 ```bash
-docker build -f ./docker/Dockerfile -t tms/tfd-aio .
+docker build -f ./docker/Dockerfile -t jasony62/tfd-aio .
 ```
 
 用于开发插件的基础镜像，包含`npm`和`typescript`包。
 
 ```bash
-docker build -f ./docker/Dockerfile.dev -t tms/tfd-aio_dev .
+docker build -f ./docker/Dockerfile.dev -t jasony62/tfd-aio_dev .
 ```
 
 运行并进入容器

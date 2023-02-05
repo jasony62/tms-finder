@@ -73,7 +73,7 @@ importers:
       tms-janus-play: ^0.0.3
       tms-koa-crypto: ^0.1.0
       tms-vue3: ^0.0.5
-      tms-vue3-ui: ^0.0.80
+      tms-vue3-ui: ^0.0.82
       typescript: ^4.5.4
       vite: ^3.0.4
       vue: ^3.2.25
@@ -88,7 +88,7 @@ importers:
       tms-janus-play: 0.0.3_vue@3.2.37
       tms-koa-crypto: 0.1.0
       tms-vue3: 0.0.5
-      tms-vue3-ui: 0.0.80
+      tms-vue3-ui: 0.0.82
       vue: 3.2.37
       vue-router: 4.1.3_vue@3.2.37
     devDependencies:
@@ -2189,6 +2189,10 @@ packages:
   /lodash.once/4.1.1:
     resolution: {integrity: sha512-Sb487aTOCr9drQVL8pIxOzVhafOjZN9UU54hiN8PU3uAiSV7lx1yYNpbNmex2PK6dSJoNTSJUUswT651yww3Mg==}
 
+  /lodash.set/4.3.2:
+    resolution: {integrity: sha512-4hNPN5jlm/N/HLMCO43v8BXKq9Z7QdAGc/VGrRD61w8gN9g/6jF9A4L1pbUgBLCffi0w9VsXfTOij5x8iTyFvg==}
+    dev: false
+
   /lodash.truncate/4.4.2:
     resolution: {integrity: sha512-jttmRe7bRse52OsWIMDLaXxWqRAmtIUccAQ3garviCqJjafXOfNMO0yMfNpdD6zbGaTU0P5Nz7e7gAT6cKmJRw==}
     dev: true
@@ -3474,11 +3478,12 @@ packages:
       - utf-8-validate
     dev: false
 
-  /tms-vue3-ui/0.0.80:
-    resolution: {integrity: sha512-yWXnInOUn6Frem1ni4stOy/Ojh3ZNRSMSVXQMDwI6AU2p/emfSEObHyB4IprdroXhlg4kuGNlGFvhaSF0DG/rA==}
+  /tms-vue3-ui/0.0.82:
+    resolution: {integrity: sha512-9ecdxVOdNPa1wY9l0ggdrmL3s6GwUxTOl7VtX+6h+4CycGU42PAWbH3vC/bs67rLkpAXOWZ9zhjO8/DvlNQMCA==}
     dependencies:
       debug: 4.3.4
       lodash: 4.17.21
+      lodash.set: 4.3.2
       randexp: 0.5.3
       tms-vue3: 0.0.5_debug@4.3.4
     transitivePeerDependencies:

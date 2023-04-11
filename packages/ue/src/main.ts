@@ -1,7 +1,8 @@
 import { createApp } from 'vue'
 import ElementPlus from 'element-plus'
 import { ElMessage } from 'element-plus'
-import { TmsAxios, TmsAxiosPlugin } from 'tms-vue3'
+import { TmsAxios, TmsAxiosPlugin, TmsLockPromise } from 'tms-vue3'
+import { Login, LoginResponse } from 'tms-vue3-ui'
 import router from './router'
 import { createPinia } from 'pinia'
 import App from './App.vue'
@@ -17,47 +18,70 @@ import './index.css'
 import 'element-plus/dist/index.css'
 import 'tms-vue3-ui/dist/es/frame/style/index.css'
 import 'tms-vue3-ui/dist/es/flex/style/index.css'
+import './assets/common.scss'
+import apiAuth from '@/apis/auth'
+import { schema } from '@/data/login'
+const { fnCaptcha, fnLogin } = apiAuth
 
-function configAxios() {
-  let accessToken: string = ''
-  if (!LOGIN_IGNORED()) {
-    let token = getLocalToken()
-    if (!token) router.push('/login')
-    accessToken = `Bearer ${token}`
-  } else {
-    accessToken = 'Bearer ' + getQueryVariable('access_token')
-  }
-  let rulesObj: any = {
-    requestHeaders: new Map([['Authorization', accessToken]]),
-    onResultFault: (res: any) => {
-      return new Promise((resolve, reject) => {
-        ElMessage.error(res.data.msg || '发生业务逻辑错误')
-        reject(res.data)
+const LoginPromise = (function () {
+  let ins = new TmsLockPromise(function () {
+    return new Promise((resolve) => {
+      const fnSuccessLogin = function (response: LoginResponse) {
+        const token = response.result.access_token
+        setLocalToken(token)
+        resolve(`Bearer ${token}`)
+      }
+      Login.open({
+        schema: schema(),
+        fnCaptcha,
+        fnLogin,
+        onSuccess: fnSuccessLogin,
+        closeAfterSuccess: true,
       })
-    },
-    // onRetryAttempt: (res: any) => {
-    //   return new Promise((resolve, reject) => {
-    //     if (res.data.code === 20001) {
-    //       ElMessage({
-    //         showClose: true,
-    //         message: res.data.msg || '登录失效请重新登录',
-    //         type: 'error',
-    //         onClose: function () {
-    //           setLocalToken('')
-    //           router.push('/login')
-    //         },
-    //       })
-    //     }
-    //     reject(res.data)
-    //   })
-    // },
+    })
+  })
+  return ins
+})()
+
+function getAccessToken() {
+  if (!LOGIN_IGNORED()) {
+    if (LoginPromise.isRunning()) {
+      return LoginPromise.wait()
+    }
+
+    let token = getLocalToken()
+    if (!token) {
+      return LoginPromise.wait()
+    }
+    return `Bearer ${token}`
+  } else {
+    return 'Bearer ' + getQueryVariable('access_token')
   }
-  let rule = TmsAxios.newInterceptorRule(rulesObj)
-  TmsAxios.ins({ name: 'file-api', rules: [rule] })
 }
 
-TmsAxios.ins({ name: 'auth-api' })
+function onRetryAttempt(res: any) {
+  if (res.data.code === 20001) {
+    return LoginPromise.wait().then(() => {
+      return true
+    })
+  }
+  return false
+}
 
+let rulesObj: any = {
+  requestHeaders: new Map([['Authorization', getAccessToken]]),
+  onResultFault: (res: any) => {
+    return new Promise((resolve, reject) => {
+      ElMessage.error(res.data.msg || '发生业务逻辑错误')
+      reject(res.data)
+    })
+  },
+  onRetryAttempt,
+}
+let rule = TmsAxios.newInterceptorRule(rulesObj)
+
+TmsAxios.ins({ name: 'file-api', rules: [rule] })
+TmsAxios.ins({ name: 'auth-api' })
 TmsAxios.ins({ name: 'master-api' })
 
 function afterLoadSettings() {
@@ -66,7 +90,6 @@ function afterLoadSettings() {
     .use(createPinia())
     .use(dialogPlugin)
     .use(TmsAxiosPlugin)
-    .use(configAxios)
     .use(ElementPlus)
     .mount('#app')
 }

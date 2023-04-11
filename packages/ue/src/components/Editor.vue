@@ -1,17 +1,10 @@
 <template>
   <div id="infoEditor">
-    <el-dialog title="文件信息" destroy-on-close :fullscreen="true" :closeOnClickModal="false" v-model="dialogVisible"
+    <el-dialog title="文件信息" destroy-on-close :closeOnClickModal="false" v-model="dialogVisible"
       @close="dialogVisible = false">
-      <div class="flex flex-row gap-4 h-full overflow-auto">
-        <json-doc ref="$jde" class="w-1/3 h-full overflow-auto" :schema="schemas" :value="info"></json-doc>
-        <div class="h-full w-1/3 flex flex-col gap-2 relative">
-          <div class="absolute top-0 right-0">
-            <el-button @click="preview">预览</el-button>
-          </div>
-          <div class="border-2 border-gray-300 rounded-md p-2 h-full w-full overflow-auto">
-            <pre>{{ previewResult }}</pre>
-          </div>
-        </div>
+      <div class="h-full  w-full overflow-auto">
+        <json-doc ref="$jde" :hideRootTitle="true" :hideRootDescription="true" :hideFieldDescription="true"
+          :schema="schemas" :value="info"></json-doc>
       </div>
       <template #footer>
         <span class="dialog-footer">
@@ -58,15 +51,3 @@ const onSubmit = () => {
   })
 }
 </script>
-<style lang="scss">
-#infoEditor {
-
-  .el-dialog.is-fullscreen {
-    @apply flex flex-col;
-
-    .el-dialog__body {
-      @apply flex-grow overflow-auto;
-    }
-  }
-}
-</style>

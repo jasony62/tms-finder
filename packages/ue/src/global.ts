@@ -7,9 +7,9 @@ type Globalsettings = {
   backFsBase: string
   backFsPort: number
   loginCaptchaDisabled: boolean
+  supportThumbnail: boolean
   supportPickFile: boolean
   supportMultiView: boolean
-  schemasRootName: string
   pickFileFiledNameMapping: { [domain: string]: object }
 }
 
@@ -24,9 +24,9 @@ let _globalsettings: Globalsettings = {
   loginCaptchaDisabled: /yes|true/i.test(
     import.meta.env.VITE_LOGIN_CAPTCHA_DISABLED
   ),
+  supportThumbnail: false,
   supportPickFile: false,
   supportMultiView: /yes|true/i.test(import.meta.env.VITE_SUPPORT_MULTI_VIEW),
-  schemasRootName: import.meta.env.VITE_SCHEMAS_ROOT_NAME,
   pickFileFiledNameMapping: {},
 }
 /**
@@ -44,11 +44,12 @@ export function init(settings: Globalsettings) {
   if (settings.backFsPort) _globalsettings.backFsPort = settings.backFsPort
   if (settings.loginCaptchaDisabled)
     _globalsettings.loginCaptchaDisabled = settings.loginCaptchaDisabled
-
+  if (settings.supportPickFile)
+    _globalsettings.supportPickFile = settings.supportPickFile
+  if (settings.supportThumbnail)
+    _globalsettings.supportThumbnail = settings.supportThumbnail
   if (settings.supportMultiView)
     _globalsettings.supportMultiView = settings.supportMultiView
-  if (settings.schemasRootName)
-    _globalsettings.schemasRootName = settings.schemasRootName
   if (
     settings.pickFileFiledNameMapping &&
     typeof settings.pickFileFiledNameMapping === 'object'
@@ -68,9 +69,9 @@ export const LOGIN_IGNORED = () => _globalsettings.loginIgnored
  */
 export const SUPPORT_PICK_FILE = () => _globalsettings.supportPickFile
 /**
- * 上传文件时，自定义扩展信息的存储名称
+ * 是否支持多视图
  */
-export const SCHEMAS_ROOT_NAME = () => _globalsettings.schemasRootName
+export const SUPPORT_THUMBNAIL = () => _globalsettings.supportThumbnail
 /**
  * 是否支持多视图
  */
@@ -137,7 +138,6 @@ export const BACK_API_URL = () => {
 
   return _BACK_API_URL
 }
-
 /**
  * 根据环境变量设置后端文件服务起始地址
  */
@@ -160,6 +160,9 @@ export const BACK_FS_URL = () => {
 
     _BACK_FS_URL = url
   }
+
+  // 保证以反斜杠结尾
+  if (!/\/$/.test(_BACK_FS_URL)) _BACK_FS_URL += '/'
 
   return _BACK_FS_URL
 }

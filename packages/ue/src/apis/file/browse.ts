@@ -1,12 +1,13 @@
 import { TmsAxios } from 'tms-vue3'
-import { BACK_API_URL, SCHEMAS_ROOT_NAME } from '@/global'
+import { BACK_API_URL } from '@/global'
+import facStore from '@/store'
 
 const base = () => BACK_API_URL() + '/file/browse'
 
 export default {
   schemas(domain?: string, bucket?: string) {
     const params = { domain, bucket }
-    return TmsAxios.ins('master-api')
+    return TmsAxios.ins('file-api')
       .get(`${base()}/schemas`, { params })
       .then((rst: any) => (rst.data.code === 0 ? rst.data.result : null))
   },
@@ -25,8 +26,9 @@ export default {
   },
   setInfo(path: string, info: any, domain?: string, bucket?: string) {
     const params = { path, domain, bucket }
-    const rootName = SCHEMAS_ROOT_NAME()
-    const data = rootName ? { [rootName]: info } : info
+    const store = facStore()
+    const { schemasRootName } = store
+    const data = schemasRootName ? { [schemasRootName]: info } : info
     return TmsAxios.ins('file-api')
       .post(`${base()}/setInfo`, data, { params })
       .then((rst: any) => rst.data.result)

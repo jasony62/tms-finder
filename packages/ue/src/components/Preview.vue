@@ -14,10 +14,10 @@
             <div>{{ file.size }}</div>
             <div>文件地址</div>
             <div class="break-all">{{ fileurl }}</div>
-            <div>缩略图地址</div>
-            <div class="break-all">{{ thumburl }}</div>
-            <div>缩略图节数</div>
-            <div>{{ file.thumbSize }}</div>
+            <div v-if="supportThumbnail">缩略图地址</div>
+            <div v-if="supportThumbnail" class="break-all">{{ thumburl }}</div>
+            <div v-if="supportThumbnail">缩略图节数</div>
+            <div v-if="supportThumbnail">{{ file.thumbSize }}</div>
           </div>
         </div>
       </div>
@@ -26,17 +26,21 @@
 </template>
 
 <script setup lang="ts">
+import { SUPPORT_THUMBNAIL } from '@/global';
+import { TmsFile } from '@/types';
 import utils from '@/utils';
-import { ref } from 'vue'
+import { PropType, computed, ref } from 'vue'
 
 const props = defineProps({
-  file: { type: Object, required: true },
+  file: { type: Object as PropType<TmsFile>, required: true },
 })
 
 const fileurl = utils.getFileUrl(props.file)
 const thumburl = utils.getThumbUrl(props.file)
 
 const dialogVisible = ref(true)
+
+const supportThumbnail = computed(() => SUPPORT_THUMBNAIL())
 </script>
 
 <style lang="scss">

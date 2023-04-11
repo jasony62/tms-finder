@@ -16,6 +16,7 @@
           <el-button size="small" @click="setInfo(scope.row)" v-if="schemas">编辑</el-button>
           <el-button size="small" @click="pick(scope.row)" v-if="SupportPickFile">选取
           </el-button>
+          <el-button size="small" @click="remove(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -76,7 +77,9 @@ import Preview from './Preview.vue'
 import Editor from './Editor.vue'
 import { ElTable, ElMessage } from 'element-plus'
 import apiPlugin from "@/apis/plugin";
-import { SCHEMAS_ROOT_NAME, SUPPORT_PICK_FILE } from '@/global'
+import { SUPPORT_PICK_FILE } from '@/global'
+import RemoveFile from './RemoveFile.vue'
+import { TmsFile } from '@/types'
 
 const SupportPickFile = ref(false)
 
@@ -109,15 +112,12 @@ const viewStyle = computed(() => {
 const imgload = (index: number) => {
   let card_body = document.getElementsByClassName('el-card__body')[index]
   //@ts-ignore
-  // card_body.children[0].style.display = 'block'
-  //@ts-ignore
   card_body.children[1].style.display = 'none'
 }
 const imgError = (e: any) => {
   e.target.parentNode.style.display = 'none'
-  // e.target.parentNode.parentNode.children[1].style.display = 'block'
 }
-const preview = (file: any) => {
+const preview = (file: TmsFile) => {
   // const fileType = utils.matchType(file.name)
   // // 是否配置了Janus媒体服务器
   // const isSupportJanus = /yes|true/i.test(
@@ -150,16 +150,16 @@ const preview = (file: any) => {
   // }
 }
 
-const SchemasRootName = SCHEMAS_ROOT_NAME()
+const SchemasRootName = computed(() => store.schemasRootName)
 const setInfo = (file: any) => {
   const props: any = { domain, bucket, schemas: toRaw(schemas), path: file.path }
-  props.info = SchemasRootName ? (file[SchemasRootName] ?? {}) : file
+  props.info = SchemasRootName.value ? (file[SchemasRootName.value] ?? {}) : file
   $dialog?.addDialog({
     component: Editor,
     props
   })
   emitter.on('onInfoSubmit', (newInfo: any) => {
-    if (SchemasRootName) file[SchemasRootName] = newInfo
+    if (SchemasRootName.value) file[SchemasRootName.value] = newInfo
     else Object.assign(file, newInfo)
     emitter.off('onInfoSubmit')
   })
@@ -178,9 +178,29 @@ const download = (index: number, file: any) => {
  * 返回选取的文件
  * @param file 选取的文件 
  */
-const pick = (file: any) => {
+const pick = (file: TmsFile) => {
   utils.postFile(file, domain ?? '')
 }
+/**
+ * 发起删除文件
+ * @param file 
+ */
+const remove = (file: TmsFile) => {
+  $dialog?.addDialog({
+    component: RemoveFile, props: {
+      filepath: file.path,
+      domain: domain,
+      bucket: bucket
+    }
+  })
+}
+/**
+ * 完成删除文件
+ */
+emitter.on('removeFile', ({ path }) => {
+  let index = store.files.findIndex(f => f.path === path)
+  store.files.splice(index, 1)
+})
 
 // 全局搜索
 const overallSearch = () => {

@@ -1,0 +1,8 @@
+html,
+body,
+#app {
+  @apply h-full w-full;
+}
+.tvu-login__form.tvu-login__form--modal {
+  @apply w-1/4;
+}

@@ -6,7 +6,7 @@
         <el-radio-button label="storage">存储视图</el-radio-button>
       </el-radio-group>
     </div>
-    <div class="w-1/5 flex flex-row items-center">
+    <div v-if="SupportThumbnail" class="w-1/5 flex flex-row items-center">
       <el-radio-group v-model="store.viewStyle" @change="selectViewStyle">
         <el-radio-button label="1">列表视图</el-radio-button>
         <el-radio-button label="2">图标视图</el-radio-button>
@@ -18,11 +18,10 @@
         <span v-if="store.currentDir">{{ store.currentDir.path }}</span>
       </div>
       <el-button @click.prevent="mkdir" v-if="manageOrStorage === 'storage'" :disabled="!currentDir">新建目录</el-button>
-      <el-button @click.prevent="rmdir" v-if="manageOrStorage === 'storage'"
-        :disabled="!currentDir || !currentDir.path">
+      <el-button @click.prevent="rmdir" v-if="manageOrStorage === 'storage'" :disabled="!currentDir || !currentDir.path">
         删除目录
       </el-button>
-      <el-button @click.prevent="upload" :disabled="!currentDir?.path">上传文件</el-button>
+      <el-button @click.prevent="upload">上传文件</el-button>
     </div>
   </div>
 </template>
@@ -34,7 +33,7 @@ import Rmdir from './Rmdir.vue'
 import Upload from './Upload.vue'
 import Mkdir from './Mkdir.vue'
 import { useRouter, useRoute } from 'vue-router';
-import { SUPPORT_MULTI_VIEW } from '@/global';
+import { SUPPORT_MULTI_VIEW, SUPPORT_THUMBNAIL } from '@/global';
 const props = defineProps({
   activeIndex: { type: String },
   domain: { type: String },
@@ -46,6 +45,7 @@ const $dialog = inject(dialogInjectionKey)
 const store = facStore()
 
 const SupportMultiView = ref(false)
+const SupportThumbnail = ref(false)
 
 const router = useRouter()
 const route = useRoute()
@@ -78,7 +78,6 @@ const upload = () => {
     props
   })
 }
-
 const mkdir = () => {
   $dialog?.addDialog({
     component: Mkdir,
@@ -99,8 +98,7 @@ const rmdir = () => {
 }
 onMounted(() => {
   SupportMultiView.value = SUPPORT_MULTI_VIEW()
+  SupportThumbnail.value = SUPPORT_THUMBNAIL()
 })
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

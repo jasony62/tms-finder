@@ -1,18 +1,24 @@
 <template>
   <el-dialog title="文件上传" :closeOnClickModal="false" v-model="dialogVisible" @close="dialogVisible = false">
     <el-form :label-position="'left'" label-width="80px">
-      <el-form-item label="当前目录">
-        <div>{{ dir }}</div>
+      <el-form-item label="指定目录">
+        <el-input placeholder="文件目录" v-model="targetDir"></el-input>
       </el-form-item>
       <el-form-item label="上传文件">
-        <el-upload ref="upload" :action="''" :http-request="handleUpload" :on-preview="handlePreview"
-          :on-remove="handleRemove" :file-list="fileList" :auto-upload="false">
+        <el-upload ref="upload" :action="''" :on-change="handleChange" :http-request="handleUpload" :file-list="fileList"
+          :auto-upload="false">
           <el-button slot="trigger" type="primary">选取文件</el-button>
         </el-upload>
       </el-form-item>
-      <div v-if="schemas">
-        <json-doc ref="$jde" class="w-full el-form-item" :schema="schemas" :value="info"></json-doc>
-      </div>
+      <el-form-item label="指定名称">
+        <el-input placeholder="指定文件名称" v-model="assignedName"></el-input>
+      </el-form-item>
+      <el-form-item label="扩展属性" v-if="schemas">
+        <div class="w-full">
+          <json-doc ref="$jde" :hideRootTitle="true" :hideRootDescription="true" :hideFieldDescription="true"
+            :schema="schemas" :value="info"></json-doc>
+        </div>
+      </el-form-item>
       <el-form-item>
         <el-button type="success" :loading="showLoading" @click="submitUpload">
           提交</el-button>
@@ -30,6 +36,7 @@ import { dialogInjectionKey } from 'gitart-vue-dialog'
 import { JsonDoc } from 'tms-vue3-ui'
 import { DocAsArray } from 'tms-vue3-ui/dist/es/json-doc'
 import 'tms-vue3-ui/dist/es/json-doc/style/tailwind.scss'
+import { UploadFile } from 'element-plus'
 
 const store = facStore()
 const $dialog = inject(dialogInjectionKey)
@@ -43,6 +50,8 @@ const props = defineProps({
   schemas: { type: Object, required: false },
 })
 const { dir, domain, bucket, schemas } = props
+const targetDir = ref(dir)
+const assignedName = ref('')
 const info = ref({})
 const fileList = ref([])
 const showLoading = ref(false)
@@ -67,7 +76,7 @@ const handleUpload = (req: any) => {
     },
   }
   createUploadApi
-    .plain({ dir: dir, domain: domain, bucket: bucket }, fileData, config)
+    .plain({ dir: targetDir.value, domain: domain, bucket: bucket, name: assignedName.value }, fileData, config)
     .then(({ path }: { path: any }) => {
       req.onSuccess(path)
       /**自定义文件扩展信息*/
@@ -98,8 +107,9 @@ const submitUpload = () => {
   upload.value?.submit()
   // $dialog.removeDialog(0)
 }
-const handleRemove = () => { }
-const handlePreview = () => { }
+const handleChange = (uploadFile: UploadFile) => {
+  assignedName.value = uploadFile.name
+}
 </script>
 
 <style lang="scss">

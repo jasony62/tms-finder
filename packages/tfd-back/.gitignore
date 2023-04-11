@@ -1,4 +1,5 @@
 dist
 _lowdb.json
 .env
+.env.local
 storage

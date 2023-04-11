@@ -6,6 +6,7 @@ export default defineStore('webfs', {
   state: () => {
     return {
       schemas: null as any,
+      schemasRootName: '',
       tree: { name: '全部', path: '' },
       files: [] as any[],
       searchFiles: [] as any[],
@@ -25,10 +26,21 @@ export default defineStore('webfs', {
     },
     getSchemas(bucket?: string, domain?: string) {
       return new Promise((resolve) => {
-        browseApi.schemas(domain, bucket).then((schemas: any) => {
-          this.schemas = schemas
-          resolve(schemas)
-        })
+        browseApi
+          .schemas(domain, bucket)
+          .then(
+            ({
+              schemas,
+              schemasRootName,
+            }: {
+              schemas: any
+              schemasRootName: string
+            }) => {
+              this.schemas = schemas
+              this.schemasRootName = schemasRootName
+              resolve(schemas)
+            }
+          )
       })
     },
     list(dir: any, domain?: string, bucket?: string) {
@@ -57,6 +69,11 @@ export default defineStore('webfs', {
           resolve(dirs)
         })
       })
+    },
+    removeFile(filepath: string, domain: string, bucket: string) {
+      return Promise.resolve(
+        createUploadApi.removeFile({ filepath, domain, bucket })
+      )
     },
     mkdir(dir: string, domain: string, bucket: string) {
       return Promise.resolve(createUploadApi.mkdir({ dir, domain, bucket }))

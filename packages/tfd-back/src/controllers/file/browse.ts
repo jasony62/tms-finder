@@ -32,9 +32,12 @@ class Browse extends BrowseCtrl {
     let { dir, basename = '' } = this['request'].body
 
     let localFS = new LocalFS(this['domain'], this['bucket'])
-    let path = localFS.fullpath(dir)
+    let path = localFS.pathWithPrefix(dir)
 
-    let globInstance = new glob.Glob(path + '/**/*+(' + basename + ')*', { matchBase: true, sync: true })
+    let globInstance = new glob.Glob(path + '/**/*+(' + basename + ')*', {
+      matchBase: true,
+      sync: true,
+    })
 
     let dirs = []
     let files = []

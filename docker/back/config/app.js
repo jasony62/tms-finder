@@ -31,7 +31,7 @@ const appConfig = {
       privateKey:
         env.TFD_APP_AUTH_JWT_KEY ||
         `TFD${Date.now()}${parseInt(Math.random() * 100)}`,
-      expiresIn: 3600,
+      expiresIn: parseInt(env.TFD_APP_AUTH_JWT_EXPIRESIN) || 3600,
     },
     // 验证码
     captcha: {

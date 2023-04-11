@@ -5,6 +5,9 @@ import Manage from '../views/Manage.vue'
 import Register from '../views/Register.vue'
 import Smscode from '../views/Smscode.vue'
 
+import { TmsRouterHistory } from 'tms-vue3'
+import { LOGIN_IGNORED, getLocalToken } from '@/global'
+
 const BASE_URL = import.meta.env.VITE_BASE_URL
   ? import.meta.env.VITE_BASE_URL
   : '/tmsfinder'
@@ -68,19 +71,19 @@ const router = createRouter({
   routes,
 })
 
-// router.beforeEach((to, from, next) => {
-//   // 进入页面前检查是否已经通过用户认证
-//   if (!LOGIN_IGNORED()) {
-//     if (to.name !== 'login') {
-//       let token = sessionStorage.getItem('access_token')
-//       if (!token) {
-//         Vue.TmsRouterHistory.push(to.path)
-//         return next({ name: 'login' })
-//       }
-//     }
-//   }
-//   next()
-// })
+router.beforeEach((to, from, next) => {
+  // 进入页面前检查是否已经通过用户认证
+  if (!LOGIN_IGNORED()) {
+    if (to.name !== 'login') {
+      let token = getLocalToken()
+      if (!token) {
+        new TmsRouterHistory().push(to.path)
+        return next({ name: 'login' })
+      }
+    }
+  }
+  next()
+})
 
 // router = Vue.TmsRouterHistory.watch(router)
 

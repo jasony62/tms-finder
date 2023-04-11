@@ -73,7 +73,7 @@ emitter.on('mkdir', ({ name, path }) => {
 /**
  * 删除子目录
  */
-emitter.on('mkdir', ({ path }) => {
+emitter.on('rmdir', ({ path }) => {
   if (path === store.currentDir.path) {
     eltree.value.remove(currentNode.value)
     store.setCurrentDir(null)

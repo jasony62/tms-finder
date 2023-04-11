@@ -1,27 +1,23 @@
-import {
-  BACK_FS_URL,
-  PICK_FILE_FILED_NAME_MAPPING,
-  SCHEMAS_ROOT_NAME,
-} from '@/global'
+import { BACK_FS_URL, PICK_FILE_FILED_NAME_MAPPING } from '@/global'
 import _ from 'lodash'
-
-const SchemasRootName = SCHEMAS_ROOT_NAME()
+import { TmsFile } from './types'
+import facStore from '@/store'
 
 export default {
   // 返回文件的完整url
-  getFileUrl(file: any) {
-    return `${BACK_FS_URL()}${file.path}`
+  getFileUrl(file: TmsFile) {
+    return `${BACK_FS_URL()}${file.publicUrl}`
   },
   // 返回文件的完整缩略图url
-  getThumbUrl(file: any) {
-    return file.thumbPath ? `${BACK_FS_URL()}${file.thumbPath}` : ''
+  getThumbUrl(file: TmsFile) {
+    return file.thumbUrl ? `${BACK_FS_URL()}${file.thumbUrl}` : ''
   },
   /**
    * 发送文件信息给调用方
    * @param file 文件信息
    * @param domain 文件所属存储域名称
    */
-  postFile(file: any, domain: string) {
+  postFile(file: TmsFile, domain: string) {
     const mapping = PICK_FILE_FILED_NAME_MAPPING(domain)
     let url = this.getFileUrl(file)
     let thumbUrl = this.getThumbUrl(file)
@@ -36,7 +32,10 @@ export default {
       /**按照原始名称返回*/
       let { name, type, size, thumbType, thumbSize } = file
       posted = { name, url, type, size, thumbUrl, thumbType, thumbSize }
-      if (SchemasRootName) posted[SchemasRootName] = file[SchemasRootName]
+      // 用户定义扩展信息
+      const store = facStore()
+      const { schemasRootName } = store
+      if (schemasRootName) posted[schemasRootName] = file[schemasRootName]
     }
     this.postMessage(() => posted)
   },

@@ -70,5 +70,6 @@ dump.rdb
 *.override.yml
 
 volumes/
+*.local.js
 
 pnpm-lock.yaml

@@ -12,13 +12,14 @@
           <el-button size="small" @click="setInfo(scope.row)" v-if="schemas">编辑</el-button>
           <el-button size="small" @click="download(scope.row)">下载</el-button>
           <el-button size="small" @click="pick(scope.row)" v-if="SupportPickFile">选取</el-button>
+          <el-button size="small" @click="remove(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <div class="icon-view" v-if="viewStyle == '2'">
       <div class="icon-lists" v-if="files.length">
-        <el-card :class="cardClass" v-for="(item, index) in files" :key="index + '-only'"
-          :body-style="{ padding: '0px' }" shadow="never">
+        <el-card :class="cardClass" v-for="(item, index) in files" :key="index + '-only'" :body-style="{ padding: '0px' }"
+          shadow="never">
           <svg class="icon" aria-hidden="true">
             <use :xlink:href="formateFileType(item)" />
           </svg>
@@ -50,7 +51,19 @@ import utils from '@/utils'
 import emitter from '@/EventBus'
 import Preview from './Preview.vue'
 import Editor from './Editor.vue'
-import { SCHEMAS_ROOT_NAME, SUPPORT_PICK_FILE } from '@/global'
+import { SUPPORT_PICK_FILE } from '@/global'
+import RemoveFile from './RemoveFile.vue'
+
+type TmsFile = {
+  domain: string
+  bucket?: string
+  name: string
+  path: string
+  publicUrl: string
+  lastModified: number
+  size: number
+  type: string
+}
 
 const props = defineProps({
   domain: { type: String },
@@ -73,11 +86,11 @@ const emptyClass = ref('empty-card')
 
 const SupportPickFile = ref(false)
 
-const SchemasRootName = SCHEMAS_ROOT_NAME()
-// 表格类对应的数据属性名称
-const columnPropName = (key: any) => SchemasRootName ? (SchemasRootName + '.' + key) : key
-
 const schemas = computed(() => store.schemas)
+const SchemasRootName = computed(() => store.schemasRootName)
+
+// 表格类对应的数据属性名称
+const columnPropName = (key: any) => SchemasRootName.value ? (SchemasRootName.value + '.' + key) : key
 
 const viewStyle = computed(() => {
   return store.viewStyle
@@ -91,13 +104,13 @@ const batchList = (page: number) => {
 /**编辑自定义扩展信息*/
 const setInfo = (file: any) => {
   const props: any = { domain, bucket, schemas: toRaw(schemas), path: file.path }
-  props.info = SchemasRootName ? (file[SchemasRootName] ?? {}) : file
+  props.info = SchemasRootName.value ? (file[SchemasRootName.value] ?? {}) : file
   $dialog?.addDialog({
     component: Editor,
     props,
   })
   emitter.on('onInfoSubmit', (newInfo: any) => {
-    if (SchemasRootName) file[SchemasRootName] = newInfo
+    if (SchemasRootName.value) file[SchemasRootName.value] = newInfo
     else Object.assign(file, newInfo)
     emitter.off('onInfoSubmit')
   })
@@ -124,6 +137,27 @@ const download = (file: any) => {
 const pick = (file: any) => {
   utils.postFile(file, domain ?? '')
 }
+
+/**
+ * 发起删除文件
+ * @param file 
+ */
+const remove = (file: TmsFile) => {
+  $dialog?.addDialog({
+    component: RemoveFile, props: {
+      filepath: file.path,
+      domain: domain,
+      bucket: bucket
+    }
+  })
+}
+/**
+ * 完成删除文件
+ */
+emitter.on('removeFile', ({ path }) => {
+  let index = files.value.findIndex(f => f.path === path)
+  files.value.splice(index, 1)
+})
 
 const formateFileType = (data: any) => {
   const fileType = utils.matchType(data.name)

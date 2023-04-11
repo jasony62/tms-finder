@@ -12,17 +12,8 @@ RUN npm config set sharp_binary_host "https://npmmirror.com/mirrors/sharp"
 RUN npm config set sharp_libvips_binary_host "https://npmmirror.com/mirrors/sharp-libvips"
 
 # 复制package.json安装依赖包
-# 先安装依赖包，再复制和编译代码，是为了制作镜像时避免反复下载依赖包
-## kit 需要先编译，有内部来依赖关系
-COPY ../packages/tfd-kit /usr/src/tfd/kit
-RUN cd /usr/src/tfd/kit && pnpm i --strict-peer-dependencies=false && pnpm build
-## 必须清楚，否则会有导致依赖不通tms-koa的问题
-RUN rm -rf /usr/src/tfd/kit/node_modules
-RUN cd /usr/src/tfd/kit && pnpm i --production --strict-peer-dependencies=false
-
 ## back安装依赖包
 COPY ../packages/tfd-back/package.json /usr/src/tfd/back/package.json
-RUN sed -i 's/"tfd-kit": "workspace:\*"/"tfd-kit": "file:\.\.\/kit"/g' /usr/src/tfd/back/package.json
 RUN cd /usr/src/tfd/back && pnpm i --strict-peer-dependencies=false
 ## ue安装依赖包
 COPY ../packages/ue/package.json /usr/src/tfd/ue/package.json
@@ -46,6 +37,8 @@ RUN cd /usr/src/tfd/back && pnpm build
 ARG vite_base_url
 RUN echo VITE_BASE_URL=$vite_base_url >> /usr/src/tfd/ue/.env
 RUN cd /usr/src/tfd/ue && pnpm build
+### 建立空的前端配置文件
+RUN echo '{"backFsPort":3000,"backFsBase":"fs"}' >> /usr/src/tfd/ue/dist/${vite_base_url:-tmsfinder}/settings.json
 
 # WORKDIR /usr/src/packages
 
@@ -66,7 +59,6 @@ RUN chmod +x /usr/local/bin/start_nginx.sh
 COPY --from=builder /usr/src/tfd/back/node_modules /usr/app/tfd/node_modules
 COPY --from=builder /usr/src/tfd/back/dist /usr/app/tfd/dist
 COPY --from=builder /usr/src/tfd/back/package.json /usr/app/tfd/package.json
-RUN sed -i 's/"tfd-kit": "file:\.\.\/kit"/"tfd-kit": "\*"/g' /usr/app/tfd/package.json
 COPY ../docker/back/start_back.sh /usr/app/tfd/start_back.sh
 RUN chmod +x /usr/app/tfd/start_back.sh
 

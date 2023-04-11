@@ -109,5 +109,5 @@ docker run -it --rm --name tfd-test tms/tfd-aio sh
 将宿主机目录映射为文件服务根目录
 
 ```
-docker run -it --rm --name tfd-test -p 3030:3000 -p 7077:80 -v $PWD/volumes/files:/usr/app/storage tms/tfd-aio
+docker run -it --rm --name tfd-test -p 3030:3000 -p 7077:80 -v $PWD/volumes/files:/usr/app/tfd/storage jasony62/tfd-aio
 ```

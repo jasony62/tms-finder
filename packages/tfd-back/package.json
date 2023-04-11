@@ -5,7 +5,7 @@
   "description": "通用的文件管理客户端",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf ./dist && tsc"
+    "build": "rimraf ./dist && tsc --skipLibCheck"
   },
   "keywords": [],
   "author": "jasony62",
@@ -15,7 +15,6 @@
     "log4js": "^6.6.0",
     "mongodb": "^4.8.1",
     "redis": "^4.2.0",
-    "tfd-kit": "workspace:*",
     "tms-koa": "0.1.7",
     "tms-koa-account": "0.1.7",
     "tms-koa-captcha": "0.1.7"

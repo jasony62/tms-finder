@@ -7,7 +7,7 @@ const database = {
   file_collection: env.TFD_FS_MONGODB_COLLECTION || 'files',
 }
 
-module.exports = {
+export default {
   local: {
     disabled: /true|yes/i.test(env.TFD_FS_LOCAL_DISABLED),
     rootDir: env.TFD_FS_ROOTDIR || 'storage',

@@ -1,5 +1,5 @@
 import { ManageCtrl } from 'tms-koa/dist/controller/fs'
-import { Info } from 'tms-koa/dist/model/fs/info'
+import { Info } from 'tms-koa/dist/model/fs/info.js'
 import { ResultData, ResultFault } from 'tms-koa'
 
 class Manage extends ManageCtrl {
@@ -35,7 +35,11 @@ class Manage extends ManageCtrl {
           } else if (typeof val.keyword === 'string') {
             find2 = { $regex: val.keyword }
           }
-        } else if (typeof val === 'object' && !val.keyword && typeof val.keyword !== 'undefined') {
+        } else if (
+          typeof val === 'object' &&
+          !val.keyword &&
+          typeof val.keyword !== 'undefined'
+        ) {
           find2 = val.keyword
         } else if (typeof val === 'string') {
           find2 = { $regex: val }
@@ -89,7 +93,9 @@ class Manage extends ManageCtrl {
       return new ResultFault('不支持设置文件信息')
 
     const mongoClient = this['domain'].mongoClient
-    const cl = mongoClient.db(this['domain'].database).collection(this['domain'].collection)
+    const cl = mongoClient
+      .db(this['domain'].database)
+      .collection(this['domain'].collection)
 
     let { column, batch } = this['request'].query
     let { filter } = this['request'].body
@@ -97,7 +103,11 @@ class Manage extends ManageCtrl {
     if (filter) {
       find = this._assembleFind(filter)
     }
-    let group = [{ $match: find }, { $group: { _id: '$' + column, num_tutorial: { $sum: 1 } } }, { $sort: { _id: 1 } }]
+    let group = [
+      { $match: find },
+      { $group: { _id: '$' + column, num_tutorial: { $sum: 1 } } },
+      { $sort: { _id: 1 } },
+    ]
     if (batch) {
       const [page, size] = batch.split(',', 2)
       const skip: any = { $skip: (parseInt(page) - 1) * parseInt(size) }

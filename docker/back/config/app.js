@@ -22,7 +22,7 @@ const appConfig = {
       npm: {
         disabled: /true|yes/i.test(env.TFD_APP_AUTH_CLIENT_DISABLED),
         id: 'tms-koa-account/dist/models',
-        authentication: 'authenticate',
+        authentication: 'authenticate.js',
         register: 'register',
       },
     },
@@ -38,7 +38,7 @@ const appConfig = {
       npm: {
         disabled: /true|yes/i.test(env.TFD_APP_AUTH_CAPTCHA_DISABLED),
         id: 'tms-koa-captcha',
-        module: 'dist',
+        module: 'dist/index.js',
         checker: 'checkCaptcha',
         generator: 'createCaptcha',
       },
@@ -46,4 +46,4 @@ const appConfig = {
   },
 }
 
-module.exports = appConfig
+export default appConfig

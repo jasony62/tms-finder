@@ -8,30 +8,28 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "element-plus": "^2.2.0",
-    "gitart-vue-dialog": "^2.4.0",
+    "element-plus": "^2.3.14",
+    "gitart-vue-dialog": "^3.1.0",
     "lodash": "^4.17.21",
     "mitt": "^3.0.0",
-    "pinia": "^2.0.14",
+    "pinia": "^2.1.6",
     "tms-janus-play": "^0.0.3",
-    "tms-koa-crypto": "^0.1.0",
+    "tms-koa-crypto": "^0.2.0",
     "tms-vue3": "^0.0.5",
-    "tms-vue3-ui": "^0.0.83",
-    "vue": "3.2.47",
-    "vue-router": "4.1.2"
+    "tms-vue3-ui": "^0.0.87",
+    "vue": "3.3.4",
+    "vue-router": "4.2.4"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.182",
-    "@types/node": "^18.6.5",
-    "@vitejs/plugin-vue": "^3.0.1",
+    "@types/node": "^20.5.9",
+    "@vitejs/plugin-vue": "^4.3.4",
     "autoprefixer": "^10.4.7",
     "postcss": "^8.4.13",
-    "sass": "^1.51.0",
-    "stylelint": "^14.8.2",
-    "stylelint-config-standard": "^26.0.0",
-    "tailwindcss": "^3.0.24",
-    "typescript": "^4.5.4",
-    "vite": "^3.0.4",
-    "vue-tsc": "^0.39.5"
+    "sass": "^1.68.0",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9",
+    "vue-tsc": "^1.8.13"
   }
 }

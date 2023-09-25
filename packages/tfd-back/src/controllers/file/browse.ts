@@ -1,7 +1,7 @@
 import { BrowseCtrl } from 'tms-koa/dist/controller/fs'
 import { ResultData } from 'tms-koa'
-import { LocalFS } from 'tms-koa/dist/model/fs/local'
-import glob from 'glob'
+import { LocalFS } from 'tms-koa/dist/model/fs/local.js'
+import { glob } from 'glob'
 import * as fs from 'fs'
 import * as pathObj from 'path'
 
@@ -34,14 +34,11 @@ class Browse extends BrowseCtrl {
     let localFS = new LocalFS(this['domain'], this['bucket'])
     let path = localFS.pathWithPrefix(dir)
 
-    let globInstance = new glob.Glob(path + '/**/*+(' + basename + ')*', {
-      matchBase: true,
-      sync: true,
-    })
+    let globResult = glob.sync(path + '/**/*+(' + basename + ')*')
 
     let dirs = []
     let files = []
-    for (const file of globInstance.found) {
+    for (const file of globResult) {
       let stats = fs.lstatSync(file)
       if (stats.isFile()) {
         //

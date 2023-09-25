@@ -13,18 +13,18 @@ RUN npm config set sharp_libvips_binary_host "https://npmmirror.com/mirrors/shar
 
 # 复制package.json安装依赖包
 ## back安装依赖包
-COPY ../packages/tfd-back/package.json /usr/src/tfd/back/package.json
+COPY ./packages/tfd-back/package.json /usr/src/tfd/back/package.json
 RUN cd /usr/src/tfd/back && pnpm i --strict-peer-dependencies=false
 ## ue安装依赖包
-COPY ../packages/ue/package.json /usr/src/tfd/ue/package.json
+COPY ./packages/ue/package.json /usr/src/tfd/ue/package.json
 RUN cd /usr/src/tfd/ue && pnpm i --strict-peer-dependencies=false
 
 ## back复制编译需要的文件
-COPY ../packages/tfd-back/src /usr/src/tfd/back/src
-COPY ../packages/tfd-back/tsconfig.json /usr/src/tfd/back/tsconfig.json
-COPY ../packages/tfd-back/tsconfig.build.json /usr/src/tfd/back/tsconfig.build.json
+COPY ./packages/tfd-back/src /usr/src/tfd/back/src
+COPY ./packages/tfd-back/tsconfig.json /usr/src/tfd/back/tsconfig.json
+COPY ./packages/tfd-back/tsconfig.build.json /usr/src/tfd/back/tsconfig.build.json
 ## ue复制编译需要的文件
-COPY ../packages/ue /usr/src/tfd/ue
+COPY ./packages/ue /usr/src/tfd/ue
 
 # 编译源代码
 ## back
@@ -51,24 +51,24 @@ RUN apk add nginx gettext
 
 # ue
 COPY --from=builder /usr/src/tfd/ue/dist /usr/share/nginx/html
-COPY ../docker/ue/nginx.conf.template /etc/nginx/nginx.conf.template
-COPY ../docker/ue/start_nginx.sh /usr/local/bin/start_nginx.sh
+COPY ./docker/ue/nginx.conf.template /etc/nginx/nginx.conf.template
+COPY ./docker/ue/start_nginx.sh /usr/local/bin/start_nginx.sh
 RUN chmod +x /usr/local/bin/start_nginx.sh
 
 # back
 COPY --from=builder /usr/src/tfd/back/node_modules /usr/app/tfd/node_modules
 COPY --from=builder /usr/src/tfd/back/dist /usr/app/tfd/dist
 COPY --from=builder /usr/src/tfd/back/package.json /usr/app/tfd/package.json
-COPY ../docker/back/start_back.sh /usr/app/tfd/start_back.sh
+COPY ./docker/back/start_back.sh /usr/app/tfd/start_back.sh
 RUN chmod +x /usr/app/tfd/start_back.sh
 
 WORKDIR /usr/app/tfd
 
 # 启动服务
-COPY ../docker/start_all.sh /usr/local/bin/start_all.sh 
+COPY ./docker/start_all.sh /usr/local/bin/start_all.sh 
 RUN chmod +x /usr/local/bin/start_all.sh 
 
 # 默认配置文件
-COPY ../docker/back/config /usr/app/tfd/config
+COPY ./docker/back/config /usr/app/tfd/config
 
 ENTRYPOINT ["start_all.sh"]

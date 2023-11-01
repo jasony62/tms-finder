@@ -1,4 +1,4 @@
-import { ManageCtrl } from 'tms-koa/dist/controller/fs'
+import { ManageCtrl } from 'tms-koa/dist/controller/fs/index.js'
 import { Info } from 'tms-koa/dist/model/fs/info.js'
 import { ResultData, ResultFault } from 'tms-koa'
 

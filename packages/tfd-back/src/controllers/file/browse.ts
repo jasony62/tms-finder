@@ -1,4 +1,4 @@
-import { BrowseCtrl } from 'tms-koa/dist/controller/fs'
+import { BrowseCtrl } from 'tms-koa/dist/controller/fs/index.js'
 import { ResultData } from 'tms-koa'
 import { LocalFS } from 'tms-koa/dist/model/fs/local.js'
 import { glob } from 'glob'

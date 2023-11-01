@@ -4,8 +4,7 @@ import fs from 'fs'
 
 let cnfpath = path.resolve(process.cwd() + '/config/log4js.js')
 if (fs.existsSync(cnfpath)) {
-  const log4jsConfig = (await import(process.cwd() + '/config/log4js.js'))
-    .default
+  const { default: log4jsConfig } = await import(cnfpath)
   log4js.configure(log4jsConfig)
 } else {
   log4js.configure({

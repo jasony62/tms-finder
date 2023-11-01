@@ -3,13 +3,11 @@
 FROM node:18-alpine AS builder
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 
+# 修改npm源
+RUN npm config set registry https://registry.npmmirror.com
+
 # 安装基础包
 RUN npm install -g pnpm typescript
-
-# 解决sharp依赖的libvips包下载慢的问题
-# COPY ../docker/back/npmlibs/_libvips/libvips-8.12.2-linuxmusl-x64.tar.br /root/.npm/_libvips/libvips-8.12.2-linuxmusl-x64.tar.br
-# RUN npm config set sharp_binary_host "https://npmmirror.com/mirrors/sharp"
-# RUN npm config set sharp_libvips_binary_host "https://npmmirror.com/mirrors/sharp-libvips"
 
 # 复制package.json安装依赖包
 ## back安装依赖包

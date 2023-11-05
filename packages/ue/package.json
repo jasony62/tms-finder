@@ -14,7 +14,7 @@
     "mitt": "^3.0.0",
     "pinia": "^2.1.6",
     "tms-janus-play": "^0.0.3",
-    "tms-koa-crypto": "^0.2.2",
+    "tms-koa-crypto": "^0.2.4",
     "tms-vue3": "^0.0.5",
     "tms-vue3-ui": "^0.0.87",
     "vue": "3.3.4",

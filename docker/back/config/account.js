@@ -2,7 +2,10 @@ const { env } = process
 
 export default {
   disabled: /true|yes/i.test(env.TFD_APP_AUTH_CLIENT_DISABLED),
-  admin: { username: 'admin', password: 'admin' },
+  admin: {
+    username: env.TFD_APP_AUTH_CLIENT_ADMIN_USERNAME || 'admin',
+    password: env.TFD_APP_AUTH_CLIENT_ADMIN_PASSWORD || 'admin',
+  },
   mongodb: {
     disabled: false,
     name: env.TFD_APP_AUTH_CLIENT_MONGODB_NAME || 'master',

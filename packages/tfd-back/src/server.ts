@@ -14,7 +14,7 @@ if (fs.existsSync(cnfpath)) {
     categories: {
       default: {
         appenders: ['consoleout'],
-        level: 'debug',
+        level: process.env.TFD_APP_LOG4JS_LEVEL || 'debug',
       },
     },
   })

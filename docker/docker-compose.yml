@@ -2,7 +2,7 @@ version: '3.7'
 services:
   mongodb:
     build:
-      context: ../mongodb
+      context: ./mongodb
       dockerfile: Dockerfile
     image: tms-finder/mongo:latest
     container_name: tms-finder-mongo
@@ -15,7 +15,7 @@ services:
 
   back:
     build:
-      context: ../back
+      context: ./back
       dockerfile: Dockerfile
     image: tms-finder/back:latest
     container_name: tms-finder-back
@@ -32,11 +32,12 @@ services:
       # - TMS_FINDER_FS_MONGODB_COLLECTION=files
     # volumes:
     #   - ../volumes/files:/home/storage # 指定文件服务的外部存储位置（rootDir）
-    command: ['./wait_for.sh', 'mongodb:27017', '-t', '300', '--', 'node', 'server']
+    command:
+      ['./wait_for.sh', 'mongodb:27017', '-t', '300', '--', 'node', 'server']
 
   ue:
     build:
-      context: ../ue
+      context: ../packages/ue
       args:
         vue_app_base_url: /finder_ue
         vue_app_login_key_username: username
@@ -54,12 +55,10 @@ services:
       - NGINX_ACCESS_CONTROL_ALLOW_ORIGIN=* # 允许跨域访问
     # ports:
     #   - '8080:80'
-    env_file:
-      - ./sample.env
 
   ue_any:
     build:
-      context: ../ue_any
+      context: ./ue_any
       args:
         vue_app_base_url: /finder_ue_any
         vue_app_login_key_username: username

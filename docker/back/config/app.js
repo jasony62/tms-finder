@@ -24,7 +24,10 @@ const appConfig = {
         id: 'tms-koa-account/dist/models',
         authentication: 'authenticate.js',
         register: 'register.js',
+        logout: 'logout.js',
       },
+      path: env.TFD_APP_AUTH_CLIENT_PATH || '',
+      logoutPath: env.TFD_APP_AUTH_CLIENT_LOGOUT_PATH || '',
     },
     // 保存鉴权信息
     jwt: {

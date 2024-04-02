@@ -7,6 +7,7 @@ type Globalsettings = {
   backFsBase: string
   backFsPort: number
   loginCaptchaDisabled: boolean
+  externalLoginUrl: string // 第三方登录
   supportThumbnail: boolean
   supportPickFile: boolean
   supportMultiView: boolean
@@ -24,6 +25,7 @@ let _globalsettings: Globalsettings = {
   loginCaptchaDisabled: /yes|true/i.test(
     import.meta.env.VITE_LOGIN_CAPTCHA_DISABLED
   ),
+  externalLoginUrl: import.meta.env.VITE_EXTERNAL_LOGIN_URL,
   supportThumbnail: false,
   supportPickFile: false,
   supportMultiView: /yes|true/i.test(import.meta.env.VITE_SUPPORT_MULTI_VIEW),
@@ -44,6 +46,8 @@ export function init(settings: Globalsettings) {
   if (settings.backFsPort) _globalsettings.backFsPort = settings.backFsPort
   if (settings.loginCaptchaDisabled)
     _globalsettings.loginCaptchaDisabled = settings.loginCaptchaDisabled
+  if (settings.externalLoginUrl)
+    _globalsettings.externalLoginUrl = settings.externalLoginUrl
   if (settings.supportPickFile)
     _globalsettings.supportPickFile = settings.supportPickFile
   if (settings.supportThumbnail)
@@ -80,6 +84,10 @@ export const SUPPORT_MULTI_VIEW = () => _globalsettings.supportMultiView
  * 关闭验证码
  */
 export const LOGIN_CAPTCHA_DISABLED = () => _globalsettings.loginCaptchaDisabled
+/**
+ * 外部登录地址
+ */
+export const EXTERNAL_LOGIN_URL = () => _globalsettings.externalLoginUrl
 /**
  * 返回存储域返回的文件字段名映射关系
  * @param domain 指定的存储域名称。存储域名称为空时，返回以'$'命名的默认映射。
@@ -213,4 +221,29 @@ export function getLocalToken(): string | null {
   } else {
     return getCookie('access_token')
   }
+}
+/**
+ * 清除保存在本地的token信息
+ */
+export function removeLocalToken() {
+  if (way === 'session') {
+    sessionStorage.removeItem('access_token')
+  }
+}
+/**
+ * 跳转到外部登录页
+ *
+ * 1. 提供回调地址。回调地址处理好token
+ */
+export function externalLogin() {
+  let appurl = location.toString()
+  if (/login/.test(appurl)) {
+    // 跳转到应用首页
+    appurl = appurl.replace(/login.*/, '')
+  }
+  // 保存要返回应用页
+  sessionStorage.setItem('oauth_passed_appurl', appurl)
+
+  const url = EXTERNAL_LOGIN_URL()
+  location.href = url
 }

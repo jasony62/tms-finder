@@ -5,6 +5,7 @@ import createUploadApi from '../apis/file/upload'
 export default defineStore('webfs', {
   state: () => {
     return {
+      clientInfo: {} as any,
       schemas: null as any,
       schemasRootName: '',
       tree: { name: '全部', path: '' },

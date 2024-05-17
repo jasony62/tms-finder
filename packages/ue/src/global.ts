@@ -12,6 +12,7 @@ type Globalsettings = {
   supportPickFile: boolean
   supportMultiView: boolean
   pickFileFiledNameMapping: { [domain: string]: object }
+  uploadFileAccept: '' // 逗号分隔的上传文件类型列表
 }
 
 let _globalsettings: Globalsettings = {
@@ -30,6 +31,9 @@ let _globalsettings: Globalsettings = {
   supportPickFile: false,
   supportMultiView: /yes|true/i.test(import.meta.env.VITE_SUPPORT_MULTI_VIEW),
   pickFileFiledNameMapping: {},
+  uploadFileAccept:
+    import.meta.env.VITE_UPLOAD_FILE_ACCEPT ??
+    '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,image/*,audio/*,video/*,.csv,.json,.jsonl,.md,.yml,.yaml',
 }
 /**
  * 根据在线获取的全局设置
@@ -63,6 +67,8 @@ export function init(settings: Globalsettings) {
   _globalsettings.supportPickFile = /yes|true/i.test(
     getQueryVariable('pickFile')
   )
+  if (settings.uploadFileAccept)
+    _globalsettings.uploadFileAccept = settings.uploadFileAccept
 }
 /**
  * 根据环境变量设置是否关闭认证
@@ -88,6 +94,10 @@ export const LOGIN_CAPTCHA_DISABLED = () => _globalsettings.loginCaptchaDisabled
  * 外部登录地址
  */
 export const EXTERNAL_LOGIN_URL = () => _globalsettings.externalLoginUrl
+/**
+ * 上传文件类型限制
+ */
+export const UPLOAD_FILE_ACCEPT = () => _globalsettings.uploadFileAccept
 /**
  * 返回存储域返回的文件字段名映射关系
  * @param domain 指定的存储域名称。存储域名称为空时，返回以'$'命名的默认映射。

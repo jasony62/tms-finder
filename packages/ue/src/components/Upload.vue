@@ -5,8 +5,8 @@
         <el-input placeholder="文件目录" v-model="targetDir"></el-input>
       </el-form-item>
       <el-form-item label="上传文件">
-        <el-upload ref="upload" :action="''" :on-change="handleChange" :http-request="handleUpload" :file-list="fileList"
-          :auto-upload="false">
+        <el-upload ref="upload" :action="''" :accept="UploadFileAccept" :on-change="handleChange"
+          :http-request="handleUpload" :file-list="fileList" :auto-upload="false">
           <el-button slot="trigger" type="primary">选取文件</el-button>
         </el-upload>
       </el-form-item>
@@ -38,6 +38,9 @@ import { DocAsArray } from 'tms-vue3-ui/dist/es/json-doc'
 import 'tms-vue3-ui/dist/es/json-doc/style/tailwind.scss'
 import { UploadFile } from 'element-plus'
 
+import { UPLOAD_FILE_ACCEPT } from '@/global'
+
+const UploadFileAccept = UPLOAD_FILE_ACCEPT()
 const store = facStore()
 const $dialog = inject(dialogInjectionKey)
 const props = defineProps({

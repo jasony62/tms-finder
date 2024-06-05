@@ -40,8 +40,8 @@ importers:
         specifier: ^4.6.10
         version: 4.6.10
       tms-koa:
-        specifier: 0.2.11
-        version: 0.2.11(@aws-sdk/credential-providers@3.414.0)(neo4j-driver@4.4.10)(openapi-types@12.1.0)(redis@4.6.10)
+        specifier: 0.2.12
+        version: 0.2.12(@aws-sdk/credential-providers@3.414.0)(neo4j-driver@4.4.10)(openapi-types@12.1.0)(redis@4.6.10)
       tms-koa-account:
         specifier: 0.2.9
         version: 0.2.9(@aws-sdk/credential-providers@3.414.0)(neo4j-driver@4.4.10)(openapi-types@12.1.0)(redis@4.6.10)
@@ -2541,8 +2541,8 @@ packages:
   tms-koa-crypto@0.2.5:
     resolution: {integrity: sha512-FjYgUdhu9z9Hi4XIatf0Hgq7txdBKlQZ7bILACxK43+Q5Cn1LSd9z4Vk7oQvfQtPrBSTxhrqaiT9ae5Pdjwc0Q==}
 
-  tms-koa@0.2.11:
-    resolution: {integrity: sha512-giaYpStNO9DJOfqI2RHJCGcFHwP8YUyEGLfkk33SnVsVMg4jKiDwv89yW+8MgVICvHn6gU4hr78I9ZmAYDe73Q==}
+  tms-koa@0.2.12:
+    resolution: {integrity: sha512-bvRIfOuup0+eeTYxrUGCQkUza9rMjyJM3C2uY97U4rrpgTXaxzLG3SslS4I0N1Q3neJv/bS32Gz090eTdbq8GA==}
     peerDependencies:
       neo4j-driver: ^4.4.2
       redis: ^4.6.10
@@ -5844,7 +5844,7 @@ snapshots:
     dependencies:
       crypto-js: 4.1.1
 
-  tms-koa@0.2.11(@aws-sdk/credential-providers@3.414.0)(neo4j-driver@4.4.10)(openapi-types@12.1.0)(redis@4.6.10):
+  tms-koa@0.2.12(@aws-sdk/credential-providers@3.414.0)(neo4j-driver@4.4.10)(openapi-types@12.1.0)(redis@4.6.10):
     dependencies:
       '@koa/cors': 4.0.0
       '@koa/router': 12.0.1

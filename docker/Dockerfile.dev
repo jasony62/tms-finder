@@ -1,6 +1,9 @@
 # 为插件开发提供的基础镜像 
 FROM jasony62/tfd-aio:latest
 
+# 修改npm源
+RUN npm config set registry https://registry.npmmirror.com
+
 # 为了后续安装扩展插件做准备。需要增加120M左右。
 ## 基础工具
 RUN npm install --location=global pnpm typescript

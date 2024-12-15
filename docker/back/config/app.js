@@ -47,6 +47,12 @@ const appConfig = {
       },
     },
   },
+  body: {
+    jsonLimit: env.TFD_APP_BODY_JSON_LIMIT ?? '1mb',
+    formLimit: env.TFD_APP_BODY_FORM_LIMIT ?? '56kb',
+    textLimit: env.TFD_APP_BODY_TEXT_LIMIT ?? '56kb',
+    maxFileSize: env.TFD_APP_BODY_MAX_FILE_SIZE ?? '200mb', // 上传文件最大限制
+  },
 }
 
 export default appConfig

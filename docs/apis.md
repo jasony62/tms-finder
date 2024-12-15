@@ -1,7 +1,8 @@
-| API               | Method | 说明     |
-| ----------------- | ------ | -------- |
-| file/upload/mkdir | GET    | 新建目录 |
-| file/upload/rmdir | GET    | 删除目录 |
+| API                  | Method | 说明     |
+| -------------------- | ------ | -------- |
+| file/upload/mkdir    | GET    | 新建目录 |
+| file/upload/rmdir    | GET    | 删除目录 |
+| file/browser/listAll | GET    | 删除目录 |
 
 # 新建目录（file/upload/mkdir）
 
@@ -18,3 +19,11 @@
 | 参数 | 说明         | 默认值 |
 | ---- | ------------ | ------ |
 | dir  | 要删除的目录 | -      |
+
+# 列出目录（file/browser/listAll）
+
+## 查询参数
+
+| 参数 | 说明         | 默认值 |
+| ---- | ------------ | ------ |
+| dir  | 要列出的目录 | -      |

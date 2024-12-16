@@ -13,9 +13,8 @@
   "license": "MIT",
   "dependencies": {
     "glob": "11.0.0",
-    "log4js": "^6.5.2",
+    "log4js": "6.9.1",
     "mongodb": "5.9.2",
-    "redis": "^4.6.10",
     "tms-koa": "0.2.15",
     "tms-koa-account": "0.2.15",
     "tms-koa-captcha": "0.2.15"

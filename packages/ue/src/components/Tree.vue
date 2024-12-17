@@ -55,6 +55,7 @@ const loadNode = (node: any, resolve: any) => {
   })
 }
 
+// current-change事件未生效
 const currentChange = (data: any, node: any) => {
   store.setCurrentDir(data.rawData)
   currentNode.value = node
@@ -84,6 +85,9 @@ emitter.on('rmdir', ({ path }) => {
  * 获得指定目录下的文件
  */
 const clickNode = (data: any, node: any) => {
+  // current-change事件未生效
+  store.setCurrentDir(data.rawData)
+  currentNode.value = node
   store.list(data.rawData, domain, bucket)
     .then((data: any) => {
       /**如果节点没有加载过，添加子节点*/

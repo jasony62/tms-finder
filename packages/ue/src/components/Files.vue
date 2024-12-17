@@ -74,6 +74,9 @@ import facStore from '@/store'
 import utils from '@/utils'
 import emitter from '@/EventBus'
 import Preview from './Preview.vue'
+import PreviewDocx from './PreviewDocx.vue'
+import PreviewXlsx from './PreviewXlsx.vue'
+import PreviewPptx from './PreviewPptx.vue'
 import Editor from './Editor.vue'
 import { ElTable, ElMessage } from 'element-plus'
 import apiPlugin from "@/apis/plugin";
@@ -145,7 +148,14 @@ const preview = (file: TmsFile) => {
   //   })
   // } else {
   // import('./Preview.vue').then((Module) => {
-  $dialog?.addDialog({ component: Preview, props: { file } })
+  if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+    $dialog?.addDialog({ component: PreviewDocx, props: { file } })
+  } if (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+    $dialog?.addDialog({ component: PreviewXlsx, props: { file } })
+  } if (file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
+    $dialog?.addDialog({ component: PreviewPptx, props: { file } })
+  } else
+    $dialog?.addDialog({ component: Preview, props: { file } })
   // })
   // }
 }

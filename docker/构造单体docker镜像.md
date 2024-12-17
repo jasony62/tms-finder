@@ -103,11 +103,13 @@ docker build -f ./docker/Dockerfile.dev -t jasony62/tfd-aio_dev .
 运行并进入容器
 
 ```bash
-docker run -it --rm --name tfd-test tms/tfd-aio sh
+docker run -it --rm --name tfd-test jasony62/tfd-aio sh
 ```
 
 将宿主机目录映射为文件服务根目录
 
-```
+在项目根目录下执行
+
+```shell
 docker run -it --rm --name tfd-test -p 3030:3000 -p 7077:80 -v $PWD/volumes/files:/usr/app/tfd/storage jasony62/tfd-aio
 ```

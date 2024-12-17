@@ -2,14 +2,14 @@
   <div class="topbar flex flex-row gap-2">
     <div v-if="SupportMultiView" class="w-1/5">
       <el-radio-group v-model="manageOrStorage" @change="toggleRoute(manageOrStorage)">
-        <el-radio-button label="manage">管理视图</el-radio-button>
-        <el-radio-button label="storage">存储视图</el-radio-button>
+        <el-radio-button value="manage">管理视图</el-radio-button>
+        <el-radio-button value="storage">存储视图</el-radio-button>
       </el-radio-group>
     </div>
     <div v-if="SupportThumbnail" class="w-1/5 flex flex-row items-center">
       <el-radio-group v-model="store.viewStyle" @change="selectViewStyle">
-        <el-radio-button label="1">列表视图</el-radio-button>
-        <el-radio-button label="2">图标视图</el-radio-button>
+        <el-radio-button value="1">列表视图</el-radio-button>
+        <el-radio-button value="2">图标视图</el-radio-button>
       </el-radio-group>
     </div>
     <div class="flex-grow flex flex-row gap-2 items-center">
@@ -18,7 +18,8 @@
         <span v-if="store.currentDir">{{ store.currentDir.path }}</span>
       </div>
       <el-button @click.prevent="mkdir" v-if="manageOrStorage === 'storage'" :disabled="!currentDir">新建目录</el-button>
-      <el-button @click.prevent="rmdir" v-if="manageOrStorage === 'storage'" :disabled="!currentDir || !currentDir.path">
+      <el-button @click.prevent="rmdir" v-if="manageOrStorage === 'storage'"
+        :disabled="!currentDir || !currentDir.path">
         删除目录
       </el-button>
       <el-button @click.prevent="upload">上传文件</el-button>

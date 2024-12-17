@@ -6,7 +6,8 @@
   "description": "通用的文件管理客户端",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf ./dist && tsc --skipLibCheck"
+    "build": "rimraf ./dist && tsc -p tsconfig.build.json --skipLibCheck",
+    "dev": "node ./dist/server"
   },
   "keywords": [],
   "author": "jasony62",

@@ -34,11 +34,11 @@ const props = defineProps({
 const fileurl = utils.getFileUrl(props.file)
 
 const renderedHandler = () => {
-  console.log("渲染完成")
+  console.log("PPTX渲染完成")
 }
 
 const errorHandler = () => {
-  console.log("渲染失败")
+  console.log("PPTX渲染失败")
 }
 
 const dialogVisible = ref(true)

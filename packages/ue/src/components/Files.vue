@@ -150,9 +150,9 @@ const preview = (file: TmsFile) => {
   // import('./Preview.vue').then((Module) => {
   if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
     $dialog?.addDialog({ component: PreviewDocx, props: { file } })
-  } if (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+  } else if (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
     $dialog?.addDialog({ component: PreviewXlsx, props: { file } })
-  } if (file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
+  } else if (file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
     $dialog?.addDialog({ component: PreviewPptx, props: { file } })
   } else
     $dialog?.addDialog({ component: Preview, props: { file } })

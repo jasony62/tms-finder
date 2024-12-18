@@ -83,6 +83,9 @@ import apiPlugin from "@/apis/plugin";
 import { SUPPORT_PICK_FILE } from '@/global'
 import RemoveFile from './RemoveFile.vue'
 import { TmsFile } from '@/types'
+import PreviewCsv from './PreviewCsv.vue'
+import PreviewMarkdown from './PreviewMarkdown.vue'
+import PreviewText from './PreviewText.vue'
 
 const SupportPickFile = ref(false)
 
@@ -148,12 +151,19 @@ const preview = (file: TmsFile) => {
   //   })
   // } else {
   // import('./Preview.vue').then((Module) => {
+  console.log('[tms-finder]', toRaw(file))
   if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
     $dialog?.addDialog({ component: PreviewDocx, props: { file } })
   } else if (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
     $dialog?.addDialog({ component: PreviewXlsx, props: { file } })
   } else if (file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
     $dialog?.addDialog({ component: PreviewPptx, props: { file } })
+  } else if (/\.csv$/i.test(file.name)) {
+    $dialog?.addDialog({ component: PreviewCsv, props: { file } })
+  } else if (/\.md$/i.test(file.name)) {
+    $dialog?.addDialog({ component: PreviewMarkdown, props: { file } })
+  } else if (/^text\/.*/i.test(file.type ?? '')) {
+    $dialog?.addDialog({ component: PreviewText, props: { file } })
   } else
     $dialog?.addDialog({ component: Preview, props: { file } })
   // })
@@ -200,8 +210,9 @@ const remove = (file: TmsFile) => {
     component: RemoveFile, props: {
       filepath: file.path,
       domain: domain,
-      bucket: bucket
-    }
+      bucket: bucket,
+    },
+    id: 'removefile'
   })
 }
 /**

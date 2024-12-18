@@ -1,0 +1,19 @@
+#preview {
+  .el-dialog.is-fullscreen {
+    @apply flex flex-col;
+
+    .el-dialog__body {
+      @apply flex-grow overflow-auto;
+    }
+  }
+
+  .file-info {
+    > div {
+      @apply p-1;
+    }
+
+    > div:nth-child(odd) {
+      @apply bg-gray-200;
+    }
+  }
+}

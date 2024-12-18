@@ -14,11 +14,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, nextTick, inject } from 'vue'
 import { ElMessage } from 'element-plus'
-import { dialogInjectionKey } from 'gitart-vue-dialog'
 import facStore from '@/store'
 import emitter from '@/EventBus.js'
+import { dialogInjectionKey } from 'gitart-vue-dialog'
+
+const $dialog = inject(dialogInjectionKey)
+const dialogVisible = ref(true)
 
 const props = defineProps({
   domain: { type: String, default: '' },
@@ -33,10 +36,6 @@ const dirName = ref('')
 
 const dir = computed(() => store.currentDir)
 
-const $dialog = inject(dialogInjectionKey)
-
-const dialogVisible = ref(true)
-
 const validateDirName = (v: string) => dirName.value = v.replace(/\//g, '')
 
 const submitMkdir = () => {
@@ -50,7 +49,8 @@ const submitMkdir = () => {
           type: 'success'
         })
         emitter.emit('mkdir', { path: fullname, name: dirName.value })
-        $dialog?.removeDialog(0)
+        dialogVisible.value = false
+        $dialog?.removeDialog('mkdir')
       } else {
         ElMessage({
           message: rst,
@@ -60,6 +60,7 @@ const submitMkdir = () => {
     })
   }
 }
+
 onMounted(() => {
   nextTick(() => {
     elDirName.value?.focus()

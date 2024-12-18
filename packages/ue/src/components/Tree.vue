@@ -64,6 +64,7 @@ const currentChange = (data: any, node: any) => {
  * 新建子目录
  */
 emitter.on('mkdir', ({ name, path }) => {
+  // 添加节点
   eltree.value.append({
     label: name,
     children: [],

@@ -40,7 +40,9 @@ const submit = () => {
         type: 'success'
       })
       emitter.emit('removeFile', { path: filepath })
-      $dialog?.removeDialog(0)
+      setTimeout(() => {
+        $dialog?.removeDialog('removefile')
+      }, 100)
     } else {
       ElMessage({
         message: rst,

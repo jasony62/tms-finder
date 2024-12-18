@@ -30,6 +30,7 @@ import { SUPPORT_THUMBNAIL } from '@/global';
 import { TmsFile } from '@/types';
 import utils from '@/utils';
 import { PropType, computed, ref } from 'vue'
+import '../assets/preview.scss'
 
 const props = defineProps({
   file: { type: Object as PropType<TmsFile>, required: true },
@@ -42,25 +43,3 @@ const dialogVisible = ref(true)
 
 const supportThumbnail = computed(() => SUPPORT_THUMBNAIL())
 </script>
-
-<style lang="scss">
-#preview {
-  .el-dialog.is-fullscreen {
-    @apply flex flex-col;
-
-    .el-dialog__body {
-      @apply flex-grow overflow-auto;
-    }
-  }
-
-  .file-info {
-    >div {
-      @apply p-1;
-    }
-
-    >div:nth-child(odd) {
-      @apply bg-gray-200;
-    }
-  }
-}
-</style>

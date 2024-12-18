@@ -26,6 +26,7 @@ import { TmsFile } from '@/types';
 import utils from '@/utils';
 import { PropType, ref } from 'vue'
 import VueOfficePptx from '@vue-office/pptx'
+import '../assets/preview.scss'
 
 const props = defineProps({
   file: { type: Object as PropType<TmsFile>, required: true },
@@ -43,25 +44,3 @@ const errorHandler = () => {
 
 const dialogVisible = ref(true)
 </script>
-
-<style lang="scss">
-#preview {
-  .el-dialog.is-fullscreen {
-    @apply flex flex-col;
-
-    .el-dialog__body {
-      @apply flex-grow overflow-auto;
-    }
-  }
-
-  .file-info {
-    >div {
-      @apply p-1;
-    }
-
-    >div:nth-child(odd) {
-      @apply bg-gray-200;
-    }
-  }
-}
-</style>

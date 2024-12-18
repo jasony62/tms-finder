@@ -76,7 +76,8 @@ const upload = () => {
   if (schemas) props.schemas = toRaw(schemas)
   $dialog?.addDialog({
     component: Upload,
-    props
+    props,
+    id: 'upload'
   })
 }
 const mkdir = () => {
@@ -85,7 +86,8 @@ const mkdir = () => {
     props: {
       domain,
       bucket
-    }
+    },
+    id: 'mkdir'
   })
 }
 const rmdir = () => {
@@ -94,7 +96,8 @@ const rmdir = () => {
       dir: currentDir ? currentDir.value.path : null,
       domain: domain,
       bucket: bucket
-    }
+    },
+    id: 'rmdir'
   })
 }
 onMounted(() => {

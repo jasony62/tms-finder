@@ -40,7 +40,7 @@ const submit = () => {
         type: 'success'
       })
       emitter.emit('rmdir', { path: dir })
-      $dialog?.removeDialog(0)
+      $dialog?.removeDialog('rmdir')
     } else {
       ElMessage({
         message: rst,

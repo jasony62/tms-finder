@@ -3,8 +3,7 @@
     <el-dialog title="文件预览" :closeOnClickModal="false" v-model="dialogVisible" :fullscreen="true">
       <div class="flex flex-row gap-2 h-full" style="background-color:#efefef;">
         <div class="h-full flex-grow">
-          <vue-office-docx :src="fileurl" style="height: 100%; width: 100%;" @rendered="renderedHandler"
-            @error="errorHandler" />
+          <div v-html="textContent"></div>
         </div>
         <div class="w-1/4 h-full bg-white px-2">
           <div class="file-info flex flex-col gap-2">
@@ -25,23 +24,20 @@
 import { TmsFile } from '@/types';
 import utils from '@/utils';
 import { PropType, ref } from 'vue'
-import VueOfficeDocx from '@vue-office/docx'
-import '@vue-office/docx/lib/index.css'
 import '../assets/preview.scss'
 
 const props = defineProps({
   file: { type: Object as PropType<TmsFile>, required: true },
 })
+const dialogVisible = ref(true)
+const textContent = ref('')
 
 const fileurl = utils.getFileUrl(props.file)
 
-const renderedHandler = () => {
-  console.log("DOCX渲染完成")
-}
+fetch(fileurl)
+  .then(response => response.text())
+  .then(text => {
+    textContent.value = text
+  })
 
-const errorHandler = () => {
-  console.log("DOCX渲染失败")
-}
-
-const dialogVisible = ref(true)
 </script>

@@ -16,6 +16,7 @@ import { ref } from 'vue'
 import { JANUS_SERVER } from '../tms-janus'
 //@ts-ignore
 import { TmsJanusMp4 } from 'tms-janus-play'
+import '../assets/preview.scss'
 
 const props = defineProps({
   fileurl: String,
@@ -28,22 +29,3 @@ const dialogVisible = ref(false)
 const server = ref(JANUS_SERVER)
 const mp4File = ref('sine-8k-testsrc2-baseline31-gop10-10s.mp4')
 </script>
-
-<style lang="scss">
-#preview {
-  .preview_dialog {
-    display: flex;
-    justify-content: center;
-    align-items: Center;
-    overflow: hidden;
-
-    .el-dialog {
-      @apply flex flex-col;
-
-      .el-dialog__body {
-        @apply flex-grow overflow-auto;
-      }
-    }
-  }
-}
-</style>

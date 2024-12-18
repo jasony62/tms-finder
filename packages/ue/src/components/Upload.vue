@@ -22,27 +22,30 @@
       <el-form-item>
         <el-button type="success" :loading="showLoading" @click="submitUpload">
           提交</el-button>
+        <el-button type="success" :loading="showLoading" @click="submitUploadAndClose">
+          提交并关闭</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue'
+import { inject, ref } from 'vue'
 import facStore from '@/store'
 import createBrowseApi from '@/apis/file/browse'
 import createUploadApi from '../apis/file/upload'
-import { dialogInjectionKey } from 'gitart-vue-dialog'
 import { JsonDoc } from 'tms-vue3-ui'
 import { DocAsArray } from 'tms-vue3-ui/dist/es/json-doc'
 import 'tms-vue3-ui/dist/es/json-doc/style/tailwind.scss'
 import { UploadFile } from 'element-plus'
-
+import { dialogInjectionKey } from 'gitart-vue-dialog'
 import { UPLOAD_FILE_ACCEPT } from '@/global'
+
+const $dialog = inject(dialogInjectionKey)
+const dialogVisible = ref(true)
 
 const UploadFileAccept = UPLOAD_FILE_ACCEPT()
 const store = facStore()
-const $dialog = inject(dialogInjectionKey)
 const props = defineProps({
   dir: {
     type: String,
@@ -58,7 +61,6 @@ const assignedName = ref('')
 const info = ref({})
 const fileList = ref([])
 const showLoading = ref(false)
-const dialogVisible = ref(true)
 const upload = ref<any>(null)
 const $jde = ref<{ editing: () => string; editDoc: DocAsArray } | null>(null)
 
@@ -90,26 +92,30 @@ const handleUpload = (req: any) => {
             .list({ path: dir }, domain, bucket)
             .then(() => {
               showLoading.value = false
-              $dialog?.removeDialog(0)
             })
             .catch((err: any) => {
               showLoading.value = false
-              $dialog?.removeDialog(0)
               req.onError(err)
             })
         })
       } else {
         store.list({ path: dir }, domain, bucket).then(() => {
           showLoading.value = false
-          $dialog?.removeDialog(0)
         })
       }
     })
 }
+
 const submitUpload = () => {
   upload.value?.submit()
-  // $dialog.removeDialog(0)
 }
+
+const submitUploadAndClose = () => {
+  upload.value?.submit()
+  dialogVisible.value = false
+  $dialog?.removeDialog('upload')
+}
+
 const handleChange = (uploadFile: UploadFile) => {
   assignedName.value = uploadFile.name
 }

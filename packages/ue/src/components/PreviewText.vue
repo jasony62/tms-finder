@@ -1,7 +1,12 @@
 <template>
   <div id="preview">
-    <el-dialog title="文件预览" :closeOnClickModal="false" v-model="dialogVisible" :fullscreen="true">
-      <div class="flex flex-row gap-2 h-full" style="background-color:#efefef;">
+    <el-dialog
+      title="文件预览"
+      :closeOnClickModal="false"
+      v-model="dialogVisible"
+      :fullscreen="true"
+    >
+      <div class="flex flex-row gap-2 h-full" style="background-color: #efefef">
         <div class="h-full flex-grow">
           <div v-html="textContent"></div>
         </div>
@@ -21,10 +26,10 @@
 </template>
 
 <script setup lang="ts">
-import { TmsFile } from '@/types';
-import utils from '@/utils';
+import { TmsFile } from '@/types'
+import utils from '@/utils'
 import { PropType, ref } from 'vue'
-import '../assets/preview.scss'
+import '../assets/preview.css'
 
 const props = defineProps({
   file: { type: Object as PropType<TmsFile>, required: true },
@@ -35,9 +40,8 @@ const textContent = ref('')
 const fileurl = utils.getFileUrl(props.file)
 
 fetch(fileurl)
-  .then(response => response.text())
-  .then(text => {
+  .then((response) => response.text())
+  .then((text) => {
     textContent.value = text
   })
-
 </script>

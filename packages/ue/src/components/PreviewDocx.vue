@@ -1,10 +1,19 @@
 <template>
   <div id="preview">
-    <el-dialog title="文件预览" :closeOnClickModal="false" v-model="dialogVisible" :fullscreen="true">
-      <div class="flex flex-row gap-2 h-full" style="background-color:#efefef;">
+    <el-dialog
+      title="文件预览"
+      :closeOnClickModal="false"
+      v-model="dialogVisible"
+      :fullscreen="true"
+    >
+      <div class="flex flex-row gap-2 h-full" style="background-color: #efefef">
         <div class="h-full flex-grow">
-          <vue-office-docx :src="fileurl" style="height: 100%; width: 100%;" @rendered="renderedHandler"
-            @error="errorHandler" />
+          <vue-office-docx
+            :src="fileurl"
+            style="height: 100%; width: 100%"
+            @rendered="renderedHandler"
+            @error="errorHandler"
+          />
         </div>
         <div class="w-1/4 h-full bg-white px-2">
           <div class="file-info flex flex-col gap-2">
@@ -22,12 +31,12 @@
 </template>
 
 <script setup lang="ts">
-import { TmsFile } from '@/types';
-import utils from '@/utils';
+import { TmsFile } from '@/types'
+import utils from '@/utils'
 import { PropType, ref } from 'vue'
 import VueOfficeDocx from '@vue-office/docx'
 import '@vue-office/docx/lib/index.css'
-import '../assets/preview.scss'
+import '../assets/preview.css'
 
 const props = defineProps({
   file: { type: Object as PropType<TmsFile>, required: true },
@@ -36,11 +45,11 @@ const props = defineProps({
 const fileurl = utils.getFileUrl(props.file)
 
 const renderedHandler = () => {
-  console.log("DOCX渲染完成")
+  console.log('DOCX渲染完成')
 }
 
 const errorHandler = () => {
-  console.log("DOCX渲染失败")
+  console.log('DOCX渲染失败')
 }
 
 const dialogVisible = ref(true)

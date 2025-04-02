@@ -13,7 +13,7 @@
   "author": "jasony62",
   "license": "MIT",
   "dependencies": {
-    "glob": "11.0.0",
+    "glob": "11.0.1",
     "log4js": "6.9.1",
     "mongodb": "5.9.2",
     "tms-koa": "0.2.15",
@@ -21,7 +21,7 @@
     "tms-koa-captcha": "0.2.15"
   },
   "devDependencies": {
-    "@types/node": "22.7.4",
+    "@types/node": "22.13.17",
     "rimraf": "^6.0.1"
   }
 }

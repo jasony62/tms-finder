@@ -56,7 +56,7 @@ class Manage extends ManageCtrl {
     return find
   }
   /**
-   *
+   * 在指定域下获得文件清单
    */
   async list() {
     const fsInfo = await Info.ins(this.domain)

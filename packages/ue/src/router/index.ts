@@ -4,7 +4,6 @@ import Storage from '../views/Storage.vue'
 import Manage from '../views/Manage.vue'
 import Register from '../views/Register.vue'
 import Smscode from '../views/Smscode.vue'
-import { TmsRouterHistory } from 'tms-vue3'
 import {
   EXTERNAL_LOGIN_URL,
   LOGIN_IGNORED,

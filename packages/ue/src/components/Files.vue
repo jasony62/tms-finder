@@ -1,20 +1,44 @@
 <template>
   <div class="files flex flex-col gap-2 h-full overflow-auto">
-    <div class="flex flex-row gap-2 w-1/2" style="display:none;">
-      <el-input placeholder="全站搜索-请输入文件名名称" v-model="searchContent"></el-input>
+    <div class="flex flex-row gap-2 w-1/2" style="display: none">
+      <el-input
+        placeholder="全站搜索-请输入文件名名称"
+        v-model="searchContent"
+      ></el-input>
       <el-button type="primary" @click="overallSearch">搜索</el-button>
       <el-button type="primary" @click="drawer = true">执行插件</el-button>
     </div>
-    <el-table ref="multipleTableRef" :data="files" stripe v-if="viewStyle === '1'">
+    <el-table
+      ref="multipleTableRef"
+      :data="files"
+      stripe
+      v-if="viewStyle === '1'"
+    >
       <el-table-column type="selection" width="55" />
       <el-table-column prop="name" label="文件名"></el-table-column>
-      <el-table-column prop="createTime" label="日期" width="180" :formatter="formatDate"></el-table-column>
-      <el-table-column prop="size" label="大小" width="180" :formatter="formateFileSize"></el-table-column>
+      <el-table-column
+        prop="createTime"
+        label="日期"
+        width="180"
+        :formatter="formatDate"
+      ></el-table-column>
+      <el-table-column
+        prop="size"
+        label="大小"
+        width="180"
+        :formatter="formateFileSize"
+      ></el-table-column>
       <el-table-column fixed="right" label="操作" width="260">
         <template #default="scope">
           <el-button size="small" @click="preview(scope.row)">预览</el-button>
-          <el-button size="small" @click="setInfo(scope.row)" v-if="schemas">编辑</el-button>
-          <el-button size="small" @click="pick(scope.row)" v-if="SupportPickFile">选取
+          <el-button size="small" @click="setInfo(scope.row)" v-if="schemas"
+            >编辑</el-button
+          >
+          <el-button
+            size="small"
+            @click="pick(scope.row)"
+            v-if="SupportPickFile"
+            >选取
           </el-button>
           <el-button size="small" @click="remove(scope.row)">删除</el-button>
         </template>
@@ -22,10 +46,19 @@
     </el-table>
     <div class="icon-view" v-if="viewStyle === '2'">
       <div class="icon-lists" v-if="files.length">
-        <el-card :class="cardClass" v-for="(item, index) in files" :key="index" :body-style="{ padding: '0px' }"
-          shadow="never">
+        <el-card
+          :class="cardClass"
+          v-for="(item, index) in files"
+          :key="index"
+          :body-style="{ padding: '0px' }"
+          shadow="never"
+        >
           <div class="thumb">
-            <img :src="thumbUrl(item)" @load="imgload(index)" @error="imgError" />
+            <img
+              :src="thumbUrl(item)"
+              @load="imgload(index)"
+              @error="imgError"
+            />
           </div>
           <svg class="image icon" aria-hidden="true">
             <use :xlink:href="formateFileType(item)" />
@@ -37,29 +70,56 @@
               <div class="file-size">{{ formateFileSize(item) }}</div>
             </div>
             <div class="operation">
-              <el-button type="default" size="small" @click="preview(item)">预览</el-button>
-              <el-button type="default" size="small" @click="setInfo(item)" v-if="schemas">编辑
+              <el-button type="default" size="small" @click="preview(item)"
+                >预览</el-button
+              >
+              <el-button
+                type="default"
+                size="small"
+                @click="setInfo(item)"
+                v-if="schemas"
+                >编辑
               </el-button>
-              <el-button type="default" size="small" @click="pick(item)" v-if="SupportPickFile">选取
+              <el-button
+                type="default"
+                size="small"
+                @click="pick(item)"
+                v-if="SupportPickFile"
+                >选取
               </el-button>
             </div>
           </div>
         </el-card>
-        <div :class="emptyClass" v-for="index in columns - (files.length % columns)" :key="index + '-only'"
-          v-show="files.length % columns > 0"></div>
+        <div
+          :class="emptyClass"
+          v-for="index in columns - (files.length % columns)"
+          :key="index + '-only'"
+          v-show="files.length % columns > 0"
+        ></div>
       </div>
       <div class="empty" v-else>暂无数据</div>
     </div>
     <el-drawer v-model="drawer" title="I am the title" :with-header="false">
       <div v-for="p in pluginList" style="margin-top: 10px">
-        <el-button v-if="p.transData === 'nothing'" type="success" plain @click="handlePlugin(p)">{{ p.title }}
+        <el-button
+          v-if="p.transData === 'nothing'"
+          type="success"
+          plain
+          @click="handlePlugin(p)"
+          >{{ p.title }}
         </el-button>
         <el-dropdown v-else>
-          <el-button type="success" plain>{{ p.title }}<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+          <el-button type="success" plain
+            >{{ p.title }}<i class="el-icon-arrow-down el-icon--right"></i
+          ></el-button>
           <template #dropdown>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="handlePlugin(p, 'all')">按全部</el-dropdown-item>
-              <el-dropdown-item @click.native="handlePlugin(p)">按选中</el-dropdown-item>
+              <el-dropdown-item @click.native="handlePlugin(p, 'all')"
+                >按全部</el-dropdown-item
+              >
+              <el-dropdown-item @click.native="handlePlugin(p)"
+                >按选中</el-dropdown-item
+              >
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -79,13 +139,14 @@ import PreviewXlsx from './PreviewXlsx.vue'
 import PreviewPptx from './PreviewPptx.vue'
 import Editor from './Editor.vue'
 import { ElTable, ElMessage } from 'element-plus'
-import apiPlugin from "@/apis/plugin";
+import apiPlugin from '@/apis/plugin'
 import { SUPPORT_PICK_FILE } from '@/global'
 import RemoveFile from './RemoveFile.vue'
 import { TmsFile } from '@/types'
 import PreviewCsv from './PreviewCsv.vue'
 import PreviewMarkdown from './PreviewMarkdown.vue'
 import PreviewText from './PreviewText.vue'
+import '../assets/css/files.css'
 
 const SupportPickFile = ref(false)
 
@@ -108,7 +169,7 @@ const schemas = computed(() => store.schemas)
 const files = computed(() => {
   return store.files
 })
-const pluginList = ref<any[]>([]);
+const pluginList = ref<any[]>([])
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()
 const viewStyle = computed(() => {
@@ -152,11 +213,20 @@ const preview = (file: TmsFile) => {
   // } else {
   // import('./Preview.vue').then((Module) => {
   console.log('[tms-finder]', toRaw(file))
-  if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+  if (
+    file.type ===
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  ) {
     $dialog?.addDialog({ component: PreviewDocx, props: { file } })
-  } else if (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+  } else if (
+    file.type ===
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  ) {
     $dialog?.addDialog({ component: PreviewXlsx, props: { file } })
-  } else if (file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
+  } else if (
+    file.type ===
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+  ) {
     $dialog?.addDialog({ component: PreviewPptx, props: { file } })
   } else if (/\.csv$/i.test(file.name)) {
     $dialog?.addDialog({ component: PreviewCsv, props: { file } })
@@ -164,19 +234,23 @@ const preview = (file: TmsFile) => {
     $dialog?.addDialog({ component: PreviewMarkdown, props: { file } })
   } else if (/^text\/.*/i.test(file.type ?? '')) {
     $dialog?.addDialog({ component: PreviewText, props: { file } })
-  } else
-    $dialog?.addDialog({ component: Preview, props: { file } })
+  } else $dialog?.addDialog({ component: Preview, props: { file } })
   // })
   // }
 }
 
 const SchemasRootName = computed(() => store.schemasRootName)
 const setInfo = (file: any) => {
-  const props: any = { domain, bucket, schemas: toRaw(schemas), path: file.path }
-  props.info = SchemasRootName.value ? (file[SchemasRootName.value] ?? {}) : file
+  const props: any = {
+    domain,
+    bucket,
+    schemas: toRaw(schemas),
+    path: file.path,
+  }
+  props.info = SchemasRootName.value ? file[SchemasRootName.value] ?? {} : file
   $dialog?.addDialog({
     component: Editor,
-    props
+    props,
   })
   emitter.on('onInfoSubmit', (newInfo: any) => {
     if (SchemasRootName.value) file[SchemasRootName.value] = newInfo
@@ -196,30 +270,31 @@ const download = (index: number, file: any) => {
 }
 /**
  * 返回选取的文件
- * @param file 选取的文件 
+ * @param file 选取的文件
  */
 const pick = (file: TmsFile) => {
   utils.postFile(file, domain ?? '')
 }
 /**
  * 发起删除文件
- * @param file 
+ * @param file
  */
 const remove = (file: TmsFile) => {
   $dialog?.addDialog({
-    component: RemoveFile, props: {
+    component: RemoveFile,
+    props: {
       filepath: file.path,
       domain: domain,
       bucket: bucket,
     },
-    id: 'removefile'
+    id: 'removefile',
   })
 }
 /**
  * 完成删除文件
  */
 emitter.on('removeFile', ({ path }) => {
-  let index = store.files.findIndex(f => f.path === path)
+  let index = store.files.findIndex((f) => f.path === path)
   store.files.splice(index, 1)
 })
 
@@ -235,7 +310,14 @@ const overallSearch = () => {
 const formatDate = (file: any) => {
   // birthtime有可能是0
   const date = new Date(file.birthtime || file.mtime)
-  return date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日'
+  return (
+    date.getFullYear() +
+    '年' +
+    (date.getMonth() + 1) +
+    '月' +
+    date.getDate() +
+    '日'
+  )
 }
 // 格式化文件大小
 const formateFileSize = (file: any) => {
@@ -340,10 +422,10 @@ onMounted(async () => {
     console.log(e);
   }
 })*/
-const drawer = ref(false);
+const drawer = ref(false)
 const handlePlugin = (plugin: any, filter?: string) => {
   // 调用接口执行插件内容
-  const selectRows = multipleTableRef.value?.getSelectionRows();
+  const selectRows = multipleTableRef.value?.getSelectionRows()
   if (!filter && selectRows.length === 0) {
     ElMessage({
       message: '无选中的数据',
@@ -353,105 +435,23 @@ const handlePlugin = (plugin: any, filter?: string) => {
   }
   const names = selectRows.map((i: any) => i.name)
   // 调用插件接口
-  apiPlugin.execute({ names, pluginName: plugin.name, filter, dir: store.currentDir?.path }).then((res: any) => {
-    const data = res.result;
-    const msgs = data.map((i: any) => {
-      return `文件名${i.filename}, 文件大小${i.size}`
+  apiPlugin
+    .execute({
+      names,
+      pluginName: plugin.name,
+      filter,
+      dir: store.currentDir?.path,
     })
-    alert(`插件执行完毕，执行结果\n${msgs.join('\n')}`)
-    /*ElMessage({
+    .then((res: any) => {
+      const data = res.result
+      const msgs = data.map((i: any) => {
+        return `文件名${i.filename}, 文件大小${i.size}`
+      })
+      alert(`插件执行完毕，执行结果\n${msgs.join('\n')}`)
+      /*ElMessage({
       message: `插件执行完毕，执行结果${JSON.stringify(res.result)}`,
       type: 'info',
     })*/
-  })
+    })
 }
 </script>
-<style lang="scss">
-.files {
-  display: flex;
-  flex-direction: column;
-
-  .el-card {
-    margin-bottom: 10px;
-    width: 19%;
-    height: 240px;
-
-    .el-card__body {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .thumb {
-      padding: 8px;
-      @apply flex-grow flex flex-row justify-center;
-
-      img {
-        @apply object-contain h-full;
-      }
-    }
-  }
-
-  .empty-card {
-    margin-bottom: 10px;
-    width: 19%;
-  }
-
-  .el-card-2 {
-    margin-bottom: 10px;
-    width: 13%;
-  }
-
-  .empty-card-2 {
-    margin-bottom: 10px;
-    width: 13%;
-  }
-
-  .file-info {
-    @apply p-2 flex flex-col gap-2;
-
-    .file-name {
-      display: inline-block;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      width: 100%;
-    }
-
-    .file-time-and-size {
-      @apply flex flex-row justify-between;
-
-      .file-size,
-      .time {
-        font-size: 13px;
-        color: #999;
-      }
-    }
-
-    .operation {
-      @apply flex flex-row;
-    }
-  }
-
-  .empty {
-    width: 100%;
-    margin-top: 50px;
-    line-height: 60px;
-    text-align: center;
-    color: #909399;
-    border-top: 1px solid #ebeef5;
-    border-bottom: 1px solid #ebeef5;
-    font-size: 14px;
-  }
-
-
-}
-
-.icon-view .icon-lists {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
-</style>

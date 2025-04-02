@@ -29,9 +29,9 @@ class Browse extends BrowseCtrl {
    *         $ref: '#/components/responses/ResponseFileList'
    */
   async listAll() {
-    let { dir, basename = '' } = this['request'].body
+    let { dir, basename = '' } = this.request.body
 
-    let localFS = new LocalFS(this['domain'], this['bucket'])
+    let localFS = new LocalFS(this.domain, this.bucket)
     let path = localFS.pathWithPrefix(dir)
 
     let globResult = glob.sync(path + '/**/*+(' + basename + ')*')

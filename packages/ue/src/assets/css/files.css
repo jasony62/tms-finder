@@ -1,0 +1,87 @@
+@import 'tailwindcss';
+
+.files {
+  display: flex;
+  flex-direction: column;
+
+  .el-card {
+    margin-bottom: 10px;
+    width: 19%;
+    height: 240px;
+
+    .el-card__body {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .thumb {
+      padding: 8px;
+      @apply flex-grow flex flex-row justify-center;
+
+      img {
+        @apply object-contain h-full;
+      }
+    }
+  }
+
+  .empty-card {
+    margin-bottom: 10px;
+    width: 19%;
+  }
+
+  .el-card-2 {
+    margin-bottom: 10px;
+    width: 13%;
+  }
+
+  .empty-card-2 {
+    margin-bottom: 10px;
+    width: 13%;
+  }
+
+  .file-info {
+    @apply p-2 flex flex-col gap-2;
+
+    .file-name {
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 100%;
+    }
+
+    .file-time-and-size {
+      @apply flex flex-row justify-between;
+
+      .file-size,
+      .time {
+        font-size: 13px;
+        color: #999;
+      }
+    }
+
+    .operation {
+      @apply flex flex-row;
+    }
+  }
+
+  .empty {
+    width: 100%;
+    margin-top: 50px;
+    line-height: 60px;
+    text-align: center;
+    color: #909399;
+    border-top: 1px solid #ebeef5;
+    border-bottom: 1px solid #ebeef5;
+    font-size: 14px;
+  }
+}
+
+.icon-view .icon-lists {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  box-sizing: border-box;
+}

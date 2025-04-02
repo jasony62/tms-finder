@@ -1,12 +1,24 @@
 <template>
   <div id="preview">
-    <el-dialog title="文件预览" :closeOnClickModal="false" v-model="dialogVisible" :fullscreen="true">
-      <div class="flex flex-row gap-2 h-full" style="background-color:#efefef;">
+    <el-dialog
+      title="文件预览"
+      :closeOnClickModal="false"
+      v-model="dialogVisible"
+      :fullscreen="true"
+    >
+      <div class="flex flex-row gap-2 h-full" style="background-color: #efefef">
         <div class="h-full flex-grow">
           <el-auto-resizer class="flex-grow overflow-x-auto">
             <template #default="{ height, width }">
-              <el-table-v2 id="table" :data="tableRows" :columns="tableColumns" :row-height="rowHeight" :width="width"
-                :height="height" fixed />
+              <el-table-v2
+                id="table"
+                :data="tableRows"
+                :columns="tableColumns"
+                :row-height="rowHeight"
+                :width="width"
+                :height="height"
+                fixed
+              />
             </template>
           </el-auto-resizer>
         </div>
@@ -29,7 +41,7 @@
 import { TmsFile } from '@/types'
 import utils from '@/utils'
 import { h, PropType, ref } from 'vue'
-import '../assets/preview.scss'
+import '../assets/preview.css'
 //@ts-ignore
 import Papa from 'papaparse'
 
@@ -53,7 +65,15 @@ const csv2TableData = () => {
       key: header,
       title: header,
       width: 100,
-      cellRenderer: ({ rowData, rowIndex, columnIndex }: { rowData: any, rowIndex: number, columnIndex: number }) => {
+      cellRenderer: ({
+        rowData,
+        rowIndex,
+        columnIndex,
+      }: {
+        rowData: any
+        rowIndex: number
+        columnIndex: number
+      }) => {
         return h('div', {}, rowData[csvHeaders![columnIndex]])
       },
     })
@@ -66,22 +86,23 @@ let index = 0
 Papa.parse(fileurl, {
   download: true,
   step: (row: { data: any[] }) => {
-    if (index === 0)
-      csvHeaders = row.data
+    if (index === 0) csvHeaders = row.data
     else {
-      let tableRow = row.data.reduce((obj: Record<string, any>, rd: any, i: number) => {
-        obj[csvHeaders![i]] = rd
-        return obj
-      }, {})
+      let tableRow = row.data.reduce(
+        (obj: Record<string, any>, rd: any, i: number) => {
+          obj[csvHeaders![i]] = rd
+          return obj
+        },
+        {}
+      )
       console.log(tableRow)
       tableRows.value.push(tableRow)
     }
     index++
   },
   complete: () => {
-    console.log("[tms-finder] 完成CSV解析")
+    console.log('[tms-finder] 完成CSV解析')
     csv2TableData()
-  }
+  },
 })
-
 </script>

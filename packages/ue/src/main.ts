@@ -18,7 +18,7 @@ import './index.css'
 import 'element-plus/dist/index.css'
 import 'tms-vue3-ui/dist/es/frame/style/index.css'
 import 'tms-vue3-ui/dist/es/flex/style/index.css'
-import './assets/common.scss'
+import './assets/css/app.css'
 import apiAuth from '@/apis/auth'
 import { schema } from '@/data/login'
 const { fnCaptcha, fnLogin } = apiAuth

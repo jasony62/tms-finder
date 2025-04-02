@@ -3,23 +3,40 @@
     <el-table :data="files" stripe style="width: 100%" v-if="viewStyle == '1'">
       <el-table-column type="index" label="序号" width="64"></el-table-column>
       <el-table-column label="名称" key="name" prop="name"></el-table-column>
-      <el-table-column v-if="schemas" v-for="(s, k) in schemas.properties" :key="k" :prop="columnPropName(k)"
-        :label="s.title">
+      <el-table-column
+        v-if="schemas"
+        v-for="(s, k) in schemas.properties"
+        :key="k"
+        :prop="columnPropName(k)"
+        :label="s.title"
+      >
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="260">
         <template #default="scope">
           <el-button size="small" @click="preview(scope.row)">预览</el-button>
-          <el-button size="small" @click="setInfo(scope.row)" v-if="schemas">编辑</el-button>
+          <el-button size="small" @click="setInfo(scope.row)" v-if="schemas"
+            >编辑</el-button
+          >
           <el-button size="small" @click="download(scope.row)">下载</el-button>
-          <el-button size="small" @click="pick(scope.row)" v-if="SupportPickFile">选取</el-button>
+          <el-button
+            size="small"
+            @click="pick(scope.row)"
+            v-if="SupportPickFile"
+            >选取</el-button
+          >
           <el-button size="small" @click="remove(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <div class="icon-view" v-if="viewStyle == '2'">
       <div class="icon-lists" v-if="files.length">
-        <el-card :class="cardClass" v-for="(item, index) in files" :key="index + '-only'" :body-style="{ padding: '0px' }"
-          shadow="never">
+        <el-card
+          :class="cardClass"
+          v-for="(item, index) in files"
+          :key="index + '-only'"
+          :body-style="{ padding: '0px' }"
+          shadow="never"
+        >
           <svg class="icon" aria-hidden="true">
             <use :xlink:href="formateFileType(item)" />
           </svg>
@@ -31,13 +48,23 @@
             </div>
           </div>
         </el-card>
-        <div :class="emptyClass" v-for="index in columns - (files.length % columns)" :key="index"
-          v-show="files.length % columns > 0"></div>
+        <div
+          :class="emptyClass"
+          v-for="index in columns - (files.length % columns)"
+          :key="index"
+          v-show="files.length % columns > 0"
+        ></div>
       </div>
       <div class="empty" v-else>暂无数据</div>
     </div>
-    <el-pagination background v-model:currentPage="batch.page" :page-sizes="[10, 20, 30]" v-model:pageSize="batch.size"
-      layout="total, sizes, prev, pager, next" :total="batch.total"></el-pagination>
+    <el-pagination
+      background
+      v-model:currentPage="batch.page"
+      :page-sizes="[10, 20, 30]"
+      v-model:pageSize="batch.size"
+      layout="total, sizes, prev, pager, next"
+      :total="batch.total"
+    ></el-pagination>
   </div>
 </template>
 
@@ -53,6 +80,7 @@ import Preview from './Preview.vue'
 import Editor from './Editor.vue'
 import { SUPPORT_PICK_FILE } from '@/global'
 import RemoveFile from './RemoveFile.vue'
+import '../assets/css/info.css'
 
 type TmsFile = {
   domain: string
@@ -90,7 +118,8 @@ const schemas = computed(() => store.schemas)
 const SchemasRootName = computed(() => store.schemasRootName)
 
 // 表格类对应的数据属性名称
-const columnPropName = (key: any) => SchemasRootName.value ? (SchemasRootName.value + '.' + key) : key
+const columnPropName = (key: any) =>
+  SchemasRootName.value ? SchemasRootName.value + '.' + key : key
 
 const viewStyle = computed(() => {
   return store.viewStyle
@@ -103,8 +132,13 @@ const batchList = (page: number) => {
 }
 /**编辑自定义扩展信息*/
 const setInfo = (file: any) => {
-  const props: any = { domain, bucket, schemas: toRaw(schemas), path: file.path }
-  props.info = SchemasRootName.value ? (file[SchemasRootName.value] ?? {}) : file
+  const props: any = {
+    domain,
+    bucket,
+    schemas: toRaw(schemas),
+    path: file.path,
+  }
+  props.info = SchemasRootName.value ? file[SchemasRootName.value] ?? {} : file
   $dialog?.addDialog({
     component: Editor,
     props,
@@ -132,7 +166,7 @@ const download = (file: any) => {
 
 /**
  * 返回选取的文件
- * @param file 选取的文件 
+ * @param file 选取的文件
  */
 const pick = (file: any) => {
   utils.postFile(file, domain ?? '')
@@ -140,22 +174,23 @@ const pick = (file: any) => {
 
 /**
  * 发起删除文件
- * @param file 
+ * @param file
  */
 const remove = (file: TmsFile) => {
   $dialog?.addDialog({
-    component: RemoveFile, props: {
+    component: RemoveFile,
+    props: {
       filepath: file.path,
       domain: domain,
-      bucket: bucket
-    }
+      bucket: bucket,
+    },
   })
 }
 /**
  * 完成删除文件
  */
 emitter.on('removeFile', ({ path }) => {
-  let index = files.value.findIndex(f => f.path === path)
+  let index = files.value.findIndex((f) => f.path === path)
   files.value.splice(index, 1)
 })
 
@@ -219,51 +254,3 @@ onMounted(async () => {
   )
 })
 </script>
-<style lang="scss">
-.info {
-  display: flex;
-  flex-direction: column;
-
-  .el-card {
-    margin-bottom: 10px;
-    width: 10%;
-  }
-
-  .empty-card {
-    margin-bottom: 10px;
-    width: 10%;
-  }
-
-  .el-card-2 {
-    margin-bottom: 10px;
-    width: 9%;
-  }
-
-  .empty-card-2 {
-    margin-bottom: 10px;
-    width: 9%;
-  }
-
-  .empty {
-    width: 100%;
-    margin-top: 50px;
-    line-height: 60px;
-    text-align: center;
-    color: #909399;
-    border-top: 1px solid #ebeef5;
-    border-bottom: 1px solid #ebeef5;
-    font-size: 14px;
-  }
-
-  .bottom {
-    margin-top: 13px;
-    line-height: 12px;
-  }
-
-  .button {
-    padding: 0;
-    float: right;
-    margin-left: 6px;
-  }
-}
-</style>

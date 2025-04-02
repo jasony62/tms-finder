@@ -1,7 +1,12 @@
 <template>
   <div id="preview">
-    <el-dialog title="文件预览" :closeOnClickModal="false" v-model="dialogVisible" :fullscreen="true">
-      <div class="flex flex-row gap-2 h-full" style="background-color:#efefef;">
+    <el-dialog
+      title="文件预览"
+      :closeOnClickModal="false"
+      v-model="dialogVisible"
+      :fullscreen="true"
+    >
+      <div class="flex flex-row gap-2 h-full" style="background-color: #efefef">
         <div class="h-full flex-grow">
           <div v-html="markdownContent"></div>
         </div>
@@ -21,10 +26,10 @@
 </template>
 
 <script setup lang="ts">
-import { TmsFile } from '@/types';
-import utils from '@/utils';
+import { TmsFile } from '@/types'
+import utils from '@/utils'
 import { PropType, ref } from 'vue'
-import '../assets/preview.scss'
+import '../assets/preview.css'
 import { marked } from 'marked'
 
 const props = defineProps({
@@ -35,10 +40,9 @@ const markdownContent = ref('')
 const fileurl = utils.getFileUrl(props.file)
 
 fetch(fileurl)
-  .then(response => response.text())
-  .then(data =>
-    marked.parse(data)
-  ).then(html => {
+  .then((response) => response.text())
+  .then((data) => marked.parse(data))
+  .then((html) => {
     markdownContent.value = html
   })
 

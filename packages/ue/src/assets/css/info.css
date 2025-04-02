@@ -1,0 +1,48 @@
+@import 'tailwindcss';
+
+.info {
+  display: flex;
+  flex-direction: column;
+
+  .el-card {
+    margin-bottom: 10px;
+    width: 10%;
+  }
+
+  .empty-card {
+    margin-bottom: 10px;
+    width: 10%;
+  }
+
+  .el-card-2 {
+    margin-bottom: 10px;
+    width: 9%;
+  }
+
+  .empty-card-2 {
+    margin-bottom: 10px;
+    width: 9%;
+  }
+
+  .empty {
+    width: 100%;
+    margin-top: 50px;
+    line-height: 60px;
+    text-align: center;
+    color: #909399;
+    border-top: 1px solid #ebeef5;
+    border-bottom: 1px solid #ebeef5;
+    font-size: 14px;
+  }
+
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
+
+  .button {
+    padding: 0;
+    float: right;
+    margin-left: 6px;
+  }
+}

@@ -11,6 +11,7 @@ type Globalsettings = {
   supportThumbnail: boolean
   supportPickFile: boolean
   supportMultiView: boolean
+  bucketMode: boolean // 空间隔离模式
   pickFileFiledNameMapping: { [domain: string]: object }
   uploadFileAccept: '' // 逗号分隔的上传文件类型列表
 }
@@ -30,6 +31,7 @@ let _globalsettings: Globalsettings = {
   supportThumbnail: false,
   supportPickFile: false,
   supportMultiView: /yes|true/i.test(import.meta.env.VITE_SUPPORT_MULTI_VIEW),
+  bucketMode: /yes|true/i.test(import.meta.env.VITE_BUCKET_MODE),
   pickFileFiledNameMapping: {},
   uploadFileAccept:
     import.meta.env.VITE_UPLOAD_FILE_ACCEPT ??
@@ -58,6 +60,7 @@ export function init(settings: Globalsettings) {
     _globalsettings.supportThumbnail = settings.supportThumbnail
   if (settings.supportMultiView)
     _globalsettings.supportMultiView = settings.supportMultiView
+  if (settings.bucketMode) _globalsettings.bucketMode = settings.bucketMode
   if (
     settings.pickFileFiledNameMapping &&
     typeof settings.pickFileFiledNameMapping === 'object'
@@ -86,6 +89,10 @@ export const SUPPORT_THUMBNAIL = () => _globalsettings.supportThumbnail
  * 是否支持多视图
  */
 export const SUPPORT_MULTI_VIEW = () => _globalsettings.supportMultiView
+/**
+ * 空间模式
+ */
+export const BUCKET_MODE = () => _globalsettings.bucketMode
 /**
  * 关闭验证码
  */

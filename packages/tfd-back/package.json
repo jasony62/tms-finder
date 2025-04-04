@@ -16,8 +16,9 @@
     "glob": "11.0.1",
     "log4js": "6.9.1",
     "mongodb": "5.9.2",
-    "tms-koa": "0.2.15",
+    "tms-koa": "0.2.20",
     "tms-koa-account": "0.2.15",
+    "tms-koa-bucket": "0.0.3",
     "tms-koa-captcha": "0.2.15"
   },
   "devDependencies": {

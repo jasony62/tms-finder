@@ -36,6 +36,10 @@ const appConfig = {
         `TFD${Date.now()}${parseInt(Math.random() * 100)}`,
       expiresIn: parseInt(env.TFD_APP_AUTH_JWT_EXPIRESIN) || 3600,
     },
+    bucket: {
+      disabled: /true|yes/i.test(env.TFD_APP_BUCKET_DISABLED),
+      validator: 'tms-koa-bucket/dist/index.js',
+    },
     // 验证码
     captcha: {
       npm: {

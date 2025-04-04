@@ -21,6 +21,9 @@ import 'tms-vue3-ui/dist/es/flex/style/index.css'
 import './assets/css/app.css'
 import apiAuth from '@/apis/auth'
 import { schema } from '@/data/login'
+
+localStorage.debug = '*'
+
 const { fnCaptcha, fnLogin } = apiAuth
 
 const LoginPromise = (function () {
@@ -72,7 +75,21 @@ let rulesObj: any = {
   requestHeaders: new Map([['Authorization', getAccessToken]]),
   onResultFault: (res: any) => {
     return new Promise((resolve, reject) => {
-      ElMessage.error(res.data.msg || '发生业务逻辑错误')
+      const { responseURL } = res.request
+      /**
+       * 获取不到bucket的schemas不是错误
+       */
+      if (
+        /admin\/bucket\/schemas/.test(responseURL) &&
+        res.data.code === 40420
+      ) {
+        return reject(res.data)
+      }
+      ElMessage.error({
+        message: res.data.msg || '发生业务逻辑错误',
+        duration: 0,
+        showClose: true,
+      })
       reject(res.data)
     })
   },

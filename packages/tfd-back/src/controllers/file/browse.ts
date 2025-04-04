@@ -31,7 +31,7 @@ class Browse extends BrowseCtrl {
   async listAll() {
     let { dir, basename = '' } = this.request.body
 
-    let localFS = new LocalFS(this.domain, this.bucket)
+    let localFS = new LocalFS(this.domain, this.bucketObj?.name)
     let path = localFS.pathWithPrefix(dir)
 
     let globResult = glob.sync(path + '/**/*+(' + basename + ')*')

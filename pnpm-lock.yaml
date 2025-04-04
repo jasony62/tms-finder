@@ -37,11 +37,14 @@ importers:
         specifier: 5.9.2
         version: 5.9.2(@aws-sdk/credential-providers@3.414.0)
       tms-koa:
-        specifier: 0.2.15
-        version: 0.2.15(@aws-sdk/credential-providers@3.414.0)(neo4j-driver@4.4.10)(openapi-types@12.1.0)(redis@4.6.10)
+        specifier: 0.2.20
+        version: 0.2.20(@aws-sdk/credential-providers@3.414.0)(neo4j-driver@4.4.10)(openapi-types@12.1.0)(redis@4.6.10)
       tms-koa-account:
         specifier: 0.2.15
         version: 0.2.15(@aws-sdk/credential-providers@3.414.0)(neo4j-driver@4.4.10)(openapi-types@12.1.0)(redis@4.6.10)
+      tms-koa-bucket:
+        specifier: 0.0.3
+        version: 0.0.3(@aws-sdk/credential-providers@3.414.0)(neo4j-driver@4.4.10)(openapi-types@12.1.0)(redis@4.6.10)
       tms-koa-captcha:
         specifier: 0.2.15
         version: 0.2.15(@aws-sdk/credential-providers@3.414.0)(neo4j-driver@4.4.10)(openapi-types@12.1.0)(redis@4.6.10)
@@ -64,6 +67,9 @@ importers:
       '@vue-office/pptx':
         specifier: 1.0.1
         version: 1.0.1(vue-demi@0.14.10(vue@3.5.13(typescript@5.6.3)))(vue@3.5.13(typescript@5.6.3))
+      debug:
+        specifier: ^4.4.0
+        version: 4.4.0
       element-plus:
         specifier: 2.9.7
         version: 2.9.7(vue@3.5.13(typescript@5.6.3))
@@ -107,6 +113,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.0.6
         version: 4.1.0
+      '@types/debug':
+        specifier: ^4.1.12
+        version: 4.1.12
       '@types/lodash':
         specifier: 4.17.13
         version: 4.17.13
@@ -968,6 +977,9 @@ packages:
   '@types/cors@2.8.13':
     resolution: {integrity: sha512-RG8AStHlUiV5ysZQKq97copd2UmVYw3/pRMLefISZ3S1hK104Cwm7iLQ3fTKx+lsUH2CE8FlLaYeEA2LSeqYUA==}
 
+  '@types/debug@4.1.12':
+    resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
+
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
 
@@ -1009,6 +1021,9 @@ packages:
 
   '@types/mime@3.0.1':
     resolution: {integrity: sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==}
+
+  '@types/ms@2.1.0':
+    resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
   '@types/node@22.13.17':
     resolution: {integrity: sha512-nAJuQXoyPj04uLgu+obZcSmsfOenUg6DxPKogeUy6yNCFwWaj5sBF8/G/pNo8EtBJjAfSVgfIlugR/BCOleO+g==}
@@ -1769,6 +1784,10 @@ packages:
     resolution: {integrity: sha512-PmDi3uwK5nFuXh7XDTlVnS17xJS7vW36is2+w3xcv8SVxiB4NyATf4ctkVY5bkSjX0Y4nbvZCq1/EjtEyr9ktw==}
     engines: {node: '>=14.14'}
 
+  fs-extra@11.3.0:
+    resolution: {integrity: sha512-Z4XaCL6dUDHfP/jT25jJKMmtxvuwbkrD1vNSMFlo9lNLY2c5FHYSQgHPRZUjAB26TpDEoW9HCOgplrdbaPV/ew==}
+    engines: {node: '>=14.14'}
+
   fs-extra@8.1.0:
     resolution: {integrity: sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==}
     engines: {node: '>=6 <7 || >=8'}
@@ -1898,6 +1917,7 @@ packages:
 
   inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
 
   inherits@2.0.3:
     resolution: {integrity: sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw==}
@@ -2053,6 +2073,10 @@ packages:
     resolution: {integrity: sha512-j/8tY9j5t+GVMLeioLaxweJiKUayFhlGqNTzf2ZGwL0ZCQijd2RLHK0SLW5Tsko8YyyqCZC2cojIb0/s62qTAg==}
     engines: {node: ^4.8.4 || ^6.10.1 || ^7.10.1 || >= 8.1.4}
 
+  koa@2.16.0:
+    resolution: {integrity: sha512-Afhqq0Vq3W7C+/rW6IqHVBDLzqObwZ07JaUNUEF8yCQ6afiyFE3RAy+i7V0E46XOWlH7vPWn/x0vsZwNy6PWxw==}
+    engines: {node: ^4.8.4 || ^6.10.1 || ^7.10.1 || >= 8.1.4}
+
   lightningcss-darwin-arm64@1.29.2:
     resolution: {integrity: sha512-cK/eMabSViKn/PG8U/a7aCorpeKLMlK0bQeNHmdb7qUnBkNPnL+oV5DjJUo0kqWsJUapZsM4jCfYItbqBDvlcA==}
     engines: {node: '>= 12.0.0'}
@@ -2129,6 +2153,7 @@ packages:
 
   lodash.get@4.4.2:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
+    deprecated: This package is deprecated. Use the optional chaining (?.) operator instead.
 
   lodash.includes@4.3.0:
     resolution: {integrity: sha512-W3Bx6mdkRTGtlJISOvVD/lbqjTlPPUDTMnlXZFnVwi9NKJ6tiAk6LVdlhZMm17VZisqhKcgzpO5Wz91PCt5b0w==}
@@ -2138,6 +2163,7 @@ packages:
 
   lodash.isequal@4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+    deprecated: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
 
   lodash.isinteger@4.0.4:
     resolution: {integrity: sha512-DBwtEWN2caHQ9/imiNeEA5ys1JoRtRfY3d7V9wkqtbycnAmTvRRmbHKDV4a0EYc678/dia0jrte4tjYwVBaZUA==}
@@ -2231,6 +2257,10 @@ packages:
 
   minio@8.0.2:
     resolution: {integrity: sha512-7ipWbtgzzboctf+McK+2cXwCrNOhuboTA/O1g9iWa0gH8R4GkeyFWwk12aVDEHdzjPiG8wxnjwfHS7pgraKuHw==}
+    engines: {node: ^16 || ^18 || >=20}
+
+  minio@8.0.5:
+    resolution: {integrity: sha512-/vAze1uyrK2R/DSkVutE4cjVoAowvIQ18RAwn7HrqnLecLlMazFnY0oNBqfuoAWvu7mZIGX75AzpuV05TJeoHg==}
     engines: {node: ^16 || ^18 || >=20}
 
   minipass@7.1.2:
@@ -2691,6 +2721,9 @@ packages:
     peerDependencies:
       redis: ^4.7.0
 
+  tms-koa-bucket@0.0.3:
+    resolution: {integrity: sha512-tg67Bvf31c97WPkCy50Iu+gYR8eOBPR5GCf/Pei//roZ+otZKf3suZ4BzbQyRUe5khHJc2oaoOr7idpuJt51IQ==}
+
   tms-koa-captcha@0.2.15:
     resolution: {integrity: sha512-W1+rrZkUbWFMqfqO+8EMWmT9MNN9e9BW4RD1UBxL6e/n5McbNZ3F9XqjvuuCOuIAE06cUejAnT1kwhpU7yrj7A==}
 
@@ -2699,6 +2732,12 @@ packages:
 
   tms-koa@0.2.15:
     resolution: {integrity: sha512-jhZIKmC141DyiVbPyuO0O4wT/a44aDAl6IDzfMvdoX1YpFXSAxtRK18aK+lzpHT8FdScFrs1Q1C2aDRcqEAmMA==}
+    peerDependencies:
+      neo4j-driver: ^4.4.2
+      redis: ^4.7.0
+
+  tms-koa@0.2.20:
+    resolution: {integrity: sha512-RmImEDpE4JCa/P/svI1AA61ekfK0cnTw4e6WRlsj8yFecW1LZYFhb1Q+oQNJHfA8t8Yz3PbW6vWOy+Kj434gyg==}
     peerDependencies:
       neo4j-driver: ^4.4.2
       redis: ^4.7.0
@@ -2788,6 +2827,10 @@ packages:
 
   uuid@11.0.3:
     resolution: {integrity: sha512-d0z310fCWv5dJwnX1Y/MncBAqGMKEzlBb1AOf7z9K8ALnd0utBX/msg/fA0+sbyN1ihbMsLhrBlnl1ak7Wa0rg==}
+    hasBin: true
+
+  uuid@11.1.0:
+    resolution: {integrity: sha512-0/A9rDy9P7cJ+8w1c9WD9V//9Wj15Ce2MPz8Ri6032usz+NfePxx5AcN3bN+r6ZL6jEo066/yNYB3tn4pQEx+A==}
     hasBin: true
 
   uuid@8.3.2:
@@ -4098,6 +4141,10 @@ snapshots:
     dependencies:
       '@types/node': 22.13.17
 
+  '@types/debug@4.1.12':
+    dependencies:
+      '@types/ms': 2.1.0
+
   '@types/estree@1.0.6': {}
 
   '@types/express-serve-static-core@4.17.36':
@@ -4150,6 +4197,8 @@ snapshots:
   '@types/mime@1.3.2': {}
 
   '@types/mime@3.0.1': {}
+
+  '@types/ms@2.1.0': {}
 
   '@types/node@22.13.17':
     dependencies:
@@ -4951,6 +5000,12 @@ snapshots:
       jsonfile: 6.1.0
       universalify: 2.0.0
 
+  fs-extra@11.3.0:
+    dependencies:
+      graceful-fs: 4.2.11
+      jsonfile: 6.1.0
+      universalify: 2.0.0
+
   fs-extra@8.1.0:
     dependencies:
       graceful-fs: 4.2.11
@@ -5208,7 +5263,7 @@ snapshots:
       lodash.isplainobject: 4.0.6
       lodash.isstring: 4.0.1
       lodash.once: 4.1.1
-      ms: 2.1.2
+      ms: 2.1.3
       semver: 7.5.4
 
   jwa@1.4.1:
@@ -5266,6 +5321,34 @@ snapshots:
       - supports-color
 
   koa@2.15.3:
+    dependencies:
+      accepts: 1.3.8
+      cache-content-type: 1.0.1
+      content-disposition: 0.5.4
+      content-type: 1.0.5
+      cookies: 0.9.1
+      debug: 4.4.0
+      delegates: 1.0.0
+      depd: 2.0.0
+      destroy: 1.2.0
+      encodeurl: 1.0.2
+      escape-html: 1.0.3
+      fresh: 0.5.2
+      http-assert: 1.5.0
+      http-errors: 1.8.1
+      is-generator-function: 1.0.10
+      koa-compose: 4.1.0
+      koa-convert: 2.0.0
+      on-finished: 2.4.1
+      only: 0.0.2
+      parseurl: 1.3.3
+      statuses: 1.5.0
+      type-is: 1.6.18
+      vary: 1.1.2
+    transitivePeerDependencies:
+      - supports-color
+
+  koa@2.16.0:
     dependencies:
       accepts: 1.3.8
       cache-content-type: 1.0.1
@@ -5436,6 +5519,23 @@ snapshots:
   minimist@1.2.8: {}
 
   minio@8.0.2:
+    dependencies:
+      async: 3.2.4
+      block-stream2: 2.1.0
+      browser-or-node: 2.1.1
+      buffer-crc32: 1.0.0
+      eventemitter3: 5.0.1
+      fast-xml-parser: 4.5.1
+      ipaddr.js: 2.0.1
+      lodash: 4.17.21
+      mime-types: 2.1.35
+      query-string: 7.1.3
+      stream-json: 1.9.1
+      through2: 4.0.2
+      web-encoding: 1.1.5
+      xml2js: 0.6.2
+
+  minio@8.0.5:
     dependencies:
       async: 3.2.4
       block-stream2: 2.1.0
@@ -5940,6 +6040,30 @@ snapshots:
       - supports-color
       - utf-8-validate
 
+  tms-koa-bucket@0.0.3(@aws-sdk/credential-providers@3.414.0)(neo4j-driver@4.4.10)(openapi-types@12.1.0)(redis@4.6.10):
+    dependencies:
+      '@log4js-node/log4js-api': 1.0.2
+      dayjs: 1.11.13
+      debug: 4.4.0
+      dotenv-flow: 4.1.0
+      lodash: 4.17.21
+      mongodb: 5.9.2(@aws-sdk/credential-providers@3.414.0)
+      nanoid: 5.0.9
+      tms-koa: 0.2.20(@aws-sdk/credential-providers@3.414.0)(neo4j-driver@4.4.10)(openapi-types@12.1.0)(redis@4.6.10)
+    transitivePeerDependencies:
+      - '@aws-sdk/credential-providers'
+      - '@mongodb-js/zstd'
+      - aws-crt
+      - bufferutil
+      - kerberos
+      - mongodb-client-encryption
+      - neo4j-driver
+      - openapi-types
+      - redis
+      - snappy
+      - supports-color
+      - utf-8-validate
+
   tms-koa-captcha@0.2.15(@aws-sdk/credential-providers@3.414.0)(neo4j-driver@4.4.10)(openapi-types@12.1.0)(redis@4.6.10):
     dependencies:
       '@log4js-node/log4js-api': 1.0.2
@@ -5991,6 +6115,43 @@ snapshots:
       socket.io: 4.8.1
       swagger-jsdoc: 6.2.8(openapi-types@12.1.0)
       uuid: 11.0.3
+    transitivePeerDependencies:
+      - '@aws-sdk/credential-providers'
+      - '@mongodb-js/zstd'
+      - aws-crt
+      - bufferutil
+      - kerberos
+      - mongodb-client-encryption
+      - openapi-types
+      - snappy
+      - supports-color
+      - utf-8-validate
+
+  tms-koa@0.2.20(@aws-sdk/credential-providers@3.414.0)(neo4j-driver@4.4.10)(openapi-types@12.1.0)(redis@4.6.10):
+    dependencies:
+      '@koa/cors': 5.0.0
+      '@koa/router': 13.1.0
+      '@log4js-node/log4js-api': 1.0.2
+      agenda: 5.0.0
+      dayjs: 1.11.13
+      debug: 4.4.0
+      dotenv-flow: 4.1.0
+      fs-extra: 11.3.0
+      glob: 11.0.0
+      jsonwebtoken: 9.0.2
+      koa: 2.16.0
+      koa-body: 6.0.1
+      koa-send: 5.0.1
+      koa-static: 5.0.0
+      lodash: 4.17.21
+      minio: 8.0.5
+      mongodb: 5.9.2(@aws-sdk/credential-providers@3.414.0)
+      neo4j-driver: 4.4.10
+      prom-client: 15.1.3
+      redis: 4.6.10
+      socket.io: 4.8.1
+      swagger-jsdoc: 6.2.8(openapi-types@12.1.0)
+      uuid: 11.1.0
     transitivePeerDependencies:
       - '@aws-sdk/credential-providers'
       - '@mongodb-js/zstd'
@@ -6083,6 +6244,8 @@ snapshots:
       which-typed-array: 1.1.9
 
   uuid@11.0.3: {}
+
+  uuid@11.1.0: {}
 
   uuid@8.3.2:
     optional: true

@@ -3,3 +3,4 @@ _lowdb.json
 .env
 .env.local
 storage
+ctrl_plugin_config

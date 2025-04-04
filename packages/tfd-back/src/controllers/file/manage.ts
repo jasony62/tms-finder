@@ -63,12 +63,12 @@ class Manage extends ManageCtrl {
     if (!fsInfo) return new ResultFault('不支持设置文件信息')
     const { filter } = this.request.body
 
-    let query = {}
+    let query: any = {}
     if (filter) {
       query = this._assembleFind(filter)
     }
-    const { bucket } = this
-    if (bucket) query['bucket'] = bucket
+    const { bucketObj } = this
+    if (bucketObj) query.bucket = bucketObj.name
 
     let { batch } = this.request.query
     if (!batch) batch = '1,10'

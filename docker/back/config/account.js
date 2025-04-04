@@ -7,7 +7,7 @@ export default {
     password: env.TFD_APP_AUTH_CLIENT_ADMIN_PASSWORD || 'admin',
   },
   mongodb: {
-    disabled: false,
+    disabled: /true|yes/i.test(env.TFD_APP_AUTH_CLIENT_MONGODB_DISABLED),
     name: env.TFD_APP_AUTH_CLIENT_MONGODB_NAME || 'master',
     database: env.TFD_APP_AUTH_CLIENT_MONGODB_DATABASE || 'tfd_account',
     collection: env.TFD_APP_AUTH_CLIENT_MONGODB_COLLECTION || 'account',

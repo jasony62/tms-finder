@@ -21,7 +21,7 @@ import Topbar from '../components/Topbar.vue'
 import Tree from '../components/Tree.vue'
 import Files from '../components/Files.vue'
 
-defineProps({
+const props = defineProps({
   domain: { type: String },
   bucket: { type: String },
 })

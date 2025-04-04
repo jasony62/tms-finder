@@ -26,6 +26,7 @@
     </div>
     <div>
       <el-table :data="coworkers">
+        <el-table-column property="bucket" label="空间名称" />
         <el-table-column property="coworker.nickname" label="协作人" />
         <el-table-column property="code" label="邀请码" />
         <el-table-column property="createAt" label="发起邀请时间" />
@@ -33,12 +34,7 @@
         <el-table-column label="操作">
           <template #default="scope">
             <el-button @click="removeCoworker(scope.row)">删除</el-button>
-            <el-button
-              type="primary"
-              v-if="!scope.row.acceptAt"
-              @click="showInviteUrl(scope.row)"
-              >邀请链接</el-button
-            >
+            <el-button @click="showInviteInfo(scope.row)">邀请信息</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -50,7 +46,7 @@
 import { inject, onMounted, reactive, ref } from 'vue'
 import apiInvite from '@/apis/invite.js'
 import { ElMessage } from 'element-plus'
-import BucketInviteUrl from '../components/BucketInviteUrl.vue'
+import BucketInviteInfo from '../components/BucketInviteInfo.vue'
 import { dialogInjectionKey } from 'gitart-vue-dialog'
 
 const $dialog = inject(dialogInjectionKey)
@@ -82,11 +78,14 @@ const back = () => {
   history.back()
 }
 
-const showInviteUrl = (row: any) => {
-  console.log('row', row)
+const showInviteInfo = (row: any) => {
   $dialog?.addDialog({
-    component: BucketInviteUrl,
-    props: { bucketName: props.bucket, nickname: row.nickname, code: row.code },
+    component: BucketInviteInfo,
+    props: {
+      bucketName: props.bucket,
+      nickname: row.coworker.nickname,
+      code: row.code,
+    },
   })
 }
 

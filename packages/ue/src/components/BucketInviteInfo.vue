@@ -7,7 +7,7 @@
   >
     <el-form>
       <el-form-item>
-        <div>{{ inviteUrl }}</div>
+        <div ref="elInviteInfo">{{ inviteInfo }}</div>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -17,10 +17,11 @@
 </template>
 
 <script setup lang="ts">
-import { BACK_API_URL } from '@/global'
 import { ref } from 'vue'
 
 const dialogVisible = ref(true)
+
+const elInviteInfo = ref<HTMLElement | null>(null)
 
 const props = defineProps({
   bucketName: {
@@ -37,13 +38,10 @@ const props = defineProps({
   },
 })
 
-const inviteUrl =
-  BACK_API_URL() +
-  `/bucket/admin/coworker/accept?bucket=${props.bucketName}&nickname=${props.nickname}&code=${props.code}`
+const inviteInfo = `bucket=${props.bucketName}&nickname=${props.nickname}&code=${props.code}`
 
 const copy = () => {
-  const el: HTMLElement | null = document.getElementById('copyContent')
-  const str = el?.innerHTML || ''
+  const str = elInviteInfo.value?.innerText || ''
   navigator.clipboard.writeText(str)
 }
 </script>

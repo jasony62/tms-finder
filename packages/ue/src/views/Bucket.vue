@@ -61,10 +61,14 @@
         <el-table-column prop="description" label="说明"></el-table-column>
         <el-table-column fixed="right" label="操作" width="280">
           <template #default="scope">
-            <el-button @click="editBucket(scope.row, scope.$index)"
+            <el-button
+              @click="editBucket(scope.row, scope.$index)"
+              v-if="scope.row._id"
               >修改</el-button
             >
-            <el-button @click="removeBucket(scope.row)">删除</el-button>
+            <el-button @click="removeBucket(scope.row)" v-if="scope.row._id"
+              >删除</el-button
+            >
             <el-button @click="manageInvite(scope.row)" v-if="scope.row._id"
               >邀请</el-button
             >

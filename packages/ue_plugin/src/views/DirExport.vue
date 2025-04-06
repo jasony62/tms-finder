@@ -1,18 +1,27 @@
 <template>
   <div class="flex flex-col gap-4 h-full w-full">
     <el-form label-position="right">
-      <div
-        class="response-content flex-grow border border-gray-200 rounded-md overflow-auto"
-        v-if="responseContent"
-      >
-        <pre>{{ responseContent }}</pre>
-      </div>
       <el-form-item>
         <el-button type="primary" @click="onExecute">执行</el-button>
         <el-button @click="onCancel" v-if="!executed">取消</el-button>
         <el-button @click="onClose" v-if="executed">关闭</el-button>
       </el-form-item>
     </el-form>
+    <div v-if="downloadURL" class="flex flex-row items-center gap-2">
+      <div class="flex-none">下载地址</div>
+      <div class="flex-1 border border-gray-200 p-1 rounded-md overflow-auto">
+        {{ downloadURL }}
+      </div>
+      <div class="flex-none"><el-button @click="download">下载</el-button></div>
+    </div>
+    <el-form-item>
+      <div
+        class="response-content flex-grow border border-gray-200 rounded-md overflow-auto"
+        v-if="responseContent"
+      >
+        <pre>{{ responseContent }}</pre>
+      </div>
+    </el-form-item>
   </div>
 </template>
 
@@ -24,6 +33,7 @@ import Debug from 'debug'
 const debug = Debug('tfd:ue_plugin:dir-export')
 const executed = ref(false)
 const responseContent = ref<string>('')
+const downloadURL = ref('')
 
 // 调用插件的宿主页面
 const Caller = window.parent
@@ -42,8 +52,9 @@ window.addEventListener('message', (event) => {
     if (typeof response === 'string') {
       responseContent.value = response
     } else if (typeof response === 'object') {
-      if (response.url) {
-        window.open(response.url)
+      if (response.result?.url) {
+        downloadURL.value = response.result.url
+        // window.open(response.reuslt?.url)
       } else {
         responseContent.value = JSON.stringify(response, null, 2)
       }
@@ -83,5 +94,9 @@ function onClose() {
     }
     Caller.postMessage(message, '*')
   }
+}
+
+function download() {
+  if (downloadURL.value) window.open(downloadURL.value, '_blank')
 }
 </script>

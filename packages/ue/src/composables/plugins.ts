@@ -14,8 +14,6 @@ const pluginWidgetSize = ref('')
 
 export type UseTfdPluginsOptions = {
   bucketName?: string
-  dir?: string
-  file?: string
   onExecute?: any
   onCreate?: any
   onClose?: any
@@ -28,14 +26,14 @@ export type UseTfdPluginsOptions = {
  * @returns
  */
 export const useTfdPlugins = (options?: UseTfdPluginsOptions) => {
-  const { bucketName, dir, file, onExecute, onCreate, onClose } = options ?? {}
+  const { bucketName, onExecute, onCreate, onClose } = options ?? {}
   /**
    * 执行插件
    *
    * @param plugin 要执行的插件
-   * @param docScope 插件操作数据的范围
+   * @param target 当前操作的对象
    */
-  const handlePlugin = (plugin: any, docScope = '') => {
+  const handlePlugin = (plugin: any, target = { dir: '', file: '' }) => {
     debug(`执行插件[name=${plugin.name}, title=${plugin.title}]`)
     const { beforeWidget, schemaJson } = plugin
     if (beforeWidget) {
@@ -43,8 +41,7 @@ export const useTfdPlugins = (options?: UseTfdPluginsOptions) => {
       if (name === 'external' && url) {
         let fullurl = url + (url.indexOf('?') > 0 ? '&' : '?')
         showPluginWidget.value = true
-        pluginWidgetUrl.value =
-          fullurl + `bucket=${bucketName ?? ''}&dir=${dir}&file=${file}`
+        pluginWidgetUrl.value = fullurl + `bucket=${bucketName ?? ''}`
         pluginWidgetSize.value = size ?? '50%'
         // 收集页面数据
         const widgetResultListener = async (event: MessageEvent) => {
@@ -86,7 +83,7 @@ export const useTfdPlugins = (options?: UseTfdPluginsOptions) => {
               case 'Execute':
                 onExecute(
                   plugin,
-                  docScope,
+                  target,
                   result,
                   handleResponse,
                   defaultHandleResponseRequired,
@@ -126,7 +123,7 @@ export const useTfdPlugins = (options?: UseTfdPluginsOptions) => {
         return
       }
     } else {
-      onExecute(plugin, docScope)
+      onExecute(plugin, target)
     }
   }
 

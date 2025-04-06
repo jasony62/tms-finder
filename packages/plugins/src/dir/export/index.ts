@@ -33,12 +33,13 @@ class ExportPlugin extends PluginBase {
     this.beforeWidget = { name: 'external', url: '', size: '60%' }
   }
   /**
-   *
+   * 执行插件
    * @param ctrl
    * @returns
    */
   async execute(ctrl: any): Promise<PluginExecuteResult> {
-    debug('执行插件操作')
+    const { bucket, dir } = ctrl.request.query
+    debug(`执行插件，操作对象[bucket=${bucket ?? ''}, dir=${dir}]`)
     return { code: 0, msg: { data: 'hello' } }
   }
 }

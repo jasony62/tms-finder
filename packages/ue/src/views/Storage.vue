@@ -50,12 +50,13 @@ const props = defineProps({
  */
 const { handlePlugin } = useTfdPlugins({
   bucketName: props.bucket,
-  dir: '',
-  file: '',
-  onExecute: (plugin: any) => {
+  onExecute: (plugin: any, target: { dir: string; file: string }) => {
     debug('调用插件执行方法')
     return apiPlugin
-      .execute(props.bucket, { pluginName: plugin.name, dir: '' })
+      .execute(props.bucket, {
+        pluginName: plugin.name,
+        dir: target?.dir ?? '',
+      })
       .then((result: any) => {
         debug('获得插件执行结果')
         return result

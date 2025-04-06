@@ -9,6 +9,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import pluginApi from '@/apis/plugin.js'
+import facStore from '@/store'
 
 const props = defineProps({
   domain: {
@@ -28,8 +29,11 @@ const props = defineProps({
 
 const plugins = ref<any[]>([])
 
+const store = facStore()
+
 const handlePlugin = (plugin: any) => {
-  if (props.handlePlugin) props.handlePlugin(plugin)
+  if (props.handlePlugin)
+    props.handlePlugin(plugin, { dir: store.currentDir.path })
 }
 
 onMounted(async () => {

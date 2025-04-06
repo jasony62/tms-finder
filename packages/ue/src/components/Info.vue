@@ -13,18 +13,13 @@
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="260">
         <template #default="scope">
-          <el-button size="small" @click="preview(scope.row)">预览</el-button>
-          <el-button size="small" @click="setInfo(scope.row)" v-if="schemas"
-            >编辑</el-button
-          >
-          <el-button size="small" @click="download(scope.row)">下载</el-button>
-          <el-button
-            size="small"
-            @click="pick(scope.row)"
-            v-if="SupportPickFile"
+          <el-button @click="preview(scope.row)">预览</el-button>
+          <el-button @click="setInfo(scope.row)" v-if="schemas">编辑</el-button>
+          <el-button @click="download(scope.row)">下载</el-button>
+          <el-button @click="pick(scope.row)" v-if="SupportPickFile"
             >选取</el-button
           >
-          <el-button size="small" @click="remove(scope.row)">删除</el-button>
+          <el-button @click="remove(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

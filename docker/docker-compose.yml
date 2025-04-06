@@ -55,18 +55,3 @@ services:
       - NGINX_ACCESS_CONTROL_ALLOW_ORIGIN=* # 允许跨域访问
     # ports:
     #   - '8080:80'
-
-  ue_any:
-    build:
-      context: ./ue_any
-      args:
-        vue_app_base_url: /finder_ue_any
-        vue_app_login_key_username: username
-        vue_app_login_key_password: password
-        vue_app_login_key_pin: pin
-    image: tms-finder/ue_any:latest
-    container_name: tms-finder-ue_any
-    environment:
-      - NGINX_WEB_BASE_URL=/finder_ue_any
-    # ports:
-    #   - '8081:80'

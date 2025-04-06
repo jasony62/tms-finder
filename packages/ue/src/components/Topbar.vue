@@ -35,7 +35,7 @@
       </el-button>
       <el-button @click.prevent="upload">上传文件</el-button>
     </div>
-    <div>
+    <div v-if="SupportBucketMode">
       <el-dropdown split-button type="default">
         {{ bucketObj.title || bucketObj.name }}
         <template #dropdown>
@@ -57,7 +57,7 @@ import Rmdir from './Rmdir.vue'
 import Upload from './Upload.vue'
 import Mkdir from './Mkdir.vue'
 import { useRouter, useRoute } from 'vue-router'
-import { SUPPORT_MULTI_VIEW, SUPPORT_THUMBNAIL } from '../global'
+import { BUCKET_MODE, SUPPORT_MULTI_VIEW, SUPPORT_THUMBNAIL } from '../global'
 import apiBucket from '../apis/bucket.js'
 
 const props = defineProps({
@@ -79,6 +79,8 @@ const route = useRoute()
 const manageOrStorage = ref(activeIndex || 'storage')
 
 const schemas = computed(() => store.schemas)
+
+const SupportBucketMode = BUCKET_MODE()
 
 const selectViewStyle = (value: string) => {
   store.setViewStyle(value)

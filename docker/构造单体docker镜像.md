@@ -113,3 +113,15 @@ docker run -it --rm --name tfd-test jasony62/tfd-aio sh
 ```shell
 docker run -it --rm --name tfd-test -p 3030:3000 -p 7077:80 -v $PWD/volumes/files:/usr/app/tfd/storage jasony62/tfd-aio
 ```
+
+```shell
+docker run -it --rm --name tfd-test -p 3030:3000 -p 7077:80 -v $PWD/volumes/files:/usr/app/tfd/storage -e TFD_MONGODB_PASSWORD=root0313 -e TFD_APP_BUCKET_DISABLED=no -e TFD_PLUGIN_DIR_EXPORT_SOURCE_DIR=/usr/app/tfd/storage/upload  -e TFD_PLUGIN_DIR_EXPORT_OUTPUT_DIR=/usr/app/tfd/storage/download -e TFD_PLUGIN_DIR_EXPORT_DOWNALOD_BASE_URL=http://localhost:3030/fs/download jasony62/tfd-aio:plugins
+```
+
+```shell
+docker run -it --rm --name tfd-test -p 3030:3000 -p 7077:80 -v $PWD/volumes/files:/usr/app/tfd/storage -v $PWD/docker/ue/settings.2.json:/usr/share/nginx/html/tmsfinder/settings.json -e TFD_MONGODB_PASSWORD=root0313 -e TFD_APP_BUCKET_DISABLED=yes -e TFD_PLUGIN_DIR_EXPORT_SOURCE_DIR=/usr/app/tfd/storage/upload  -e TFD_PLUGIN_DIR_EXPORT_OUTPUT_DIR=/usr/app/tfd/storage/download -e TFD_PLUGIN_DIR_EXPORT_DOWNALOD_BASE_URL=http://localhost:3030/fs/download jasony62/tfd-aio:plugins
+```
+
+```
+http://localhost:7077/tmsfinder/login
+```

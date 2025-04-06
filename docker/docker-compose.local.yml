@@ -28,12 +28,3 @@ services:
         vue_app_fs_server: http://localhost:3000
     ports:
       - '8080:80'
-
-  ue_any:
-    build:
-      args:
-        vue_app_auth_server: http://localhost:3000
-        vue_app_api_server: http://localhost:3000
-        vue_app_upload_lib_url: http://localhost:8080/finder_ue/lib
-    ports:
-      - '8081:80'

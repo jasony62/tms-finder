@@ -436,7 +436,7 @@ const handlePlugin = (plugin: any, filter?: string) => {
   const names = selectRows.map((i: any) => i.name)
   // 调用插件接口
   apiPlugin
-    .execute({
+    .execute(bucket ?? '', {
       names,
       pluginName: plugin.name,
       filter,

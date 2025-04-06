@@ -32,9 +32,16 @@ http {
 #nonssl_server    server {
 #nonssl_server        listen       80;
 #nonssl_server        server_name  localhost;
+#nonssl_server        root   /usr/share/nginx/html;
+#nonssl_server        # 应用
 #nonssl_server        location $NGINX_TFD_UE_BASE_URL {
-#nonssl_server            root   /usr/share/nginx/html;
+#nonssl_server            index index.html;
 #nonssl_server            try_files $uri $uri/index.html $NGINX_TFD_UE_BASE_URL/index.html;
+#nonssl_server        }
+#nonssl_server        # 插件部件
+#nonssl_server        location $NGINX_TFD_UE_PLUGIN_BASE_URL {
+#nonssl_server            index index.html;
+#nonssl_server            try_files $uri $uri/ $NGINX_TFD_UE_PLUGIN_BASE_URL/index.html;
 #nonssl_server        }
 #nonssl_server        # 转发前端的API请求到本地服务
 #nonssl_server        location / {
@@ -51,6 +58,11 @@ http {
 #ssl_server        location $NGINX_TFD_UE_BASE_URL {
 #ssl_server            root   /usr/share/nginx/html;
 #ssl_server            try_files $uri $uri/index.html $NGINX_TFD_UE_BASE_URL/index.html;
+#ssl_server        }
+#ssl_server        # 插件部件
+#ssl_server        location $NGINX_TFD_UE_PLUGIN_BASE_URL {
+#ssl_server            root   /usr/share/nginx/html;
+#ssl_server            try_files $uri $uri/ $NGINX_TFD_UE_PLUGIN_BASE_URL/index.html;
 #ssl_server        }
 #ssl_server        # 转发前端的API请求到本地服务
 #ssl_server        location / {

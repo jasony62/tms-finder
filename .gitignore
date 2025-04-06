@@ -71,6 +71,7 @@ dump.rdb
 
 volumes/
 *.local.js
+*.local.json
 
 pnpm-lock.yaml
 dist

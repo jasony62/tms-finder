@@ -1,0 +1,5 @@
+{
+  "id": "tms-koa-bucket",
+  "dir": "dist/controllers",
+  "alias": "bucket"
+}

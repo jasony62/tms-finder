@@ -4,7 +4,6 @@
   "description": "tms-finder开发工具包",
   "type": "module",
   "main": "./dist/index.js",
-  "types": "/dist/index.d.ts",
   "scripts": {
     "build": "rimraf ./dist && tsc -p tsconfig.json"
   },

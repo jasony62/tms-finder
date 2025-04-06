@@ -7,7 +7,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rimraf ./dist && tsc -p tsconfig.build.json --skipLibCheck",
-    "dev": "node ./dist/server"
+    "dev": "DEBUG=tfd* node ./dist/server"
   },
   "keywords": [],
   "author": "jasony62",
@@ -19,7 +19,9 @@
     "tms-koa": "0.2.20",
     "tms-koa-account": "0.2.15",
     "tms-koa-bucket": "0.0.4",
-    "tms-koa-captcha": "0.2.15"
+    "tms-koa-captcha": "0.2.15",
+    "tfd-data": "workspace:*",
+    "tfd-kit": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "22.13.17",

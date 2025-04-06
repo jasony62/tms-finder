@@ -27,13 +27,25 @@ process.on('uncatchException', function (e) {
   process.exit(0)
 })
 
-import { TmsKoa } from 'tms-koa'
+import { loadConfig, TmsKoa } from 'tms-koa'
+import { PluginContext } from 'tfd-kit'
 const tmsKoa = new TmsKoa()
+
+/**初始化配置上下文对象*/
+async function loadPlugins() {
+  let config = await loadConfig('plugin')
+  PluginContext.init(config)
+}
 
 /**
  * 框架完成初始化
  */
 function afterInit() {
+  /**
+   * 加载插件
+   */
+  loadPlugins()
+
   logger.info('已完成框架初始化')
 }
 

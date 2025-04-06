@@ -1,0 +1,23 @@
+{
+  "name": "plugins",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "description": "",
+  "scripts": {
+    "build": "rimraf ./dist && tsc"
+  },
+  "keywords": [],
+  "author": "jasony62",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^4.4.0",
+    "tfd-data": "workspace:*",
+    "tfd-kit": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.12",
+    "@types/node": "22.14.0",
+    "rimraf": "6.0.1"
+  }
+}

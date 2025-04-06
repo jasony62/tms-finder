@@ -1,0 +1,23 @@
+{
+  "name": "tfd-data",
+  "version": "0.0.1",
+  "description": "TFD数据结构",
+  "type": "module",
+  "main": "./dist/index.js",
+  "files": [
+    "dist/",
+    "docs/"
+  ],
+  "scripts": {
+    "build": "rimraf ./dist && tsc"
+  },
+  "keywords": [
+    "TMS"
+  ],
+  "author": "jasony62",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "22.14.0",
+    "rimraf": "6.0.1"
+  }
+}

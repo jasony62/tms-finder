@@ -1,0 +1,26 @@
+{
+  "name": "tfd-kit",
+  "version": "0.0.1",
+  "description": "tms-finder开发工具包",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "/dist/index.d.ts",
+  "scripts": {
+    "build": "rimraf ./dist && tsc -p tsconfig.json"
+  },
+  "files": [
+    "dist/"
+  ],
+  "author": "jasony62",
+  "license": "MIT",
+  "dependencies": {
+    "@log4js-node/log4js-api": "1.0.2",
+    "glob": "11.0.1",
+    "lodash": "^4.17.21",
+    "tfd-data": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "22.14.0",
+    "rimraf": "6.0.1"
+  }
+}

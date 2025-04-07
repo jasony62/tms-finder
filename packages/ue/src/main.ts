@@ -27,8 +27,11 @@ import 'tms-vue3-ui/dist/es/flex/style/index.css'
 import './assets/css/app.css'
 import apiAuth from '@/apis/auth'
 import { schema } from '@/data/login'
+import Debug from 'debug'
 
 localStorage.debug = '*'
+
+const debug = Debug('tfd:main')
 
 const { fnCaptcha, fnLogin } = apiAuth
 
@@ -67,9 +70,15 @@ function getAccessToken() {
     return 'Bearer ' + getQueryVariable('access_token')
   }
 }
-
+/**
+ * 如果是认证相关的错误，重新登录
+ *
+ * @param res
+ * @returns
+ */
 function onRetryAttempt(res: any) {
-  if (res.data.code === 20001) {
+  debug('API执行失败\n%O', res.data)
+  if (res.data.code === 20001 || res.data.code === 10001) {
     return LoginPromise.wait().then(() => {
       return true
     })

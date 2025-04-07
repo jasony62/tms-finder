@@ -7,7 +7,7 @@
   >
     <el-form>
       <el-form-item>
-        <div ref="elInviteInfo">{{ inviteInfo }}</div>
+        <div ref="elInviteInfo">{{ inviteURL }}</div>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { BASE_URL } from '@/global'
 
 const dialogVisible = ref(true)
 
@@ -38,7 +39,7 @@ const props = defineProps({
   },
 })
 
-const inviteInfo = `bucket=${props.bucketName}&nickname=${props.nickname}&code=${props.code}`
+const inviteURL = `${location.protocol}//${location.host}${BASE_URL}/bucket/${props.bucketName}/join/${props.nickname}/${props.code}`
 
 const copy = () => {
   const str = elInviteInfo.value?.innerText || ''

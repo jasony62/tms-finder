@@ -5,6 +5,7 @@ import Manage from '../views/Manage.vue'
 import Register from '../views/Register.vue'
 import Smscode from '../views/Smscode.vue'
 import Bucket from '../views/Bucket.vue'
+import JoinBucket from '../views/JoinBucket.vue'
 import {
   EXTERNAL_LOGIN_URL,
   LOGIN_IGNORED,
@@ -12,6 +13,7 @@ import {
   removeLocalToken,
   externalLogin,
   BUCKET_MODE,
+  BASE_URL,
 } from '@/global'
 import facStore from '@/store'
 import apiAuth from '@/apis/auth'
@@ -19,10 +21,6 @@ import Coworker from '@/views/Coworker.vue'
 import Debug from 'debug'
 
 const debug = Debug('tfd:router')
-
-const BASE_URL = import.meta.env.VITE_BASE_URL
-  ? import.meta.env.VITE_BASE_URL
-  : '/tmsfinder'
 
 const routes = [
   {
@@ -51,6 +49,12 @@ const routes = [
     path: '/bucket/:bucket/coworker',
     name: 'coworker',
     component: Coworker,
+    props: true,
+  },
+  {
+    path: '/bucket/:bucket/join/:nickname/:code',
+    name: 'joinbucket',
+    component: JoinBucket,
     props: true,
   },
   {
@@ -154,6 +158,7 @@ router.beforeEach(async (to, from, next) => {
           if (
             routeName !== 'bucket' &&
             routeName !== 'coworker' &&
+            routeName !== 'joinbucket' &&
             !to.query.bucket
           ) {
             debug('应用为bucket模式，检查用户是否已经创建bucket')

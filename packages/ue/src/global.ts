@@ -74,6 +74,12 @@ export function init(settings: Globalsettings) {
     _globalsettings.uploadFileAccept = settings.uploadFileAccept
 }
 /**
+ * 应用的起始地址
+ */
+export const BASE_URL = import.meta.env.VITE_BASE_URL
+  ? import.meta.env.VITE_BASE_URL
+  : '/tmsfinder'
+/**
  * 根据环境变量设置是否关闭认证
  */
 export const LOGIN_IGNORED = () => _globalsettings.loginIgnored

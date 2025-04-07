@@ -32,6 +32,9 @@ import { setLocalToken } from '@/global'
 import router from '@/router/index'
 import { ElMessage } from 'element-plus'
 import { TmsAxios } from 'tms-vue3'
+import { getCurrentInstance } from 'vue'
+
+const { proxy }: any = getCurrentInstance()
 const { fnCaptcha, fnLogin } = apiAuth
 
 const fnSuccessLogin = (response: LoginResponse) => {
@@ -46,7 +49,17 @@ const fnSuccessLogin = (response: LoginResponse) => {
     let rule = TmsAxios.newInterceptorRule(rulesObj)
     TmsAxios.ins({ name: 'file-api', rules: [rule] })
     TmsAxios.ins({ name: 'auth-api' })
-    router.push('/web')
+    // router.push('/web')
+    /**
+     * 返回登录前页面或首页
+     */
+    const history = proxy.$tmsRouterHistory.history
+    const path = history.slice(-2, -1).join()
+    if (path && ['/register', '/smscode'].indexOf(path) === -1) {
+      router.push({ path })
+    } else {
+      router.push({ name: 'root' })
+    }
   }
 }
 

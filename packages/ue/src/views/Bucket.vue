@@ -29,9 +29,6 @@
         <el-form-item>
           <el-button @click="reloadBucket">刷新</el-button>
         </el-form-item>
-        <el-form-item>
-          <el-button @click="acceptInvite">接受邀请</el-button>
-        </el-form-item>
       </el-form>
     </div>
     <!--content-->
@@ -40,6 +37,7 @@
         <el-table-column label="名称" width="180">
           <template #default="scope">
             <router-link
+              class="text-blue-400"
               :to="{ path: '/web', query: { bucket: scope.row.name } }"
               >{{ scope.row.name }}
             </router-link>
@@ -86,7 +84,6 @@ import { dialogInjectionKey } from 'gitart-vue-dialog'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import apiBucket from '@/apis/bucket.js'
 import BucketEditor from '../components/BucketEditor.vue'
-import BucketInviteAccept from '../components/BucketInviteAccept.vue'
 import router from '@/router/index'
 
 const store = facStore()
@@ -166,13 +163,6 @@ const saveDefaultBucket = () => {
 
 const manageInvite = (bucket: any) => {
   router.push({ name: 'coworker', params: { bucket: bucket.name } })
-}
-
-const acceptInvite = () => {
-  $dialog?.addDialog({
-    component: BucketInviteAccept,
-    id: 'bucketInviteAccept',
-  })
 }
 
 onMounted(() => {

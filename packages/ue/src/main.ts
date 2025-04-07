@@ -1,7 +1,12 @@
 import { createApp } from 'vue'
 import ElementPlus from 'element-plus'
 import { ElMessage } from 'element-plus'
-import { TmsAxios, TmsAxiosPlugin, TmsLockPromise } from 'tms-vue3'
+import {
+  TmsAxios,
+  TmsAxiosPlugin,
+  TmsLockPromise,
+  TmsRouterHistoryPlugin,
+} from 'tms-vue3'
 import { Login, LoginResponse } from 'tms-vue3-ui'
 import router from './router'
 import { createPinia } from 'pinia'
@@ -13,6 +18,7 @@ import {
   getLocalToken,
   setLocalToken,
   getQueryVariable,
+  BASE_URL,
 } from './global'
 import './index.css'
 import 'element-plus/dist/index.css'
@@ -107,19 +113,25 @@ function afterLoadSettings() {
     .use(createPinia())
     .use(dialogPlugin)
     .use(TmsAxiosPlugin)
+    .use(TmsRouterHistoryPlugin, { router })
     .use(ElementPlus)
+    .use({
+      /**
+       * 为了解决在路由中可以访问app实例问题
+       * @param app
+       */
+      install: (app) => {
+        //@ts-ignore
+        window['_VueApp'] = app
+      },
+    })
     .mount('#app')
 }
 
-const { VITE_BASE_URL } = import.meta.env
-const UrlSettings =
-  (VITE_BASE_URL && VITE_BASE_URL !== '/' ? VITE_BASE_URL : '/tmsfinder') +
-  '/settings.json'
-
 TmsAxios.ins('master-api')
-  .get(UrlSettings)
+  .get(`${BASE_URL}/settings.json`)
   .then((rsp: any) => {
-    let settings = rsp.data
+    const settings = rsp.data
     initGlobalSettings(settings)
     afterLoadSettings()
   })

@@ -1,0 +1,6 @@
+@import 'tailwindcss';
+
+#joinBucket {
+  @apply mx-auto mt-16 p-8 border border-gray-600 rounded-md;
+  width: 400px;
+}

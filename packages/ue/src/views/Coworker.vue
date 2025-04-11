@@ -7,14 +7,14 @@
         </el-form-item>
         <el-form-item label="被邀请用户">
           <el-input
-            v-model="formInline.nickname"
+            v-model="formInline.username"
             placeholder="请输入用户昵称"
           ></el-input>
         </el-form-item>
         <el-form-item>
           <el-button
             type="primary"
-            :disabled="!formInline.nickname"
+            :disabled="!formInline.username"
             @click="createInvite"
             >发起邀请</el-button
           >
@@ -27,10 +27,31 @@
     <div>
       <el-table :data="coworkers">
         <el-table-column property="bucket" label="空间名称" />
-        <el-table-column property="coworker.nickname" label="协作人" />
+        <el-table-column property="coworker.username" label="协作人" />
         <el-table-column property="code" label="邀请码" />
-        <el-table-column property="createAt" label="发起邀请时间" />
-        <el-table-column property="acceptAt" label="接受邀请时间" />
+        <el-table-column label="发起邀请时间">
+          <template #default="scope">
+            {{ new Date(scope.row.createAt).toLocaleString() }}
+          </template>
+        </el-table-column>
+        <el-table-column label="接受邀请时间">
+          <template #default="scope">
+            {{
+              scope.row.acceptAt
+                ? new Date(scope.row.acceptAt).toLocaleString()
+                : ''
+            }}
+          </template>
+        </el-table-column>
+        <el-table-column label="拒绝邀请时间">
+          <template #default="scope">
+            {{
+              scope.row.rejectAt
+                ? new Date(scope.row.rejectAt).toLocaleString()
+                : ''
+            }}
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
           <template #default="scope">
             <el-button @click="removeCoworker(scope.row)">删除</el-button>
@@ -53,16 +74,17 @@ const $dialog = inject(dialogInjectionKey)
 
 const props = defineProps({ bucket: { type: String, required: true } })
 
-const formInline = reactive({ nickname: '' })
+const formInline = reactive({ username: '' })
 const coworkers = ref<any[]>([])
 
 const createInvite = () => {
-  apiInvite.invite(props.bucket, formInline.nickname).then((res: any) => {
+  apiInvite.invite(props.bucket, formInline.username).then((res: any) => {
     reloadInvite()
   })
 }
+
 const removeCoworker = (data: any) => {
-  apiInvite.remove(props.bucket, data.coworker.nickname).then(
+  apiInvite.remove(props.bucket, data.coworker.username).then(
     (res: any) => {
       ElMessage({ message: res.msg || '删除成功', type: 'success' })
       reloadInvite()
@@ -83,7 +105,7 @@ const showInviteInfo = (row: any) => {
     component: BucketInviteInfo,
     props: {
       bucketName: props.bucket,
-      nickname: row.coworker.nickname,
+      username: row.coworker.username,
       code: row.code,
     },
   })

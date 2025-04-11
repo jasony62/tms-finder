@@ -8,7 +8,10 @@
   >
     <el-form ref="form" :model="bucket" label-position="top">
       <el-form-item label="空间名称（英文字符）">
-        <el-input v-model="bucket.name"></el-input>
+        <el-input
+          v-model="bucket.name"
+          :disabled="mode === 'update'"
+        ></el-input>
       </el-form-item>
       <el-form-item label="空间显示名">
         <el-input v-model="bucket.title"></el-input>
@@ -28,8 +31,8 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="onSubmit">提交</el-button>
-      <el-button @click="onBeforeClose">取消</el-button>
+      <el-button type="primary" @click="onSubmit()">提交</el-button>
+      <el-button @click="onBeforeClose()">取消</el-button>
     </div>
   </el-dialog>
 </template>
@@ -68,11 +71,12 @@ const onSubmit = () => {
   const extAttrs = $jde.value?.editing()
   bucket[props.schemasRootName] = extAttrs
   if (mode === 'update') {
+    const { title, description, extAttrs } = bucket
     apiBkt
-      .update(bucket.name, bucket)
-      .then((newBucket: any) => {
+      .update(bucket.name, { title, description, extAttrs })
+      .then(({ modifiedCount }: { modifiedCount: number }) => {
         ElMessage({ message: '更新成功', type: 'success' })
-        onBeforeClose(newBucket)
+        onBeforeClose(bucket)
       })
       .catch((err: any) => {
         ElMessage({ message: err.msg || '失败', type: 'error' })

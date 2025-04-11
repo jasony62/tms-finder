@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import browseApi from '../apis/file/browse'
 import bucketApi from '../apis/bucket.js'
+import inviteApi from '../apis/invite.js'
 import createUploadApi from '../apis/file/upload'
 
 export default defineStore('webfs', {
@@ -39,6 +40,33 @@ export default defineStore('webfs', {
       return bucketApi.remove(bucket).then(() => {
         this.buckets.splice(this.buckets.indexOf(bucket), 1)
       })
+    },
+    acceptInvite(bucket: any) {
+      const { invitation } = bucket
+      if (invitation) {
+        inviteApi
+          .accept(bucket.name, invitation.username, invitation.code)
+          .then((result: any) => {
+            delete bucket.invitation
+            bucket.acceptAt = result.acceptAt
+          })
+          .catch(() => {
+            // @TODO 需要做什么？
+          })
+      }
+    },
+    rejextInvite(bucket: any) {
+      const { invitation } = bucket
+      if (invitation) {
+        inviteApi
+          .reject(bucket.name, invitation.username, invitation.code)
+          .then((result: any) => {
+            this.buckets.splice(this.buckets.indexOf(bucket), 1)
+          })
+          .catch(() => {
+            // @TODO 需要做什么？
+          })
+      }
     },
     setSearchFiles(searchFiles: any[]) {
       this.searchFiles = searchFiles

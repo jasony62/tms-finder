@@ -17,7 +17,7 @@ import '../assets/css/join-bucket.css'
 
 const props = defineProps({
   bucket: { type: String, required: true },
-  nickname: { type: String, required: true },
+  username: { type: String, required: true },
   code: { type: String, required: true },
 })
 
@@ -28,9 +28,9 @@ apiBucket.byName(props.bucket).then((result: any) => {
 })
 
 function accept() {
-  const { bucket, nickname, code } = props
+  const { bucket, username, code } = props
   apiInvite
-    .accept(bucket, nickname, code)
+    .accept(bucket, username, code)
     .then((result: any) => {
       router.push({ name: 'root', params: { bucket } })
     })

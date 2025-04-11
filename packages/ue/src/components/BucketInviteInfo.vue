@@ -29,7 +29,7 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  nickname: {
+  username: {
     type: String,
     required: true,
   },
@@ -39,7 +39,7 @@ const props = defineProps({
   },
 })
 
-const inviteURL = `${location.protocol}//${location.host}${BASE_URL}/bucket/${props.bucketName}/join/${props.nickname}/${props.code}`
+const inviteURL = `${location.protocol}//${location.host}${BASE_URL}/bucket/${props.bucketName}/join/${props.username}/${props.code}`
 
 const copy = () => {
   const str = elInviteInfo.value?.innerText || ''

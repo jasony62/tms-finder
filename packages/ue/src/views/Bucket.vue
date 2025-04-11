@@ -48,6 +48,15 @@
           label="标题"
           width="180"
         ></el-table-column>
+        <el-table-column label="创建时间">
+          <template #default="scope">
+            {{
+              scope.row.createAt
+                ? new Date(scope.row.createAt).toLocaleString()
+                : ''
+            }}
+          </template>
+        </el-table-column>
         <el-table-column
           v-if="schemas"
           v-for="(s, k) in schemas.properties"
@@ -61,14 +70,33 @@
           <template #default="scope">
             <el-button
               @click="editBucket(scope.row, scope.$index)"
-              v-if="scope.row._id"
+              v-if="isCreator(scope.row)"
               >修改</el-button
             >
-            <el-button @click="removeBucket(scope.row)" v-if="scope.row._id"
+            <el-button
+              @click="removeBucket(scope.row)"
+              v-if="isCreator(scope.row)"
               >删除</el-button
             >
-            <el-button @click="manageInvite(scope.row)" v-if="scope.row._id"
+            <el-button
+              @click="manageInvite(scope.row)"
+              v-if="isCreator(scope.row)"
               >邀请</el-button
+            >
+            <el-button
+              @click="acceptInvite(scope.row)"
+              v-if="isInvitation(scope.row)"
+              >接受</el-button
+            >
+            <el-button
+              @click="rejectInvite(scope.row)"
+              v-if="isInvitation(scope.row)"
+              >拒绝</el-button
+            >
+            <el-button
+              @click="removeBucket(scope.row)"
+              v-if="isCoworker(scope.row)"
+              >退出</el-button
             >
           </template>
         </el-table-column>
@@ -83,6 +111,7 @@ import facStore from '@/store'
 import { dialogInjectionKey } from 'gitart-vue-dialog'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import apiBucket from '@/apis/bucket.js'
+import apiInvite from '@/apis/invite.js'
 import BucketEditor from '../components/BucketEditor.vue'
 import router from '@/router/index'
 
@@ -117,11 +146,17 @@ const reloadBucket = () => {
 }
 
 const removeBucket = (bucket: any) => {
-  ElMessageBox.confirm(`删除[${bucket.title}/${bucket.name}]?`, `请确认`, {
-    confirmButtonText: '是',
-    cancelButtonText: '取消',
-    type: 'warning',
-  }).then(() => {
+  ElMessageBox.confirm(
+    `${bucket.creator ? '删除' : '退出'}空间 [${bucket.title}/${
+      bucket.name
+    }] ?`,
+    ` 请确认`,
+    {
+      confirmButtonText: '是',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  ).then(() => {
     store.removeBucket(bucket).then(
       (res: any) => {
         ElMessage({ message: '空间已删除', type: 'success' })
@@ -164,6 +199,20 @@ const saveDefaultBucket = () => {
 const manageInvite = (bucket: any) => {
   router.push({ name: 'coworker', params: { bucket: bucket.name } })
 }
+
+const acceptInvite = (bucket: any) => {
+  store.acceptInvite(bucket)
+}
+
+const rejectInvite = (bucket: any) => {
+  store.rejextInvite(bucket)
+}
+
+const isCreator = (bucket: any) => !!bucket.creator
+
+const isCoworker = (bucket: any) => !!(!bucket.invitation && bucket.coworker)
+
+const isInvitation = (bucket: any) => !!bucket.invitation
 
 onMounted(() => {
   store.listBucket()

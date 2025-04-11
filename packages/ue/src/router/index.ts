@@ -58,7 +58,7 @@ const routes = [
     props: true,
   },
   {
-    path: '/bucket/:bucket/join/:nickname/:code',
+    path: '/bucket/:bucket/join/:username/:code',
     name: 'joinbucket',
     component: JoinBucket,
     props: true,
